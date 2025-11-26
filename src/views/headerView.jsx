@@ -1,28 +1,33 @@
 /***********************************************************************
  * Pure top navigation UI.
  * Contains:
- *  - Logo/Title (WeebCult)
+ *  - Title (WeebCult)
  *  - Search input box and search button
  *  - Logout button
  ***********************************************************************/
 
-export function HeaderView({ onSearch, onLogout }) {
+export function HeaderView(props) {
 
     // TODO:
-    // - Render nav bar
-    // - Trigger onSearch() when clicking search icon
-    // - Trigger onLogout() when clicking logout
+    // - Render a simple top nav bar
+    // - When user clicks search → onSearch()
+    // - When logout → onLogout()
+    // - NO internal logic, NO data fetching
 
     return (
         <header className="header">
 
-            <div className="title" onClick={() => onSearch("")}>
+            <div className="title" onClick={() => props.onSearch("")}>
                 WeebCult
             </div>
 
-            <button onClick={onSearch}>Search</button>
+            <button onClick={() => props.onSearch()}>
+                Search
+            </button>
 
-            <button onClick={onLogout}>Logout</button>
+            <button onClick={props.onLogout}>
+                Logout
+            </button>
 
         </header>
     );

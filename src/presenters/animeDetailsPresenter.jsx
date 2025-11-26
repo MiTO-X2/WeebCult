@@ -1,33 +1,43 @@
 /***********************************************************************
  * PURPOSE:
- *   - Present details for a single anime
- *   - Load anime details + characters
- *   - Handle promiseState for both
+ *   - Present details for a single anime in a modal
+ *   - Presenter = Redux-connected container
+ *   - Dispatch thunks for details + characters
+ *   - Pass state + callbacks to AnimeDetailsView (pure)
  *   - Typically used inside a modal triggered from Main/Search
  ***********************************************************************/
 
-export function AnimeDetailsPresenter({ animeId, onClose }) {
+import { connect } from "react-redux";
+import { AnimeDetailsView } from "../views/animeDetailsView";
 
-    // TODO:
-    // 1. useDispatch + thunks:
-    //        loadAnimeDetails(animeId)
-    //        loadAnimeCharacters(animeId)
+export function AnimeDetailsPresenter() {
 
-    // 2. useEffect(() => dispatch(loadAnimeDetails(id)), [animeId])
-    //    useEffect(() => dispatch(loadAnimeCharacters(id)), [animeId])
-
-    // 3. Select from Redux:
-    //        detailsPS = state.details.details.promiseState
-    //        charPS = state.details.characters.promiseState
-
-    // 4. Suspense:
-    //        if(detailsPS.pending OR charPS.pending) <Loader />
-
-    // 5. If error: <ErrorView />
-
-    // 6. return <AnimeDetailsView
-    //           anime={detailsPS.data}
-    //           characters={charPS.data}
-    //           onClose={onClose}
-    //         />
+    // TODO (Redux-based presenter):
+    //
+    // 1. mapStateToProps(state, ownProps):
+    //        - extract animeId from ownProps
+    //        - select:
+    //              detailsPS = state.details.details.promiseState
+    //              charPS = state.details.characters.promiseState
+    //
+    // 2. mapDispatchToProps(dispatch, ownProps):
+    //        - loadDetails(): dispatch(loadAnimeDetails(ownProps.animeId))
+    //        - loadCharacters(): dispatch(loadAnimeCharacters(ownProps.animeId))
+    //
+    // 3. ComponentDidMount/Update equivalent:
+    //        - inside mergeProps, check if id changed → call loadDetails + loadCharacters
+    //
+    // 4. Suspense logic happens in presenter BEFORE rendering the View:
+    //        if pending → return <Loader />
+    //        if error → return <ErrorView />
+    //
+    // 5. Finally return:
+    //        <AnimeDetailsView
+    //            anime={detailsPS.data}
+    //            characters={charPS.data}
+    //            onClose={ownProps.onClose}
+    //        />
+    //
+    // Export:
+    //    export connect(mapStateToProps, mapDispatchToProps, mergeProps)(AnimeDetailsPresenter);
 }

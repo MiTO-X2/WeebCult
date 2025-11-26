@@ -1,7 +1,7 @@
 // TODO: This file defines the main routing structure for the app.
 //       It should:
 //         - Set up <BrowserRouter>
-//         - Display the top-level layout (HeaderPresenter, Footer, etc.)
+//         - Display the top-level layout (HeaderPresenter, etc.)
 //         - Declare all route → Presenter mappings
 //       It should NOT:
 //         - Contain business logic
@@ -38,7 +38,7 @@ export function ReactRoot() {
                 </Routes>
                 */}
 
-                {/* <FooterView /> (optional) */}
+                {/* <FooterView /> (maybe) */}
             </>
         // </BrowserRouter>
     );

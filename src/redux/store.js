@@ -1,21 +1,22 @@
 /***************************************************************
  * PURPOSE:
  *   - Create and export the Redux store using configureStore()
- *   - Add middleware (default + thunk)
- *   - Import rootReducer (or individual slices)
+ *   - Add default  middleware (including thunk)
+ *   - Import the rootReducer containing all slices
  *  
  *
  * NOTES:
  *   - No business logic here.
- *   - Store should only be created once.
  ***************************************************************/
 
 // TODO:
-// 1. Import configureStore from Redux Toolkit
-// 2. Import rootReducer (or each slice reducer individually)
-// 3. Call configureStore({
+// 1. import { configureStore } from '@reduxjs/toolkit';
+// 2. import rootReducer from './rootReducer';
+// 3. Call const store = configureStore({
 //        reducer: rootReducer,
 //        middleware: (getDefault) => getDefault(),
 //    })
 // 4. Export store
-// 5. No thunks written here — ONLY configured.
+//
+// 5. DO NOT create thunks here.
+// 6. DO NOT fetch APIs here.

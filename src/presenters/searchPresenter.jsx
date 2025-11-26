@@ -7,22 +7,32 @@
  *   - Pass results to SearchView
  ***********************************************************************/
 
+import { connect } from "react-redux";
+import { SearchView } from "../views/searchView";
+
 export function SearchPresenter() {
 
     // TODO:
-    // 1. Import dispatch + fetchSearch(query)
-    // 2. Extract query param from router (useSearchParams or useParams)
-
-    // 3. useEffect(() => {
-    //        if(query) dispatch(fetchSearch(query))
-    //    }, [query])
-
-    // 4. useSelector to read:
-    //        searchPS = state.anime.search.promiseState
-
-    // 5. If searchPS.promise && !searchPS.data: <Loader />
-
-    // 6. If searchPS.error: show <ErrorView message={...} />
-
-    // 7. return <SearchView results={searchPS.data} query={query} />
+    //
+    // 1. mapStateToProps(state, ownProps):
+    //        query     = ownProps.query
+    //        searchPS  = state.anime.search.promiseState
+    //
+    // 2. mapDispatchToProps(dispatch, ownProps):
+    //        executeSearch(): dispatch(fetchSearch(ownProps.query))
+    //
+    // 3. In mergeProps:
+    //        - If query changed → call executeSearch()
+    //
+    // 4. Suspense logic:
+    //        if searchPS.pending → <Loader />
+    //        if searchPS.error → <ErrorView />
+    //
+    // 5. Return SearchView:
+    //        <SearchView
+    //            query={query}
+    //            results={searchPS.data}
+    //        />
+    //
+    // Connect + export presenter
 }

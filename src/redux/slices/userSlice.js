@@ -1,13 +1,13 @@
 /***********************************************************************
  * PURPOSE:
  *   - Manage Firebase user state: uid, profile object
- *   - Expose login/logout reducers
- *   - Async thunks load/save user data using firestoreModel.js
+ *   - loginUser = loads profile from Firestore
+ *   - logoutUser = clears state + maybe saves stats
  * 
  ***********************************************************************/
 
 // TODO:
-// 1. Import createSlice, createAsyncThunk
+// 1. import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 // 2. Import firestoreModel functions:
 //       loadUserStats, saveUserStats, loadUserSettings, etc.
 // 3. Define initialState:

@@ -1,24 +1,26 @@
 /**********************************************************************
  * PURPOSE:
  *   - Store selected anime ID
- *   - Fetch and store characters and details promiseState
+ *   - Fetch characters and full anime details
+ *   - Use promiseState for both
  **********************************************************************/
 
 // TODO:
-// 1. Import animeSource functions:
+// 1. import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+// 2. Import animeSource functions:
 //       getAnimeCharacters, getAnimeById
 //
-// 2. initialState = {
-//       anime: null,            // selected anime object
-//       characters: { promiseState },
-//       details: { promiseState }
-//    }
+// 3. initialState = {
+//        selectedId: null,
+//        details: { promiseState: {} },
+//        characters: { promiseState: {} }
+//    };
 //
-// 3. Thunks:
+// 4. Thunks:
 //       loadAnimeDetails(id)
 //       loadAnimeCharacters(id)
 //
-// 4. reducers:
-//       setSelectedAnimeId(id)
+// 5. reducers:
+//       setSelectedAnimeId(state, action)
 //
 // 5. Export reducer & actions

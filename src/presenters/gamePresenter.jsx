@@ -1,36 +1,41 @@
 /***********************************************************************
  * PURPOSE:
- *   - Implements all game logic for the Quiz
- *   - Handles question flow, next/previous, scoring
- *   - Dispatches quizSlice actions
- *   - Provides props to GameView
+ *   - Presenter for the Game/Quiz page
+ *   - Reads quiz state from Redux
+ *   - Dispatches quiz actions
+ *   - Passes props to GameView (pure)
  ***********************************************************************/
+
+import { connect } from "react-redux";
+import { GameView } from "../views/gameView";
 
 export function GamePresenter() {
 
     // TODO:
-    // 1. Select quiz state:
-    //        questions, index, score, mode, status
-
-    // 2. Provide event handlers:
-    //        onAnswer(selectedOption):
-    //            dispatch(answerQuestion(isCorrect))
-
+    //
+    // 1. mapStateToProps(state):
+    //        questions = state.quiz.questions
+    //        index     = state.quiz.index
+    //        score     = state.quiz.score
+    //        status    = state.quiz.status
+    //
+    // 2. mapDispatchToProps(dispatch):
+    //        onAnswer(option):
+    //             dispatch(answerQuestion(option))
     //        onNext():
-    //            dispatch(nextQuestion())
-
-    //        onRestart():
-    //            dispatch(resetQuiz())
-
-    // 3. Transform data for the view:
+    //             dispatch(nextQuestion())
+    //
+    // 3. In mergeProps:
     //        const currentQ = questions[index]
-
-    // 4. return <GameView
-    //           question={currentQ}
-    //           index={index}
-    //           score={score}
-    //           onAnswer={onAnswer}
-    //           onNext={onNext}
-    //           onRestart={onRestart}
-    //          />
+    //
+    // 4. Return GameView with props:
+    //        <GameView
+    //            question={currentQ}
+    //            index={index}
+    //            score={score}
+    //            onAnswer={onAnswer}
+    //            onNext={onNext}
+    //         />
+    //
+    // Connect + export
 }

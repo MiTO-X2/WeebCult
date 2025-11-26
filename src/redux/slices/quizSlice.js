@@ -23,6 +23,5 @@
 //       setMode(mode)
 //       answerQuestion(isCorrect)
 //       nextQuestion()
-//       resetQuiz()     // maybe ?????
 //
 // 3. Export reducer & actions

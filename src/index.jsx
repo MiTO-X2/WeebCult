@@ -18,7 +18,7 @@ root.render(<TestPresenter model={model} />);
 
 
 // 2) Resolve a promise and update the model's promise state (for debug purpose)
-//    Test and uncomment one resolvePromise at a time and check the UI (view) in the app
+// Test and uncomment one resolvePromise at a time and check the UI (view) in the app
 /*resolvePromise(
     searchAnime("naruto"),                    // The promise returned by the API call
     model.promiseState,                       // The object to store promise, data, error

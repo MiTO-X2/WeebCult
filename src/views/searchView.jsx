@@ -1,16 +1,19 @@
 /***********************************************************************
  * Pure UI.
- * Renders:
- *   - Search input field
- *   - Results via RowView or a list of AnimeCards
+ * 
+ * Props:
+ *   props.query
+ *   props.onQueryChange
+ *   props.results        (array)
+ *   props.onSelectAnime
  ***********************************************************************/
 
-export function SearchView({ query, onQueryChange, results, onSelectAnime }) {
+export function SearchView(props) {
 
     // TODO:
-    // - Input field
-    // - Map results → AnimeCard elements
-    // - No fetch logic here
+    // - Render input field with props.query as value
+    // - Trigger props.onQueryChange(text)
+    // - Trigger props.onSelectAnime(anime) when user clicks an item
 
     return (
         <div className="search-page">
@@ -18,8 +21,8 @@ export function SearchView({ query, onQueryChange, results, onSelectAnime }) {
             <input
                 type="text"
                 placeholder="Search anime..."
-                value={query}
-                onChange={(e) => onQueryChange(e.target.value)}
+                value={props.query}
+                onChange={(e) => props.onQueryChange(e.target.value)}
             />
 
         </div>

@@ -6,36 +6,36 @@
  *   - Score + progress
  ***********************************************************************/
 
-export function GameView({ question, index, score, onAnswer, onNext, onRestart }) {
+export function GameView(props) {
 
     // TODO:
-    // - Show the question image
-    // - List answer options as <button>
-    // - Show progress (index + 1 / total)
-    // - No business logic here
+    // - Show question prompt + image
+    // - Map answer options → <button>
+    // - NO logic (correct/wrong is handled in presenter)
+
+    const q = props.question;
 
     return (
         <div className="game-view">
 
-            <h2>Question {index + 1}</h2>
+            <h2>Question {props.index + 1}</h2>
 
-            <img src={question.image} className="question-img" />
+            <img src={q.image} className="question-img" />
 
-            <h3>{question.prompt}</h3>
+            <h3>{q.prompt}</h3>
 
             <div className="answers">
-                {question.answers.map((a, i) => (
-                    <button key={i} onClick={() => onAnswer(a)}>
+                {q.answers.map((a, i) => (
+                    <button key={i} onClick={() => props.onAnswer(a)}>
                         {a}
                     </button>
                 ))}
             </div>
 
-            <button onClick={onNext}>Next</button>
-            <button onClick={onRestart}>Restart</button>
+            <button onClick={props.onNext}>Next</button>
+            <button onClick={props.onRestart}>Restart</button>
 
-            <div className="score">Score: {score}</div>
-
+            <div className="score">Score: {props.score}</div>
         </div>
     );
 }
