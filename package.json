@@ -1,0 +1,20 @@
+{
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "latest",
+    "@vitejs/plugin-react": "latest"
+  },
+  "dependencies": {
+    "firebase": "latest",
+    "@reduxjs/toolkit": "latest",
+    "react-redux": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "react-router-dom": "latest"
+  }
+}
