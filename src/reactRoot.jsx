@@ -17,7 +17,7 @@ import React from "react";
 // TODO: import presenters (not views!) used in the routes
 // import { MainPagePresenter } from "./presenters/mainPagePresenter.jsx";
 // import { SearchPresenter } from "./presenters/searchPresenter.jsx";
-// import { AnimePresenter } from "./presenters/animePresenter.jsx";
+// import { AnimeDetailsPresenter } from "./presenters/animeDetailsPresenter.jsx";
 // import { AuthPresenter } from "./presenters/authPresenter.jsx";
 
 export function ReactRoot() {
@@ -33,7 +33,7 @@ export function ReactRoot() {
                 <Routes>
                     <Route path="/" element={<MainPagePresenter />} />
                     <Route path="/search" element={<SearchPresenter />} />
-                    <Route path="/anime/:id" element={<AnimePresenter />} />
+                    <Route path="/anime/:id" element={<AnimeDetailsPresenter />} />
                     <Route path="/login" element={<AuthPresenter />} />
                 </Routes>
                 */}
