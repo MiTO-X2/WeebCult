@@ -9,15 +9,27 @@
  ***************************************************************/
 
 // TODO:
-// 1. import { combineReducers } from '@reduxjs/toolkit';
+// 1.// Kombinera reducers från olika slices 
+import { combineReducers } from '@reduxjs/toolkit';
+
 // 2. Import reducers from the slices:
 //       userReducer, uiReducer, animeReducer,
 //       detailsReducer, quizReducer
 //
-// 3. export default combineReducers({
+//import userReducer from './slices/userSlice';
+//import uiReducer from './slices/uiSlice';
+//import animeReducer from './slices/animeSlice';
+//import detailsReducer from './slices/detailsSlice';
+import quizReducer from './slices/quizSlice';   
+
+
+// 3. 
+export default combineReducers({
 //        user: userReducer,
 //        ui: uiReducer,
 //        anime: animeReducer,
 //        details: detailsReducer,
-//        quiz: quizReducer,
-//    });
+        quiz: quizReducer,// Lägg till quiz slice
+   });
+
+   
