@@ -32,3 +32,26 @@
 //    })
 //
 // 6. Export actions & reducer
+
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+// import { loadUserProfile, saveUserProfile } from '../../models/firestoreModel';
+// Placeholder imports for Firestore functions
+const loadUserProfile = async (uid) => {
+    // Simulate fetching user profile from Firestore
+    return { name: "Test User", settings: {} };
+};  
+const saveUserProfile = async (profile) => {    
+    // Simulate saving user profile to Firestore
+    return;
+};
+
+const initialState = {
+    uid: null,
+    profile: null,
+    loading: false,
+    error: null,
+};  
+
+
+
+
