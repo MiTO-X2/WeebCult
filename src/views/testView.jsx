@@ -1,6 +1,6 @@
 export function TestView(props) {
     return (
-        <div>
+        <div className="test-view-text">
             <h2>Anime Fetch Results</h2>
             <div>
                 {props.searchResults.map(renderAnimeItemCB)}

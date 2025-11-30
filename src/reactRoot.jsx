@@ -20,18 +20,23 @@ import React from "react";
 // import { AnimeDetailsPresenter } from "./presenters/animeDetailsPresenter.jsx";
 // import { AuthPresenter } from "./presenters/authPresenter.jsx";
 import { HeaderPresenter } from "./presenters/headerPresenter.jsx";
+import { FooterView } from "./views/footerView.jsx";
 import { TestPresenter } from "./presenters/testPresenter.jsx"; // used for testing (remove later)
 
 export function ReactRoot(props) {
     return (
         /****** The following is used for testing ******/
-        <div>
+        <div className="App-background">
             <div>
                 <HeaderPresenter model={props.model} />
             </div>
 
             <div>
                 <TestPresenter model={props.model}/> 
+            </div>
+
+            <div>
+                <FooterView onNavigateHome={() => window.location.href = "/"} />
             </div>
         </div>
         /************************************************/

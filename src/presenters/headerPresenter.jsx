@@ -4,8 +4,8 @@ import { HeaderView } from "../views/headerView.jsx";
 export function HeaderPresenter() {
     return (
         <HeaderView
-            onNavigateHome={() => navigate("/")}
-            onProfile={() => navigate("/")}
+            onNavigateHome={() => window.location.href = "/"}
+            onProfile={() => window.location.href = "/"}
         />
     );
 }
