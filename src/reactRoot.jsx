@@ -19,27 +19,41 @@ import React from "react";
 // import { SearchPresenter } from "./presenters/searchPresenter.jsx";
 // import { AnimeDetailsPresenter } from "./presenters/animeDetailsPresenter.jsx";
 // import { AuthPresenter } from "./presenters/authPresenter.jsx";
+import { HeaderPresenter } from "./presenters/headerPresenter.jsx";
+import { TestPresenter } from "./presenters/testPresenter.jsx"; // used for testing (remove later)
 
-export function ReactRoot() {
+export function ReactRoot(props) {
     return (
+        /****** The following is used for testing ******/
+        <div>
+            <div>
+                <HeaderPresenter model={props.model} />
+            </div>
+
+            <div>
+                <TestPresenter model={props.model}/> 
+            </div>
+        </div>
+        /************************************************/
+
         // <BrowserRouter>
 
-            <>
-                {/* TODO: global layout components */}
-                {/* <HeaderPresenter/SearchPresenter /> */}
+        //    <>
+        //        {/* TODO: global layout components */}
+        //        {/* <HeaderPresenter/SearchPresenter /> */}
 
-                {/* TODO: define all routes that render presenters */}
-                {/* 
+        //        {/* TODO: define all routes that render presenters */}
+        /*       {
                 <Routes>
                     <Route path="/" element={<MainPagePresenter />} />
                     <Route path="/search" element={<SearchPresenter />} />
                     <Route path="/anime/:id" element={<AnimeDetailsPresenter />} />
                     <Route path="/login" element={<AuthPresenter />} />
                 </Routes>
-                */}
-
-                {/* <FooterView /> (maybe) */}
-            </>
+                }
+        */
+        //        {/* <FooterView /> (maybe) */}
+        //    </>
         // </BrowserRouter>
     );
 }

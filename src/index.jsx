@@ -2,8 +2,7 @@ import { createRoot } from "react-dom/client";
 import { searchAnime, getTopAnime, getGenres, getAnimeByGenre, getAnimeCharacters } from "./api/animeSource.js";
 import { createMiniModel } from "./miniModel.js";
 import { resolvePromise } from "./resolvePromise.js";
-import { TestPresenter } from "./presenters/testPresenter.jsx";
-
+import { ReactRoot } from "./reactRoot.jsx";
 
 // Create a React root for rendering into the DOM element with id="root"
 const root = createRoot(document.getElementById("root"));
@@ -14,7 +13,7 @@ const model = createMiniModel();
 // 1) Initial render (for debug purpose)
 // Render the presenter component and pass the model as a prop
 // At this point, model.promiseState.promise is null → shows "Loading..."
-root.render(<TestPresenter model={model} />);
+root.render(<ReactRoot model={model} />);
 
 
 // 2) Resolve a promise and update the model's promise state (for debug purpose)
