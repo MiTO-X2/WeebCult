@@ -15,13 +15,13 @@ import React from "react";
 // import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // TODO: import presenters (not views!) used in the routes
-// import { MainPagePresenter } from "./presenters/mainPagePresenter.jsx";
+import { MainPagePresenter } from "./presenters/mainPagePresenter.jsx";
 // import { SearchPresenter } from "./presenters/searchPresenter.jsx";
 // import { AnimeDetailsPresenter } from "./presenters/animeDetailsPresenter.jsx";
 // import { AuthPresenter } from "./presenters/authPresenter.jsx";
 import { HeaderPresenter } from "./presenters/headerPresenter.jsx";
-import { FooterView } from "./views/footerView.jsx";
-import { TestPresenter } from "./presenters/testPresenter.jsx"; // used for testing (remove later)
+// import { FooterView } from "./views/footerView.jsx";
+// import { TestPresenter } from "./presenters/testPresenter.jsx"; // used for testing (remove later)
 
 export function ReactRoot(props) {
     return (
@@ -30,14 +30,15 @@ export function ReactRoot(props) {
             <div>
                 <HeaderPresenter model={props.model} />
             </div>
-
+            
             <div>
-                <TestPresenter model={props.model}/> 
+                <MainPagePresenter />
             </div>
-
+            {/******
             <div>
                 <FooterView onNavigateHome={() => window.location.href = "/"} />
             </div>
+            ********/}
         </div>
         /************************************************/
 

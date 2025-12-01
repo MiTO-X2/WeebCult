@@ -6,7 +6,14 @@
  * Props:
  *   props.trending  (array)
  *   props.genres    (array)
+ *   props.comedy
+ *   props.sliceOfLife
+ *   props.fantasy 
+ *   props."More Genres If Desired"
+ *   props.onSelectAnime
  ***********************************************************************/
+
+import { RowView } from "./rowView.jsx";
 
 export function MainPageView(props) {
 
@@ -17,21 +24,39 @@ export function MainPageView(props) {
     // - Trigger props.onSelectGenre(item)
     // - NO side effects
 
+
     return (
         <div className="main-page">
 
-            <RowView // maybe ?????
-                title="Trending Anime"
+            <RowView
+                title="Trending"
                 items={props.trending}
                 onSelectItem={props.onSelectAnime}
             />
 
             <RowView
-                title="Genres"
-                items={props.genres}
-                onSelectItem={props.onSelectGenre}
+                title="Action"
+                items={props.action}
+                onSelectItem={props.onSelectAnime}
             />
 
+            <RowView
+                title="Comedy"
+                items={props.comedy}
+                onSelectItem={props.onSelectAnime}
+            />
+
+            <RowView
+                title="Slice of Life"
+                items={props.sliceOfLife}
+                onSelectItem={props.onSelectAnime}
+            />
+
+            <RowView
+                title="Fantasy"
+                items={props.fantasy}
+                onSelectItem={props.onSelectAnime}
+            />
         </div>
     );
 }

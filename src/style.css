@@ -11,6 +11,7 @@
 .App-background {
     background-color: #121212;
 }
+
 /* To prevent page content from being hidden behind header/footer */
 body {
     background-color: #121212;
@@ -227,4 +228,92 @@ body {
     font-weight: 600;
     color: #b673ff;
     line-height: 1.1;
+}
+
+/**************************** Main Page View ******************/
+.main-page {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding: 20px 20px 40px 20px;
+}
+
+/* Row container */
+.row-container {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 0 15px 0;
+    position: relative;
+    overflow: visible;
+    z-index: 1;
+}
+
+/* Title */
+.row-title {
+    font-size: 34px;
+    font-weight: 600;
+    color: #b673ff;
+    margin-bottom: 12px;
+    margin-top: 0;          
+    z-index: 0;         
+    position: relative;
+}
+
+/* Horizontal scroll */
+.row-scroll {
+    display: flex;
+    overflow-x: auto;
+    gap: 16px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;  
+    padding-bottom: 20px;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+}
+
+/****************************
+ * STREAMING-APP POSTER CARD
+ ****************************/
+
+.row-item {
+    width: 250px;                /* fixed width of anime card */
+    flex: 0 0 auto;              /* prevents stretching */
+    cursor: pointer;
+    border-radius: 10px;
+    background-color: #1d1d1d;
+    padding: 8px;
+    margin-top: 10px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    overflow: visible;           /* prevents hover clipping */
+}
+
+.row-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px #9b4dff;
+    z-index: 10;                  /* ensures hover doesn’t get cut by title or container */
+}
+
+.row-item-img {
+    width: 100%;
+    aspect-ratio: 2/3;          /* PERFECT POSTER SHAPE */
+    max-height: 300px;          /* height of the anime card */
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+
+.row-item-title {
+    color: white;
+    font-size: 18px;
+    line-height: 1.2em;
+    text-align: center;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
