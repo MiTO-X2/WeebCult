@@ -53,23 +53,23 @@ resolvePromise(
 //       - Create the React root
 //       - Provide the Redux store to the entire application
 //       - Render <App />
-//       - NO business logic, NO API calls, NO presenters, NO views here.
+//       - NO business logic, NO API calls, NO presenters, NO views here.*/
 
 import React from "react";
 import ReactDOM from "react-dom/client";
 
 // TODO: import the top-level App component
-import { ReactRoot } from "./reactRoot.jsx";
+//import { ReactRoot } from "./reactRoot.jsx";
 
 // TODO: import Redux provider + configured store
-// import { Provider } from "react-redux";
-// import { store } from "./redux/store";
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
 
 // TODO: Render the application root
 ReactDOM.createRoot(document.getElementById("root")).render(
-    //   <Provider store={store}>
-            <App />
-    //   </Provider>
+       <Provider store={store}>
+            <ReactRoot />   
+       </Provider>
 );
 
 // NOTES:
@@ -77,4 +77,4 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 // - DO NOT import animeSource.js here.
 // - DO NOT fetch API data in this file.
 // - Purpose: wrap App in providers (Redux, Router, etc.).
-***************************************************************************************************/
+//***************************************************************************************************/

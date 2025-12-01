@@ -12,11 +12,16 @@
 // TODO:
  import { configureStore } from '@reduxjs/toolkit';
  import rootReducer from './rootReducer';
-// 3. Call const store = configureStore({
-//        reducer: rootReducer,
-//        middleware: (getDefault) => getDefault(),
-//    })
-// 4. Export store
+
+// Create and export the Redux store    
+ export const store = configureStore({   
+       reducer: rootReducer,
+       middleware: (getDefault) => getDefault(),
+});  
+ 
+
+//export default store;  
+
 //
 // 5. DO NOT create thunks here.
 // 6. DO NOT fetch APIs here.
