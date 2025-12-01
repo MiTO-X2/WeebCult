@@ -10,8 +10,8 @@
  ***************************************************************/
 
 // TODO:
-// 1. import { configureStore } from '@reduxjs/toolkit';
-// 2. import rootReducer from './rootReducer';
+ import { configureStore } from '@reduxjs/toolkit';
+ import rootReducer from './rootReducer';
 // 3. Call const store = configureStore({
 //        reducer: rootReducer,
 //        middleware: (getDefault) => getDefault(),

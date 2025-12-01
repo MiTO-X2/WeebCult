@@ -16,7 +16,7 @@ import { combineReducers } from '@reduxjs/toolkit';
 //       userReducer, uiReducer, animeReducer,
 //       detailsReducer, quizReducer
 //
-//import userReducer from './slices/userSlice';
+import userReducer from './slices/userSlice';
 //import uiReducer from './slices/uiSlice';
 //import animeReducer from './slices/animeSlice';
 //import detailsReducer from './slices/detailsSlice';
@@ -25,7 +25,7 @@ import quizReducer from './slices/quizSlice';
 
 // 3. 
 export default combineReducers({
-//        user: userReducer,
+        user: userReducer,// Kombinera user slice
 //        ui: uiReducer,
 //        anime: animeReducer,
 //        details: detailsReducer,

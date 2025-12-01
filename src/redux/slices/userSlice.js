@@ -45,13 +45,45 @@ const saveUserProfile = async (profile) => {
     return;
 };
 
-const initialState = {
+const initialState = {// 3. Define initialState:
+    // { uid: null, profile: null, loading: false, error: null }
+    // Placeholder values
     uid: null,
     profile: null,
     loading: false,
     error: null,
 };  
 
+
+// 4. Define thunks:
+export const loginUser = createAsyncThunk(// loginUser(uid):
+    'user/loginUser',
+    async (uid, { rejectWithValue }) => {  //fetch Firestore user profile 
+        try {// return { uid, profile }
+            const profile = await loadUserProfile(uid);// Placeholder function
+            return { uid, profile };
+        } catch (error) {
+            return rejectWithValue(error.message);// Handle error
+        }           
+            return { uid, profile };// Placeholder return
+    }
+);
+
+export const logoutUser = createAsyncThunk(// logoutUser():
+    'user/logoutUser',
+    async (_, { getState, rejectWithValue }) => { //clear state, maybe save stats   
+        try {
+            const state = getState();
+            const profile = state.user.profile;
+            await saveUserProfile(profile);// Placeholder function
+            return;
+        }   
+        catch (error) {
+            return rejectWithValue(error.message);// Handle error       
+        }
+    }
+    
+);
 
 
 
