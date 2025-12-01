@@ -11,7 +11,7 @@
 
 // TODO:
  import { configureStore } from '@reduxjs/toolkit';
- import rootReducer from './rootReducer';
+ import rootReducer from './rootReducer.js';
 
 // Create and export the Redux store    
  export const store = configureStore({   

@@ -16,11 +16,11 @@ import { combineReducers } from '@reduxjs/toolkit';
 //       userReducer, uiReducer, animeReducer,
 //       detailsReducer, quizReducer
 //
-import userReducer from './slices/userSlice';
+import userReducer from './slices/userSlice.js';
 //import uiReducer from './slices/uiSlice';
 //import animeReducer from './slices/animeSlice';
 //import detailsReducer from './slices/detailsSlice';
-import quizReducer from './slices/quizSlice';   
+import quizReducer from './slices/quizSlice.js';   
 
 
 // 3. 
