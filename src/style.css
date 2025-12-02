@@ -1,275 +1,273 @@
 /******************** Remove later ********************/
-.test-view-text {
-    color: white;
+.test-view-text {             /* Temporary test styling container */
+    color: white;           /* Set text color to white */
 }
 
-.test-view-text h2{
-    color: #b673ff;
+.test-view-text h2{           /* Test styling for h2 inside test-view-text */
+    color: #b673ff;         /* Purple color for test headings */
 }
 /******************************************************/
 
-.App-background {
-    background-color: #121212;
+.App-background {                 /* Background styling for the app wrapper */
+    background-color: #121212;  /* Dark background */
 }
 
 /* To prevent page content from being hidden behind header/footer */
 body {
-    background-color: #121212;
-    padding-top: 60px;       /* height of header */
-    padding-bottom: 80px;    /* height of footer */
+    background-color: #121212; /* Match app background */
+    padding-top: 5px;            /* Small space under header */
+    padding-bottom: 10px;        /* Small space above footer */
 }
 
 /************************************* Header View *************************************/
 /* HEADER BAR */
 .header-bar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    min-height: 60px;
-    height: auto;       /* allow header to expand */
-    background-color: #121212;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-top: 8px;
-    padding-bottom: 8px;
-    box-sizing: border-box;
-    border-bottom: 1px solid #1f1f1f;
-    z-index: 1000;           /* make sure it stays above content */
+    top: 0;                             /* Align to very top of page */
+    left: 0;                            /* Align to left edge */
+    width: 100%;                        /* Full screen width */
+    min-height: 60px;                   /* Minimum height */
+    height: auto;                       /* Allow it to expand with content */
+    background-color: #121212;        /* Dark background */
+    display: flex;                      /* Enable flexbox layout */
+    align-items: center;                /* Vertically center children */
+    justify-content: space-between;     /* Spread left/center/right sections */
+    padding-top: 8px;                   /* Top padding */
+    padding-bottom: 8px;                /* Bottom padding */
+    box-sizing: border-box;             /* Include padding in total height */
+    border-bottom: 1px solid #1f1f1f; /* Subtle bottom border */
+    z-index: 1000;                      /* Keep header above page content */
 }
 
 /* LEFT SIDE */
 .header-left {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
+    display: flex;                 /* Horizontal alignment of children */
+    align-items: center;           /* Vertically center them */
+    gap: 10px;                     /* Space between logo and title */
+    cursor: pointer;               /* Makes entire left header clickable */
 }
 
 .header-logo {
-    height: 40px;
-    width: 40px;
+    height: 40px;                  /* Logo height */
+    width: 40px;                   /* Logo width */
 }
 
 .header-logo:hover img {
-    filter: brightness(1.2); /* slightly brighter on hover */
-    transition: 0.2s;
+    filter: brightness(1.2);       /* Brighten logo on hover */
+    transition: 0.2s;              /* Smooth hover transition */
 }
 
 .header-title {
-    font-size: 25px;
-    font-weight: 600;
-    color: #b673ff;   /* Purple accent color */
+    font-size: 25px;               /* Header title font size */
+    font-weight: 600;              /* Make it bold */
+    color: #b673ff;                /* Purple accent color */
 }
 
 .header-title:hover {
-    color: #bb80ff; /* lighter purple accent */
-    transition: 0.2s;
+    color: #bb80ff;                /* Lighter purple on hover */
+    transition: 0.2s;              /* Smooth color fade */
 }
 
 /* CENTER SEARCH BAR */
 .header-center {
-    display: flex;
-    flex-direction: column;   /* stack items vertically */
-    justify-content: center;
-    width: 40%;
-    min-width: 250px;
+    display: flex;                 /* Flex column for input + filters */
+    flex-direction: column;        /* Stack vertically */
+    justify-content: center;       /* Center content vertically */
+    width: 41%;                    /* Middle section width */
+    min-width: 250px;              /* Prevent collapsing on small screens */
 }
 
 .search-row {
-    display: flex;
-    align-items: center;
-    width: 100%;
+    display: flex;                 /* Horizontal row for input + button */
+    align-items: center;           /* Center vertically */
+    width: 100%;                   /* Full width of center area */
 }
 
 .header-search-input {
-    width: 100%;
-    background-color: #1d1d1d;
-    border: none;
-    outline: none;
-    padding: 10px 14px;
-    border-radius: 25px;
-    font-size: 14px;
-    color: white;
+    width: 100%;                   /* Search bar stretches full row */
+    background-color: #1d1d1d;   /* Dark input background */
+    border: none;                  /* Remove border */
+    outline: none;                 /* Remove browser outline */
+    padding: 10px 14px;            /* Inner spacing */
+    border-radius: 25px;           /* Rounded search bar */
+    font-size: 14px;               /* Text size */
+    color: white;                /* White text */
 }
 
 .header-search-input::placeholder {
-    color: #666;
+    color: #666;                 /* Gray placeholder text */
 }
 
 /* SEARCH BUTTON */
 .header-search-button {
-    width: 40px;
-    height: 35px;
-    background-color: #1d1d1d;
-    border: 1px solid #2b2b2b;
-    cursor: pointer;
-    margin-left: 8px;
-    border-radius: 50%;
-    display: flex;
+    width: 40px;                   /* Circle width */
+    height: 35px;                  /* Circle height */
+    background-color: #1d1d1d;   /* Dark background */
+    border: 1px solid #2b2b2b;   /* Subtle border */
+    cursor: pointer;               /* Clickable */
+    margin-left: 8px;              /* Spacing from input */
+    border-radius: 50%;            /* Make button circular */
+    display: flex;                 /* Center the icon */
     align-items: center;
     justify-content: center;
 }
 
 .header-search-button i {
-    color: #9b4dff;  /* Purple accent */
-    font-size: 18px;
+    color: #9b4dff;                /* Purple search icon */
+    font-size: 18px;                 /* Icon size */
 }
 
 .header-search-button:hover {
-    background-color: #2b2b2b; /* slightly lighter background */
-    border-color: #9b4dff;     /* match profile button accent */
+    background-color: #2b2b2b;     /* Slightly lighter background */
+    border-color: #9b4dff;         /* Purple border on hover */
     i {
-        color: #bb80ff;        /* lighten the icon */
+        color: #bb80ff;            /* Lighter purple icon */
     }
-    transition: 0.2s;
+    transition: 0.2s;                /* Smooth animation */
 }
 
 .search-filters {
-    justify-content: center;
-    display: flex;
-    flex-wrap: wrap;       /* wrap if screen is too narrow */
-    gap: 8px;
-    margin-top: 8px;       /* spacing below input */
+    justify-content: center;       /* Center filter dropdowns */
+    display: flex;                 /* Horizontal flex layout */
+    flex-wrap: wrap;               /* Wrap filters on small screens */
+    gap: 8px;                      /* Space between dropdowns */
+    margin-top: 8px;               /* Spacing under search bar */
 }
 
 .search-filters select {
-    padding: 6px 12px;
-    border-radius: 6px;
-    border: 1px solid #2b2b2b;
-    background-color: #1d1d1d;
-    color: white;
-    cursor: pointer;
-    font-size: 13px;
-    transition: 0.2s;
+    padding: 6px 12px;             /* Inner spacing */
+    border-radius: 6px;            /* Rounded corners */
+    border: 1px solid #2b2b2b;     /* Subtle border */
+    background-color: #1d1d1d;     /* Dark dropdown background */
+    color: white;                  /* Text color */
+    cursor: pointer;               /* Clickable */
+    font-size: 13px;               /* Font size */
+    transition: 0.2s;              /* Smooth hover */
 }
 
 .search-filters select:hover {
-    border-color: #9b4dff;
-    background-color: #2b2b2b;
-    color: #bb80ff;
+    border-color: #9b4dff;         /* Purple border */
+    background-color: #2b2b2b;     /* Slightly lighter background */
+    color: #bb80ff;                /* Lighter purple text */
 }
 
 /* RIGHT SIDE LOGIN/PROFILE BUTTON */
 .header-right {
-    display: flex;
+    display: flex;                 /* Align right-side buttons horizontally */
     align-items: center;
 }
 
 .profile-button {
-    background-color: #1d1d1d;
-    border: 1px solid #2d2d2d;
-    color: #d0d0d0;
-    padding: 7px 16px;
-    border-radius: 6px;
-    font-size: 13px;
-    cursor: pointer;
-    transition: 0.2s;
-    margin-right: 10px;
+    background-color: #1d1d1d;     /* Button background */
+    border: 1px solid #2d2d2d;     /* Subtle border */
+    color: #d0d0d0;                /* Light gray text */
+    padding: 7px 16px;             /* Button padding */
+    border-radius: 6px;            /* Rounded corners */
+    font-size: 13px;               /* Button text size */
+    cursor: pointer;               /* Clickable */
+    transition: 0.2s;              /* Smooth hover */
+    margin-right: 10px;            /* Spacing before edge */
 }
 
 .profile-button:hover {
-    border-color: #9b4dff;
-    color: #bb80ff;
+    border-color: #9b4dff;         /* Purple border on hover */
+    color: #bb80ff;                /* Purple text on hover */
 }
 
 /************************************* Footer View *************************************/
 /* FOOTER BAR */
 .footer-bar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 80px;
-    background-color: #121212;
-    display: flex;
-    flex-direction: column;  /* stack logo above text */
-    align-items: center;     /* center horizontally */
-    justify-content: center; /* center vertically */
-    border-top: 1px solid #1f1f1f;
-    padding: 5px 0;          /* small vertical padding */
-    box-sizing: border-box;
-    text-align: center;
-    z-index: 1000;           /* stay above content */
+    bottom: 0;                     /* Align to bottom of page */
+    left: 0;                       /* Align to left edge */
+    width: 100%;                   /* Full width */
+    height: 80px;                  /* Footer height */
+    background-color: #121212;     /* Dark background */
+    display: flex;                 /* Enable flexbox */
+    flex-direction: column;        /* Stack logo above text */
+    align-items: center;           /* Center horizontally */
+    justify-content: center;       /* Center vertically */
+    border-top: 1px solid #1f1f1f; /* Subtle top border */
+    padding: 5px 0;                /* Vertical padding */
+    box-sizing: border-box;        /* Include padding in height */
+    text-align: center;            /* Center footer text */
+    z-index: 1000;                 /* Keep above content */
 }
 
 .footer-logo {
-    cursor: pointer;
-    margin-bottom: 3px;      /* small gap between logo and text */
+    cursor: pointer;               /* Logo is clickable */
+    margin-bottom: 3px;            /* Small spacing under logo */
 }
 
 .footer-logo-img {
-    height: 40px;
+    height: 40px;                  /* Size of logo image */
     width: 40px;
-    display: block;          /* remove inline gap */
+    display: block;                /* Prevent inline spacing issues */
 }
 
 .footer-logo:hover img {
-    filter: brightness(1.2); /* slightly brighter on hover */
-    transition: 0.2s;
+    filter: brightness(1.2);       /* Brighten logo on hover */
+    transition: 0.2s;              /* Smooth effect */
 }
 
 /* TEXT */
 .footer-text {
-    display: flex;
+    display: flex;                 /* Vertical stack of texts */
     flex-direction: column;
     align-items: center;
-    gap: 0;                  /* no extra gap between text lines */
+    gap: 0;                        /* No extra spacing */
 }
 
 .footer-text span {
-    color: white;
+    color: white;                  /* Regular footer text */
 }
 .footer-text p {
-    margin: 0;
+    margin: 0;                     /* Remove default spacing */
     padding: 0;
-    font-size: 14px;
-    font-weight: 600;
-    color: #b673ff;
-    line-height: 1.1;
+    font-size: 14px;               /* Text size */
+    font-weight: 600;              /* Bold */
+    color: #b673ff;                /* Purple highlight */
+    line-height: 1.1;              /* Compact line spacing */
 }
 
 /**************************** Main Page View ******************/
 .main-page {
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-    padding: 20px 20px 40px 20px;
+    display: flex;                 /* Main layout uses flexbox */
+    flex-direction: column;        /* Stack rows vertically */
+    gap: 40px;                     /* Space between sections */
+    padding: 20px 20px 40px 20px;  /* Page padding */
 }
 
 /* Row container */
 .row-container {
-    display: flex;
+    display: flex;                 /* Stack title + scroll area */
     flex-direction: column;
-    padding: 20px 0 15px 0;
-    position: relative;
-    overflow: visible;
-    z-index: 1;
+    padding: 20px 0 15px 0;        /* Top/bottom spacing */
+    position: relative;            /* Required for z-index control */
+    overflow: visible;             /* Prevent clipping */
+    z-index: 1;                    /* Ensure visibility */
 }
 
 /* Title */
 .row-title {
-    font-size: 34px;
-    font-weight: 600;
-    color: #b673ff;
-    margin-bottom: 12px;
-    margin-top: 0;          
-    z-index: 0;         
-    position: relative;
+    font-size: 34px;               /* Section title size */
+    font-weight: 600;              /* Bold */
+    color: #b673ff;                /* Purple highlight */
+    margin-bottom: 12px;           /* Spacing under title */
+    margin-top: 0;                 /* Remove default margin */
+    z-index: 0;                    /* Behind hovered cards */
+    position: relative;            /* Needed for layering */
 }
 
 /* Horizontal scroll */
 .row-scroll {
-    display: flex;
-    overflow-x: auto;
-    gap: 16px;
-    padding-left: 10px;
+    display: flex;                 /* Horizontal container */
+    overflow-x: auto;              /* Allow horizontal scrolling */
+    gap: 16px;                     /* Space between cards */
+    padding-left: 10px;            /* Side padding */
     padding-right: 10px;
-    padding-top: 10px;  
-    padding-bottom: 20px;
-    scroll-behavior: smooth;
-    scrollbar-width: none;
+    padding-top: 10px;             /* Top padding */
+    padding-bottom: 20px;          /* Space under cards */
+    scroll-behavior: smooth;       /* Smooth scrolling */
+    scrollbar-width: none;         /* Hide scrollbar */
 }
 
 /****************************
@@ -277,43 +275,43 @@ body {
  ****************************/
 
 .row-item {
-    width: 250px;                /* fixed width of anime card */
-    flex: 0 0 auto;              /* prevents stretching */
-    cursor: pointer;
-    border-radius: 10px;
-    background-color: #1d1d1d;
-    padding: 8px;
-    margin-top: 10px;
-    box-sizing: border-box;
-    display: flex;
+    width: 250px;                  /* Card width */
+    flex: 0 0 auto;                /* Prevent stretching */
+    cursor: pointer;               /* Clickable cards */
+    border-radius: 10px;           /* Rounded corners */
+    background-color: #1d1d1d;     /* Card background */
+    padding: 8px;                  /* Inner padding */
+    margin-top: 10px;              /* Space above card */
+    box-sizing: border-box;        /* Include padding in size */
+    display: flex;                 /* Layout card vertically */
     flex-direction: column;
-    align-items: center;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-    overflow: visible;           /* prevents hover clipping */
+    align-items: center;           /* Center content */
+    transition: transform 0.25s ease, box-shadow 0.25s ease; /* Hover animation */
+    overflow: visible;             /* Prevent clipping during hover */
 }
 
 .row-item:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 15px #9b4dff;
-    z-index: 10;                  /* ensures hover doesn’t get cut by title or container */
+    transform: scale(1.05);        /* Enlarge card on hover */
+    box-shadow: 0 0 15px #9b4dff;  /* Purple glow */
+    z-index: 10;                   /* Bring forward to avoid clipping */
 }
 
 .row-item-img {
-    width: 100%;
-    aspect-ratio: 2/3;          /* PERFECT POSTER SHAPE */
-    max-height: 300px;          /* height of the anime card */
-    object-fit: cover;
-    border-radius: 8px;
-    margin-bottom: 8px;
+    width: 100%;                   /* Image spans full width */
+    aspect-ratio: 2/3;             /* Classic poster ratio */
+    max-height: 300px;             /* Height limit */
+    object-fit: cover;             /* Crop image nicely */
+    border-radius: 8px;            /* Slight rounding */
+    margin-bottom: 8px;            /* Space under image */
 }
 
 .row-item-title {
-    color: white;
-    font-size: 18px;
-    line-height: 1.2em;
-    text-align: center;
-    display: -webkit-box;
+    color: white;                  /* Card title color */
+    font-size: 18px;               /* Text size */
+    line-height: 1.2em;            /* Slight spacing */
+    text-align: center;            /* Center the title */
+    display: -webkit-box;          /* Enable line-clamping */
     -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    overflow: hidden;              /* Hide overflowing text */
+    text-overflow: ellipsis;       /* Add "..." truncation */
 }

@@ -1,5 +1,5 @@
 /**
- * Used for test and debug purposes
+ * Used for test and debug purposes, remove the file later
  */
 
 import { useState, useEffect } from "react";

@@ -36,11 +36,11 @@ root.render(<ReactRoot model={model} />);
     function() { model.notifyObservers(); }
 );*/
 
-resolvePromise(
+/*resolvePromise(
     getAnimeByGenre(1),
     model.promiseState,
     function() { model.notifyObservers(); }
-);
+);*/
 
 /*resolvePromise(
     getAnimeCharacters(20),

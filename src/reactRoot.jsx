@@ -20,7 +20,7 @@ import { MainPagePresenter } from "./presenters/mainPagePresenter.jsx";
 // import { AnimeDetailsPresenter } from "./presenters/animeDetailsPresenter.jsx";
 // import { AuthPresenter } from "./presenters/authPresenter.jsx";
 import { HeaderPresenter } from "./presenters/headerPresenter.jsx";
-// import { FooterView } from "./views/footerView.jsx";
+import { FooterView } from "./views/footerView.jsx";
 // import { TestPresenter } from "./presenters/testPresenter.jsx"; // used for testing (remove later)
 
 export function ReactRoot(props) {
@@ -34,11 +34,10 @@ export function ReactRoot(props) {
             <div>
                 <MainPagePresenter />
             </div>
-            {/******
+
             <div>
                 <FooterView onNavigateHome={() => window.location.href = "/"} />
             </div>
-            ********/}
         </div>
         /************************************************/
 
