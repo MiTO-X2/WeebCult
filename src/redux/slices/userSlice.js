@@ -1,8 +1,12 @@
 /***********************************************************************
  * PURPOSE:
+ * Central Redux auth slice (Firebase Authentication + Firestore user data)
+ * 
  *   - Manage Firebase user state: uid, profile object
- *   - loginUser = loads profile from Firestore
- *   - logoutUser = clears state + maybe saves stats
+ *   - Stores logged-in user's UID and profile document
+ *   - loginUser() = sign-in detected → load Firestore profile
+ *   - logoutUser() = sign-out detected → clear state
+ *   - saveUserProfile() = update profile in Firestore
  * 
  ***********************************************************************/
 
@@ -10,28 +14,62 @@
 // 1. import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 // 2. Import firestoreModel functions:
 //       loadUserStats, saveUserStats, loadUserSettings, etc.
+//    import { auth } from "../firebase/firebaseConfig";
+//    import { onAuthStateChanged } from "firebase/auth";
+//
 // 3. Define initialState:
 //       { uid: null, profile: null, loading: false, error: null }
 //
 // 4. Define thunks:
-//       loginUser(uid):
+//    Thunk: loginUser(uid):
 //           - fetch Firestore user profile
 //           - return { uid, profile }
 //
-//       logoutUser():
-//           - clear state, maybe save stats
+//       export const loginUser = createAsyncThunk(
+//         "user/loginUser",
+//         async (uid) => {
+//             const profile = await loadUserProfile(uid);
+//             return { uid, profile };
+//         }
+//       );
 //
-//       saveUserProfile(profile):
-//           - write to Firestore
+//    Thunk: logoutUser():
+//           - clear Redux state, maybe save stats
+//
+//           export const logoutUser = createAsyncThunk(
+//             "user/logoutUser",
+//             async () => {
+//               return true;  // nothing async needed
+//             }
+//           );
+//
+//    Thunk: saveUserProfile(profile):
+//           - write the profile to Firestore
+//
+//           export const saveUserProfile = createAsyncThunk(
+//             "user/saveUserProfile",
+//             async (profile, { getState }) => {
+//                const uid = getState().user.uid;
+//                await saveUserProfileToDB(uid, profile);
+//                return profile;
+//             }
+//           );
 //
 // 5. createSlice({
 //       name: 'user',
+//       initialState,
 //       reducers: {
-//         logout(state) { clear uid + profile }
+//             // If something needs manual reset
+//             clearUser(state) {
+//                 state.uid = null;
+//                 state.profile = null;
+//             }
 //       }
-//    })
+//     })
 //
 // 6. Export actions & reducer
+//    export const { clearUser } = userSlice.actions;
+//    export userSlice.reducer;
 
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 // import { loadUserProfile, saveUserProfile } from '../../models/firestoreModel';
