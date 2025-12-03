@@ -69,6 +69,7 @@ export const loginUser = createAsyncThunk(// loginUser(uid):
     }
 );
 
+
 export const logoutUser = createAsyncThunk(// logoutUser():
     'user/logoutUser',
     async (_, { getState, rejectWithValue }) => { //clear state, maybe save stats   
@@ -84,6 +85,36 @@ export const logoutUser = createAsyncThunk(// logoutUser():
     }
     
 );
+
+
+export const saveUserProfileThunk = createAsyncThunk(// saveUserProfile(profile):
+    'user/saveUserProfile',
+    async (profile, { rejectWithValue }) => { //write to Firestore  
+        try {
+            await saveUserProfile(profile);// Placeholder function
+            return profile;
+        } catch (error) {
+            return rejectWithValue(error.message);// Handle error
+        }
+    }
+);
+
+/* 5. createSlice({
+const userSlice = createSlice({
+    name: 'user',
+    initialState,
+    reducers: {//       logout(state) { clear uid + profile }
+        logout(state) {//   
+            // clear uid + profile
+            state.uid = null;// clear uid
+            state.profile = null;// clear user data
+        },
+    },
+
+    
+    //**********ska fortsättas sedan ***************/
+  
+            
 
 
 
