@@ -24,6 +24,7 @@ export function HeaderView(props) {
     const onNavigateHome = props.onNavigateHome || (() => console.log("navigateHomeACB triggered"));
     const onSearch = props.onSearch || ((q) => console.log("searchACB triggered:", q));
     const onProfile = props.onProfile || (() => console.log("profileACB triggered"));
+    const onSignIn = props.onSignIn 
 
     function navigateHomeACB() {
         console.log("HeaderView: navigateHomeACB triggered");
@@ -49,6 +50,10 @@ export function HeaderView(props) {
         console.log("HeaderView: profileACB triggered");
         // props.onProfile();
         onProfile(); // remove later
+    }
+    function signInACB(){
+        console.log("HeaderView: signInACB triggered");
+        onSignIn();
     }
 
     return (
@@ -129,6 +134,7 @@ export function HeaderView(props) {
 
             {/* RIGHT: Profile Button */}
             <div className="header-right">
+                <button onClick={signInACB} className="profile-button">{props.userName || "Sign in!"}</button>
                 <button onClick={profileACB} className="profile-button">
                     Profile
                 </button>

@@ -14,9 +14,45 @@
  *   - Always return Promises.
  *********************************************************/
 
-// TODO #1:
-// Import Firestore helpers:
-// import { doc, setDoc, updateDoc, getDoc } from "firebase/firestore";
+
+import { initializeApp } from "firebase/app";
+ import { getFirestore, doc, setDoc, updateDoc, getDoc } from "firebase/firestore";
+ import{ firebaseConfig } from "/src/firebase/firebaseConfig.js"
+ import { getAuth, signInWithPopup, signInWithRedirect, GoogleAuthProvider, onAuthStateChanged, signOut } from "firebase/auth"
+
+ const app= initializeApp(firebaseConfig);
+ export const auth = getAuth(app);
+ const db = getFirestore(app);
+ window.db = db
+
+
+
+ const provider = new GoogleAuthProvider();
+
+ export function signInTest(){
+
+    auth.currentUser? signOut(auth):
+    signInWithPopup(auth,provider)
+
+}
+
+//Koden under är inte färdig 
+export function connectToFirebase(model, watchFunction){
+
+    model.ready = false
+    onAuthStateChanged(auth,loginOrOutACB);
+    /*
+    if(model.user)
+        getDoc(document).then(readyACB).catch(errorACB)
+    */
+    
+
+
+    function loginOrOutACB(user){
+        model.user = user
+        model.ready = false
+    }
+}
 
 // TODO #2:
 // Implement saveUserStats(uid, stats):
