@@ -15,6 +15,7 @@
 
 import { useState } from "react"; // remove later
 import "../style.css";
+import { auth } from "../firebase/firestoreModel";
 
 export function HeaderView(props) {
     // Use internal state for testing, remove later
@@ -134,7 +135,7 @@ export function HeaderView(props) {
 
             {/* RIGHT: Profile Button */}
             <div className="header-right">
-                <button onClick={signInACB} className="profile-button">{props.userName || "Sign in!"}</button>
+                <button onClick={signInACB} className="profile-button">{ auth.currentUser? "Sign out" : "Sign in"}</button>
                 <button onClick={profileACB} className="profile-button">
                     Profile
                 </button>
