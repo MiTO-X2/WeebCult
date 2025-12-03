@@ -15,42 +15,52 @@
  *********************************************************/
 
 
- import { initializeApp } from "firebase/app";
- import { getFirestore, doc, setDoc, updateDoc, getDoc } from "firebase/firestore";
- import{ firebaseConfig } from "/src/firebase/firebaseConfig.js"
- import { getAuth,  onAuthStateChanged} from "firebase/auth"
+import { initializeApp } from "firebase/app";
+import { getFirestore, doc, setDoc, updateDoc, getDoc } from "firebase/firestore";
+import{ firebaseConfig } from "/src/firebase/firebaseConfig.js"
+import { getAuth,  onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut} from "firebase/auth"
 
- const app= initializeApp(firebaseConfig);
- export const auth = getAuth(app);
- const db = getFirestore(app);
- window.db = db
+const app= initializeApp(firebaseConfig);
+export const auth = getAuth(app);
+export const db = getFirestore(app);
+window.db = db
 
-
-
-//Koden under är inte färdig 
 export function connectToFirebase(model){
 
     model.ready = false
     onAuthStateChanged(auth,loginOrOutACB);
-    
-    
-    
 
+    async function loginOrOutACB(user) {
+        model.user = user;
+        model.ready = false;
 
-    function loginOrOutACB(user){
-        model.user = user
-        model.ready = false
-        if(model.user)
-            getDoc(doc(db, "testDocument",model.user.uid)).then(readyACB).catch(console.log)
+        if (!user) {
+            model.userData = null;
+            model.ready = true;
+            return;
+        }
+
+        const userRef = doc(db, "users", user.uid);
+        const snap = await getDoc(userRef);
+
+        if (!snap.exists()) {
+            // create user doc on first login
+            await setDoc(userRef, { createdAt: Date.now() });
+        }
+
+        model.userData = snap.data();
+        model.ready = true;
     }
+}
 
-    function readyACB(response){
+/** LOGIN / LOGOUT **/
+export function login() {
+    const provider = new GoogleAuthProvider();
+    return signInWithPopup(auth, provider);
+}
 
-        model.ready=true
-
-    }
-
-
+export function logout() {
+    return signOut(auth);
 }
 
 // TODO #2:
