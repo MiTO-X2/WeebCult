@@ -19,8 +19,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 // 2. Import animeSource functions: searchAnime, getTopAnime, getGenres
-import { searchAnime, getTopAnime, getGenres } from '../../sources/animeSource';
-import { resolvePromise } from '../../utils/reduxUtils';
+import { searchAnime, getTopAnime, getGenres } from '/src/api/animeSource.js';
+
 
 // 3. Define initialState:
 /************* 1. Hjälpfunktion: tomt promiseState *************/
@@ -73,7 +73,97 @@ export const fetchGenres = createAsyncThunk(
 
 
 //************************ */ 5. createSlice({*****************
+export const animeSlice = createSlice({
+    name: 'anime',// namn på slice
+    initialState,
+    reducers: {},
+        // Inga vanliga reducers behövs just nu
+        // all state hanteras via thunks och promiseState
+    
+    extraReducers: (builder) => {
+        
+        // Hantera fetchSearch, för att uppdatera search.promiseState
+        builder
+            .addCase(fetchSearch.pending, (state, action) => {// när anropet påbörjas
+                const promiseState = state.search.promiseState;
+                promiseState.promise = action.meta.requestId; // sätt promise till requestId
+                promiseState.data = null;
+                promiseState.error = null;
+            })
+            .addCase(fetchSearch.fulfilled, (state, action) => {// när anropet lyckas
+                const promiseState = state.search.promiseState;
+                // Kontrollera race condition
+                if (promiseState.promise !== action.meta.requestId) return; 
+                    promiseState.data = action.payload; // sätt data från payload
+                    promiseState.error = null;
+                  
+            })
+            .addCase(fetchSearch.rejected, (state, action) => {// när anropet misslyckas
+                const promiseState = state.search.promiseState;
+                // Kontrollera race condition
+                if (promiseState.promise === action.meta.requestId) return;
+                    promiseState.data = null;
+                    promiseState.error = action.error; // sätt fel från action.error
+                   
+            });
 
+
+        // Hantera fetchTrending, för att uppdatera trending.promiseState  
+        builder
+            .addCase(fetchTrending.pending, (state, action) => {// när anropet påbörjas
+                const promiseState = state.trending.promiseState;
+                promiseState.promise = action.meta.requestId; // sätt promise till requestId
+                promiseState.data = null;
+                promiseState.error = null; 
+            })
+            .addCase(fetchTrending.fulfilled, (state, action) => {// när anropet lyckas
+                const promiseState = state.trending.promiseState;
+                // Kontrollera race condition
+                if (promiseState.promise !== action.meta.requestId) return;
+                    promiseState.data = action.payload; // sätt data från payload
+                    promiseState.error = null;
+                
+            })
+            .addCase(fetchTrending.rejected, (state, action) => {// när anropet misslyckas
+                const promiseState = state.trending.promiseState;
+                // Kontrollera race condition
+                if (promiseState.promise !== action.meta.requestId) return;
+                    promiseState.data = null;
+                    promiseState.error = action.error; // sätt fel från action.error
+            }); 
+        
+
+        // Hantera fetchGenres, för att uppdatera genres.promiseState
+        builder
+            .addCase(fetchGenres.pending, (state, action) => {
+                const promiseState = state.genres.promiseState;
+                promiseState.promise = action.meta.requestId;
+                promiseState.data = null;
+                promiseState.error = null;
+            })
+            .addCase(fetchGenres.fulfilled, (state, action) => {
+                const promiseState = state.genres.promiseState;
+                // Kontrollera race condition
+                if (promiseState.promise !== action.meta.requestId) return;
+                    promiseState.data = action.payload;
+                    promiseState.error = null;
+            })
+            .addCase(fetchGenres.rejected, (state, action) => {
+                const promiseState = state.genres.promiseState;
+                // Kontrollera race condition
+                if (promiseState.promise !== action.meta.requestId) return;
+                    promiseState.data = null;
+                    promiseState.error = action.error;  
+                
+            }); 
+
+            //...lägg till fler thunks här vid behov
+    }
+});
+
+
+//************************ 6. Export reducer *****************/
+export default animeSlice.reducer; // exportera reducer för store 
 
         
 
