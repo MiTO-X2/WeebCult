@@ -26,7 +26,7 @@ import { searchAnime, getTopAnime, getGenres } from '/src/api/animeSource.js';
 /************* 1. Hjälpfunktion: tomt promiseState *************/
 function makePromiseState() {
     return {
-        promise: null,
+        promise: null,// kan vara requestId eller liknande
         data: null,
         error: null
     };
