@@ -101,7 +101,7 @@ export const animeSlice = createSlice({
             .addCase(fetchSearch.rejected, (state, action) => {// när anropet misslyckas
                 const promiseState = state.search.promiseState;
                 // Kontrollera race condition
-                if (promiseState.promise === action.meta.requestId) return;
+                if (promiseState.promise !== action.meta.requestId) return;
                     promiseState.data = null;
                     promiseState.error = action.error; // sätt fel från action.error
                    
