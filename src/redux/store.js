@@ -7,21 +7,17 @@
  *
  * NOTES:
  *   - No business logic here.
+ *   - DO NOT create thunks here.
+ *   - DO NOT fetch APIs here.
  ***************************************************************/
 
-// TODO:
+// Import configureStore and root reducer
  import { configureStore } from '@reduxjs/toolkit';
  import rootReducer from './rootReducer.js';
 
 // Create and export the Redux store    
  export const store = configureStore({   
        reducer: rootReducer,
+       // Attach default middleware ONLY (no custom logic)
        middleware: (getDefault) => getDefault(),
-});  
- 
-
-//export default store;  
-
-//
-// 5. DO NOT create thunks here.
-// 6. DO NOT fetch APIs here.
+}); 

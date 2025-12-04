@@ -7,29 +7,22 @@
  *   - No side effects
  *   - Only structural combination of slices
  ***************************************************************/
-
-// TODO:
-// 1.// Kombinera reducers från olika slices 
+// 1. Import combineReducers
 import { combineReducers } from '@reduxjs/toolkit';
 
-// 2. Import reducers from the slices:
-//       userReducer, uiReducer, animeReducer,
-//       detailsReducer, quizReducer
-//
+// 2. Import reducers from the slices (NO business logic here)
 import userReducer from './slices/userSlice.js';
-//import uiReducer from './slices/uiSlice';
-import animeReducer from './slices/animeSlice';
-//import detailsReducer from './slices/detailsSlice';
+import animeReducer from './slices/animeSlice.js';
+import detailsReducer from './slices/detailsSlice.js';
 import quizReducer from './slices/quizSlice.js';   
 
 
-// 3. 
+// 3. Combine reducers into a single root reducer (EXPORT ONLY)
 export default combineReducers({
-        user: userReducer,// Kombinera user slice
-//        ui: uiReducer,
-        anime: animeReducer,
-//        details: detailsReducer,
-        quiz: quizReducer,// Lägg till quiz slice
+        user: userReducer,       // User authentication, profile, tokens
+        anime: animeReducer,     // Anime lists, genres, filters
+        details: detailsReducer, // Detailed view data
+        quiz: quizReducer,       // Quiz system state
    });
 
    
