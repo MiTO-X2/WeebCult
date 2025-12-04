@@ -67,7 +67,7 @@ export const loadAnimeCharacters = createAsyncThunk(
 /************************************************************
  * 2. Slice
  ************************************************************/
-export const selectedAnimeSlice = createSlice({
+export const detailsSlice = createSlice({
     name: "details",
     initialState,
     reducers: {
