@@ -120,6 +120,23 @@ export function getAnimeCharacters(animeID) {
 }
 
 /***************************************************************
+ *  GET ANIME FROM GIVEN ID
+ ***************************************************************/
+export function getAnimeById(animeID) {
+    const url = PROXY_URL + "/anime/" + animeID;
+
+    return fetch(url, {
+    method: "GET",
+    headers: {
+        "X-DH2642-Key": PROXY_KEY,
+        "X-DH2642-Group": GROUP_NUMBER
+    }
+    })
+    .then(checkStatusACB)
+    .then(handleAnimeSearchJSONACB); //Converts to standard anime format
+}                                    //Might need change depending on info left
+
+/***************************************************************
  *  TRANSFORMERS CHARACTER DATA
  ***************************************************************/
 // function for handling the JSON response of searchAnime

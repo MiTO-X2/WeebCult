@@ -137,8 +137,9 @@ export const saveUserProfileThunk = createAsyncThunk(// saveUserProfile(profile)
     }
 );
 
-/* 5. createSlice({
-const userSlice = createSlice({
+ /************************ 5. createSlice *****************/
+
+export const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {//       logout(state) { clear uid + profile }
@@ -147,10 +148,47 @@ const userSlice = createSlice({
             state.uid = null;// clear uid
             state.profile = null;// clear user data
         },
-    },
 
-    
-    //**********ska fortsättas sedan ***************/
+    },
+    extraReducers:(builder) =>{
+
+        // Hantera loginUser() load profile and uid
+        builder 
+            .addCase(loginUser.pending, (state)=>{
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(loginUser.fulfilled, (state,action)=>{//Osäker hur man kommer åt profile och uid
+                state.loading = false;
+                state.profile = action.payload.profile;
+                state.uid = action.payload.uid ;
+            })
+            .addCase(loginUser.rejected, (state, action)=>{
+                state.loading = false;
+                state.error = action.error;
+            });
+
+        // Hantera saveUserProfileThunk()
+        builder
+            .addCase(saveUserProfileThunk.pending, (state)=>{
+                state.loading = true;
+                state.error = null;
+
+            })
+            .addCase(saveUserProfileThunk.fulfilled, (state, action)=>{
+                state.loading = false;
+                state.profile = action.payload;
+                
+            })
+            .addCase(saveUserProfileThunk.rejected, (state, action)=>{
+                state.loading = false;
+                state.error = action.error;
+                
+            })
+
+    }
+})
+export default userSlice.reducer
   
             
 
