@@ -1,13 +1,3 @@
-/******************** Remove later ********************/
-.test-view-text {             /* Temporary test styling container */
-    color: white;           /* Set text color to white */
-}
-
-.test-view-text h2{           /* Test styling for h2 inside test-view-text */
-    color: #b673ff;         /* Purple color for test headings */
-}
-/******************************************************/
-
 .App-background {                 /* Background styling for the app wrapper */
     background-color: #121212;  /* Dark background */
 }
@@ -228,7 +218,7 @@ body {
     line-height: 1.1;              /* Compact line spacing */
 }
 
-/**************************** Main Page View ******************/
+/**************************** Main Page View **************************************/
 .main-page {
     display: flex;                 /* Main layout uses flexbox */
     flex-direction: column;        /* Stack rows vertically */
@@ -270,10 +260,8 @@ body {
     scrollbar-width: none;         /* Hide scrollbar */
 }
 
-/****************************
- * STREAMING-APP POSTER CARD
- ****************************/
 
+/* STREAMING-APP POSTER CARD */
 .row-item {
     width: 250px;                  /* Card width */
     flex: 0 0 auto;                /* Prevent stretching */
@@ -314,4 +302,122 @@ body {
     -webkit-box-orient: vertical;
     overflow: hidden;              /* Hide overflowing text */
     text-overflow: ellipsis;       /* Add "..." truncation */
+}
+
+/* MODAL OVERLAY + BLUR */
+.modal-overlay {
+    position: fixed;               /* Keep overlay in place relative to viewport */
+    top: 0;                        /* Start at the very top */
+    left: 0;                       /* Start at the very left */
+    width: 100vw;                   /* Full viewport width */
+    height: 100vh;                  /* Full viewport height */
+    background-color: rgba(0,0,0,0.55); /* Semi-transparent black overlay */
+    backdrop-filter: blur(6px);    /* Blur background content behind modal */
+    display: flex;                  /* Use flexbox for centering content */
+    justify-content: center;        /* Center horizontally */
+    align-items: center;            /* Center vertically */
+    z-index: 5000;                  /* Ensure overlay is above all other content */
+}
+
+/* MODAL CARD (FULL-WIDTH) */
+.modal-card {
+    background-color: #1c1c1c;     /* Dark background for the modal card */
+    color: white;                   /* Default text color inside modal */
+    width: 85vw;                    /* Make modal occupy 85% of viewport width */
+    max-width: 900px;               /* Limit maximum width */
+    padding: 32px;                  /* Inner spacing inside modal */
+    border-radius: 18px;            /* Rounded corners */
+    position: relative;             /* Needed for absolute positioning of close button */
+    box-shadow: 0 0 25px rgba(0,0,0,0.4); /* Soft shadow around modal */
+}
+
+/* TITLE */
+.modal-title {
+    margin: 0;                      /* Remove default margins */
+    color: #b673ff;                 /* Purple accent color */
+    font-size: 36px;                /* Large title font size */
+    font-weight: 700;               /* Bold font weight */
+}
+
+/* CLOSE BUTTON */
+.modal-close-button {
+    position: absolute;             /* Position relative to modal-card */
+    top: 22px;                      /* 22px from top of modal */
+    right: 22px;                    /* 22px from right of modal */
+    background: #333;               /* Dark gray background */
+    color: #d2d2d2;                 /* Light gray text color */
+    border: none;                   /* Remove default button border */
+    font-size: 14px;                /* Font size of X button */
+    padding: 6px 12px;              /* Inner spacing inside button */
+    border-radius: 20px;            /* Rounded pill-like button */
+    cursor: pointer;                /* Pointer cursor on hover */
+    transition: 0.2s;               /* Smooth transition for hover effects */
+}
+
+.modal-close-button:hover {
+    background-color: #333;         /* Slightly lighter background on hover */
+    color: #bb80ff;                    /* Purple text on hover */
+}
+
+/* GRID LAYOUT (3 COLUMNS) */
+.details-grid {
+    display: grid;                  /* Use CSS Grid for layout */
+    grid-template-columns: repeat(3, 1fr); /* 3 equal-width columns */
+    gap: 40px;                      /* Space between columns */
+    margin-top: 30px;               /* Space above the grid */
+}
+
+.details-column {
+    display: flex;                  /* Use flexbox inside each column */
+    flex-direction: column;         /* Stack items vertically */
+}
+
+.details-heading {
+    font-size: 20px;                /* Heading font size */
+    font-weight: 600;               /* Semi-bold font */
+    color: #b673ff;                 /* Purple accent */
+    margin-bottom: 6px;             /* Space below heading */
+    border-bottom: 1px solid #444;  /* Underline with subtle line */
+    padding-bottom: 6px;            /* Padding for underline spacing */
+}
+
+/* OPTION LIST */
+.option-box {
+    color: white;                   /* Default option text color */
+    font-size: 16px;                /* Font size for option text */
+    padding: 6px 0;                 /* Vertical padding inside option */
+    cursor: pointer;                /* Pointer cursor to indicate clickable */
+    transition: 0.2s;               /* Smooth hover effect transition */
+}
+
+.option-box:hover {
+    color: #bb80ff;                 /* Highlight color on hover */
+}
+
+.option-box.selected {
+    color: #bb80ff;                 /* Highlight selected option */
+    font-weight: 600;               /* Make selected option semi-bold */
+}
+
+/* PLAY BUTTON */
+.play-button-container {
+    display: flex;                  /* Flex container for centering */
+    justify-content: center;        /* Center button horizontally */
+    margin-top: 40px;               /* Space above button */
+}
+
+.play-button {
+    background-color: #424242;      /* Dark gray button background */
+    color: #cfcfcf;                 /* Light gray text */
+    border: none;                   /* Remove default border */
+    padding: 12px 40px;             /* Vertical + horizontal padding */
+    border-radius: 25px;            /* Rounded pill-style button */
+    cursor: pointer;                /* Pointer cursor on hover */
+    font-size: 16px;                /* Button text size */
+    transition: 0.2s;               /* Smooth hover transition */
+}
+
+.play-button:hover {
+    background-color: #333;      /* Lighter gray on hover */
+    color: #bb80ff;                   /* Purple text on hover */
 }

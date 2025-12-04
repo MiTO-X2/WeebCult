@@ -17,7 +17,7 @@ import React from "react";
 // TODO: import presenters (not views!) used in the routes
 import { MainPagePresenter } from "./presenters/mainPagePresenter.jsx";
 // import { SearchPresenter } from "./presenters/searchPresenter.jsx";
-// import { AnimeDetailsPresenter } from "./presenters/animeDetailsPresenter.jsx";
+import { AnimeDetailsPresenter } from "./presenters/animeDetailsPresenter.jsx";
 // import { AuthPresenter } from "./presenters/authPresenter.jsx";
 import { HeaderPresenter } from "./presenters/headerPresenter.jsx";
 import { FooterView } from "./views/footerView.jsx";
@@ -32,7 +32,7 @@ export function ReactRoot(props) {
             </div>
             
             <div>
-                <MainPagePresenter />
+                <AnimeDetailsPresenter />
             </div>
 
             <div>
