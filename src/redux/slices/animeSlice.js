@@ -37,7 +37,8 @@ const initialState = {
     search:   { promiseState: makePromiseState() },
     trending: { promiseState: makePromiseState() },
     genres:   { promiseState: makePromiseState() },
-    animeByGenre: {} // e.g. { "Action": { promiseState }, "Comedy": { promiseState } }
+    animeByGenre: {}, // e.g. { "Action": { promiseState }, "Comedy": { promiseState } }
+    genreLists: []    // The model pre-computed structure
 };
 
 
@@ -67,7 +68,8 @@ export const fetchGenres = createAsyncThunk(
     'anime/fetchGenres',    
     async () => {   
         const data = await getGenres();
-        return data;
+        // Filter only MAIN_GENRES here to move business logic into model layer
+        return data.filter((g) => MAIN_GENRES.includes(g.name));
     }
 );
 
@@ -156,6 +158,22 @@ export const animeSlice = createSlice({
                 if (promiseState.promise !== action.meta.requestId) return;
                     promiseState.data = action.payload;
                     promiseState.error = null;
+                    promiseState.promise = null;
+
+                    // Uppdatera genreLists med den hämtade datan
+                    /*state.genreLists = action.payload.map(genre => ({
+                        id: genre.mal_id,
+                        name: genre.name,
+                        animes: [] // tom array för anime-listor per genre
+                    }));*/
+                    
+                    // Bygg genreLists baserat på hämtade genres och ev. redan laddade animeByGenre
+                    state.genreLists = action.payload.map(g => ({
+                        label: g.name,// genre namn som label
+                        // Hämta anime-listan för genren om den finns, annars tom array
+                        items: state.animeByGenre[g.name]?.promiseState.data || []
+                    }));
+
             })
             .addCase(fetchGenres.rejected, (state, action) => {
                 const promiseState = state.genres.promiseState;
@@ -163,6 +181,8 @@ export const animeSlice = createSlice({
                 if (promiseState.promise !== action.meta.requestId) return;
                     promiseState.data = null;
                     promiseState.error = action.error;  
+                    promiseState.promise = null;
+
                 
             }); 
 
@@ -170,26 +190,49 @@ export const animeSlice = createSlice({
         builder
             .addCase(fetchAnimeByGenre.pending, (state, action) => {
                 const { genreName } = action.meta.arg;
-                if (!state.animeByGenre[genreName]) state.animeByGenre[genreName] = { promiseState: makePromiseState() };
+                if (!state.animeByGenre[genreName]){
+                     state.animeByGenre[genreName] = { promiseState: makePromiseState() };
+                }
+
                 const ps = state.animeByGenre[genreName].promiseState;
                 ps.promise = action.meta.requestId;
                 ps.data = null;
                 ps.error = null;
             })
+
+            // Hantera lyckad fetchAnimeByGenre
             .addCase(fetchAnimeByGenre.fulfilled, (state, action) => {
                 const { genreName, data } = action.payload;
-                if (!state.animeByGenre[genreName]) state.animeByGenre[genreName] = { promiseState: makePromiseState() };
+                if (!state.animeByGenre[genreName]) {
+                    state.animeByGenre[genreName] = { promiseState: makePromiseState() };
+                }
+
                 const ps = state.animeByGenre[genreName].promiseState;
                 if (ps.promise !== action.meta.requestId) return;
+                
                 ps.data = data;
                 ps.error = null;
                 ps.promise = null;
+
+                // Rebuild genreLists to ensure consistency
+                if(state.genres.promiseState.data){// kontrollera att genres är laddade
+                    state.genreLists = state.genres.promiseState.data.map(g => ({// för varje genre
+                        label: g.name,// sätt label
+                        items: state.animeByGenre[g.name]?.promiseState.data || []// hämta anime-listan eller tom array
+                    }));
+                }
             })
+
+            // Hantera fel vid fetchAnimeByGenre
             .addCase(fetchAnimeByGenre.rejected, (state, action) => {
                 const { genreName } = action.meta.arg;
-                if (!state.animeByGenre[genreName]) state.animeByGenre[genreName] = { promiseState: makePromiseState() };
+                if (!state.animeByGenre[genreName]){
+                     state.animeByGenre[genreName] = { promiseState: makePromiseState() };
+                }
+                // Hämta rätt promiseState för genren
                 const ps = state.animeByGenre[genreName].promiseState;
                 if (ps.promise !== action.meta.requestId) return;
+
                 ps.data = null;
                 ps.error = action.error;
                 ps.promise = null;
