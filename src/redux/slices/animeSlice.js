@@ -36,7 +36,8 @@ function makePromiseState() {
 const initialState = {
     search:   { promiseState: makePromiseState() },
     trending: { promiseState: makePromiseState() },
-    genres:   { promiseState: makePromiseState() }
+    genres:   { promiseState: makePromiseState() },
+    animeByGenre: {} // e.g. { "Action": { promiseState }, "Comedy": { promiseState } }
 };
 
 
@@ -51,8 +52,7 @@ export const fetchSearch = createAsyncThunk(
     }   
 );
 
-//fetchTrending()
-// Hämta top / trending anime
+//fetch trending/top anime
 export const fetchTrending = createAsyncThunk(
     'anime/fetchTrending',    
     async () => {
@@ -68,6 +68,15 @@ export const fetchGenres = createAsyncThunk(
     async () => {   
         const data = await getGenres();
         return data;
+    }
+);
+
+// Fetch anime by a specific genre (for main page rows)
+export const fetchAnimeByGenre = createAsyncThunk(
+    'anime/fetchAnimeByGenre',
+    async ({ genreID, genreName }) => {
+        const data = await getAnimeByGenre(genreID);
+        return { genreName, data };
     }
 );
 
@@ -157,6 +166,35 @@ export const animeSlice = createSlice({
                 
             }); 
 
+                    // ------------------ GENRE-SPECIFIC ANIME ------------------
+        builder
+            .addCase(fetchAnimeByGenre.pending, (state, action) => {
+                const { genreName } = action.meta.arg;
+                if (!state.animeByGenre[genreName]) state.animeByGenre[genreName] = { promiseState: makePromiseState() };
+                const ps = state.animeByGenre[genreName].promiseState;
+                ps.promise = action.meta.requestId;
+                ps.data = null;
+                ps.error = null;
+            })
+            .addCase(fetchAnimeByGenre.fulfilled, (state, action) => {
+                const { genreName, data } = action.payload;
+                if (!state.animeByGenre[genreName]) state.animeByGenre[genreName] = { promiseState: makePromiseState() };
+                const ps = state.animeByGenre[genreName].promiseState;
+                if (ps.promise !== action.meta.requestId) return;
+                ps.data = data;
+                ps.error = null;
+                ps.promise = null;
+            })
+            .addCase(fetchAnimeByGenre.rejected, (state, action) => {
+                const { genreName } = action.meta.arg;
+                if (!state.animeByGenre[genreName]) state.animeByGenre[genreName] = { promiseState: makePromiseState() };
+                const ps = state.animeByGenre[genreName].promiseState;
+                if (ps.promise !== action.meta.requestId) return;
+                ps.data = null;
+                ps.error = action.error;
+                ps.promise = null;
+            });
+
             //...lägg till fler thunks här vid behov
     }
 });
@@ -166,29 +204,3 @@ export const animeSlice = createSlice({
 export default animeSlice.reducer; // exportera reducer för store 
 
         
-
-
-
-//initialState = {
-//       search: { promiseState: { promise: null, data: null, error: null }},
-//       trending: { promiseState: {} },
-//       genres: { promiseState: {} }
-//    }
-//
-// 4. Create thunks:
-//       fetchSearch(query)
-//       fetchTrending()
-//       fetchGenres()
-//
-//    Each thunk should:
-//       - call animeSource...
-//       - return data (fulfilled)
-//       - handle errors (rejected)
-//
-// 5. createSlice({
-//       name: 'anime',
-//       initialState,
-//       reducers: {}
-//    })
-//
-// 6. Export reducer
