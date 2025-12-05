@@ -19,7 +19,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 // 2. Import animeSource functions: searchAnime, getTopAnime, getGenres
-import { searchAnime, getTopAnime, getGenres } from '/src/api/animeSource.js';
+import { searchAnime, getTopAnime, getGenres, getAnimeByGenre } from '/src/api/animeSource.js';
 
 
 // 3. Define initialState:
@@ -31,6 +31,8 @@ function makePromiseState() {
         error: null
     };
 }
+
+const MAIN_GENRES = ["Action", "Comedy", "Slice of Life", "Fantasy"];
 
 /************* 2. initialState *************/
 const initialState = {
@@ -62,8 +64,7 @@ export const fetchTrending = createAsyncThunk(
     }   
 );
 
-//fetchGenres()
-// Hämta genre-lista
+// Fetch list of genres (metadata only)
 export const fetchGenres = createAsyncThunk(
     'anime/fetchGenres',    
     async () => {   
@@ -107,7 +108,7 @@ export const animeSlice = createSlice({
                 if (promiseState.promise !== action.meta.requestId) return; 
                     promiseState.data = action.payload; // sätt data från payload
                     promiseState.error = null;
-                  
+                    promiseState.promise = null;
             })
             .addCase(fetchSearch.rejected, (state, action) => {// när anropet misslyckas
                 const promiseState = state.search.promiseState;
@@ -115,7 +116,7 @@ export const animeSlice = createSlice({
                 if (promiseState.promise !== action.meta.requestId) return;
                     promiseState.data = null;
                     promiseState.error = action.error; // sätt fel från action.error
-                   
+                    promiseState.promise = null;
             });
 
 
@@ -133,7 +134,7 @@ export const animeSlice = createSlice({
                 if (promiseState.promise !== action.meta.requestId) return;
                     promiseState.data = action.payload; // sätt data från payload
                     promiseState.error = null;
-                
+                    promiseState.promise = null;
             })
             .addCase(fetchTrending.rejected, (state, action) => {// när anropet misslyckas
                 const promiseState = state.trending.promiseState;
@@ -141,6 +142,7 @@ export const animeSlice = createSlice({
                 if (promiseState.promise !== action.meta.requestId) return;
                     promiseState.data = null;
                     promiseState.error = action.error; // sätt fel från action.error
+                    promiseState.promise = null;
             }); 
         
 
@@ -159,13 +161,6 @@ export const animeSlice = createSlice({
                     promiseState.data = action.payload;
                     promiseState.error = null;
                     promiseState.promise = null;
-
-                    // Uppdatera genreLists med den hämtade datan
-                    /*state.genreLists = action.payload.map(genre => ({
-                        id: genre.mal_id,
-                        name: genre.name,
-                        animes: [] // tom array för anime-listor per genre
-                    }));*/
                     
                     // Bygg genreLists baserat på hämtade genres och ev. redan laddade animeByGenre
                     state.genreLists = action.payload.map(g => ({
@@ -181,9 +176,7 @@ export const animeSlice = createSlice({
                 if (promiseState.promise !== action.meta.requestId) return;
                     promiseState.data = null;
                     promiseState.error = action.error;  
-                    promiseState.promise = null;
-
-                
+                    promiseState.promise = null; 
             }); 
 
                     // ------------------ GENRE-SPECIFIC ANIME ------------------
