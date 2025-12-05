@@ -124,5 +124,5 @@ export const detailsSlice = createSlice({
 /************************************************************
  * 3. Exports
  ************************************************************/
-export const { setSelectedAnimeId } = selectedAnimeSlice.actions;
+export const { setSelectedAnimeId } = detailsSlice.actions;
 export default detailsSlice.reducer;

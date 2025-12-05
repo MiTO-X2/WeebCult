@@ -14,10 +14,11 @@
 // Import configureStore and root reducer
  import { configureStore } from '@reduxjs/toolkit';
  import rootReducer from './rootReducer.js';
+ import { listenerMiddleware } from "./listeners/listenerMiddleware.js";
 
 // Create and export the Redux store    
  export const store = configureStore({   
        reducer: rootReducer,
        // Attach default middleware ONLY (no custom logic)
-       middleware: (getDefault) => getDefault(),
+       middleware: (getDefault) => getDefault().prepend(listenerMiddleware.middleware),
 }); 

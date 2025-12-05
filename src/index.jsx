@@ -21,6 +21,9 @@ import { ReactRoot } from "./reactRoot.jsx";
 import { Provider } from "react-redux";
 import { store } from "./redux/store.js";
 
+// Dispatch APP_INIT once at startup
+store.dispatch({ type: "APP_INIT" });
+
 // Create the React root
 const root = createRoot(document.getElementById("root"));
 
