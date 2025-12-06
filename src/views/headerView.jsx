@@ -13,49 +13,57 @@
  *  - Only calls the functions passed in props
  ***********************************************************************/
 
-import { useState } from "react"; // remove later
 import "../style.css";
 
 export function HeaderView(props) {
-    // Use internal state for testing, remove later
-    const [query, setQuery] = useState(""); 
-
-    // Fallbacks for testing, remove later
-    const onNavigateHome = props.onNavigateHome || (() => console.log("navigateHomeACB triggered"));
-    const onSearch = props.onSearch || ((q) => console.log("searchACB triggered:", q));
-    const onProfile = props.onProfile || (() => console.log("profileACB triggered"));
-
-    function navigateHomeACB() {
+    function handleNavigateHomeACB() {
         console.log("HeaderView: navigateHomeACB triggered");
-        // props.onNavigateHome();
-        onNavigateHome(); // remove later
+        //props.onNavigateHome();
+        window.location.href = "/";
     }
 
-    function queryChangeACB(event) {
+    function handleQueryChangeACB(event) {
         console.log("HeaderView: queryChangeACB triggered, new query =", event.target.value);
-        // props.onQueryChange(event.target.value);
-        // remove later
-        setQuery(event.target.value); // update local state
-        if (props.onQueryChange) props.onQueryChange(event.target.value);
+        props.onQueryChange(event.target.value);
     }
 
-    function searchACB() {
+    function handleSearchClickACB() {
         console.log("HeaderView: searchACB triggered with query =", props.query);
-        // props.onSearch(props.query);
-        onSearch(query); // remove later
+        props.onSearch(props.query);
     }
 
-    function profileACB() {
+    function handleProfileClickACB() {
         console.log("HeaderView: profileACB triggered");
-        // props.onProfile();
-        onProfile(); // remove later
+        //props.onProfile();
+        window.location.href = "/";
+    }
+
+    function handleTypeChangeACB(e) {
+        props.onTypeChange(e.target.value);
+    }
+
+    function handleStatusChangeACB(e) {
+        props.onStatusChange(e.target.value);
+    }
+
+    function handleRatingChangeACB(e) {
+        props.onRatingChange(e.target.value);
+    }
+
+    function handleOrderByChangeACB(e) {
+        props.onOrderByChange(e.target.value);
+    }
+
+    function handleGenresChangeACB(e) {
+        const selected = e.target.value;
+        props.onGenresChange([selected]);
     }
 
     return (
         <header className="header-bar">
 
             {/* LEFT: Logo + Title */}
-            <div className="header-left" onClick={navigateHomeACB}>
+            <div className="header-left" onClick={handleNavigateHomeACB}>
                 <img
                     src="/WeebCultLogo.png"
                     alt="WeebCult Logo"
@@ -71,57 +79,68 @@ export function HeaderView(props) {
                     <input
                         type="text"
                         placeholder="Search anime..."
-                        // value={props.query}
-                        value={query} // remove later
-                        onChange={queryChangeACB}
+                        value={props.query || ""}
+                        onChange={handleQueryChangeACB}
                         className="header-search-input"
                     />
 
                     <button
-                        onClick={searchACB}
+                        onClick={handleSearchClickACB}
                         className="header-search-button"
                     >
                         <i className="fa-solid fa-magnifying-glass"></i>
                     </button>
                 </div>
 
-                {/* CONDITIONAL FILTERS */}
-                {query.length > 0 && (
+                {/* FILTERS (only show if user typed something) */}
+                {props.query?.length > 0 && (
                     <div className="search-filters">
-                        <select>
+
+                        {/* TYPE */}
+                        <select
+                            value={props.selectedType || ""}
+                            onChange={handleTypeChangeACB}
+                        >
                             <option value="">Type</option>
-                            <option value="tv">TV</option>
-                            <option value="movie">Movie</option>
+                            {props.typeOptions?.map(renderOptionCB)}
                         </select>
 
-                        <select>
+                        {/* STATUS */}
+                        <select
+                            value={props.selectedStatus || ""}
+                            onChange={handleStatusChangeACB}
+                        >
                             <option value="">Status</option>
-                            <option value="airing">Airing</option>
-                            <option value="completed">Completed</option>
-                            <option value="upcoming">Upcoming</option>
+                            {props.statusOptions?.map(renderOptionCB)}
                         </select>
 
-                        <select>
+                        {/* RATING */}
+                        <select
+                            value={props.selectedRating || ""}
+                            onChange={handleRatingChangeACB}
+                        >
                             <option value="">Rating</option>
-                            <option value="g">G</option>
-                            <option value="pg">PG</option>
-                            <option value="pg13">PG-13</option>
-                            <option value="r">R</option>
+                            {props.ratingOptions?.map(renderOptionCB)}
                         </select>
 
-                        <select>
-                            <option value="">Genres</option>
-                            <option value="action">Action</option>
-                            <option value="comedy">Comedy</option>
-                            <option value="drama">Drama</option>
+                        {/* GENRES (multi-select) */}
+                        <select
+                            value={props.selectedGenres[0] || ""}
+                            onChange={handleGenresChangeACB}
+                        >
+                            <option value="">Genre</option>
+                            {props.genreOptions?.map(renderGenreCB)}
                         </select>
 
-                        <select>
+                        {/* ORDER BY */}
+                        <select
+                            value={props.selectedOrderBy || ""}
+                            onChange={handleOrderByChangeACB}
+                        >
                             <option value="">Order By</option>
-                            <option value="score">Score</option>
-                            <option value="popularity">Popularity</option>
-                            <option value="favorites">Favorites</option>
+                            {props.orderByOptions?.map(renderOptionCB)}
                         </select>
+
                     </div>
                 )}
 
@@ -129,11 +148,19 @@ export function HeaderView(props) {
 
             {/* RIGHT: Profile Button */}
             <div className="header-right">
-                <button onClick={profileACB} className="profile-button">
+                <button onClick={handleProfileClickACB} className="profile-button">
                     Profile
                 </button>
             </div>
 
         </header>
     );
+
+    function renderOptionCB(option, i) {
+        return <option key={i} value={option}>{option}</option>;
+    }
+
+    function renderGenreCB(genre) {
+        return <option key={genre.mal_id} value={genre.name}>{genre.name}</option>;
+    }
 }

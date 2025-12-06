@@ -304,6 +304,14 @@ body {
     text-overflow: ellipsis;       /* Add "..." truncation */
 }
 
+.search-results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, auto)); /* fixed card width */
+  justify-content: center;       /* center the cards horizontally */
+  gap: 16px 24px;               /* vertical + horizontal spacing */
+  padding: 10px 0;              /* vertical padding */
+}
+
 /* MODAL OVERLAY + BLUR */
 .modal-overlay {
     position: fixed;               /* Keep overlay in place relative to viewport */
