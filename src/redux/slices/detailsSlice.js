@@ -5,26 +5,6 @@
  *   - Use promiseState for both
  **********************************************************************/
 
-// TODO:
-// 1. import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-// 2. Import animeSource functions:
-//       getAnimeCharacters, getAnimeById
-//
-// 3. initialState = {
-//        selectedId: null,
-//        details: { promiseState: {} },
-//        characters: { promiseState: {} }
-//    };
-//
-// 4. Thunks:
-//       loadAnimeDetails(id)
-//       loadAnimeCharacters(id)
-//
-// 5. reducers:
-//       setSelectedAnimeId(state, action)
-//
-// 5. Export reducer & actions
-
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { getAnimeCharacters, getAnimeById } from "/src/api/animeSource.js";
 
@@ -38,8 +18,14 @@ function makePromiseState() {
 
 const initialState = {
     selectedId: null,
+    isOpen: false,
     details: { promiseState: makePromiseState() },
-    characters: { promiseState: makePromiseState() }
+    characters: { promiseState: makePromiseState() },
+    quizSettings: {                 // Store selected quiz options
+        category: null,             // "name" | "age"
+        mode: null,                 // "solo" | "1v1"
+        type: null                  // "best10" | "timed"
+    }
 };
 
 /************************************************************
@@ -73,8 +59,25 @@ export const detailsSlice = createSlice({
     reducers: {
         setSelectedAnimeId(state, action) {
             state.selectedId = action.payload;
-        }
+            state.isOpen = !!action.payload; // open modal if an ID is set
+        },
+        setQuizCategory(state, action) {
+            state.quizSettings.category = action.payload; // "name" | "age"
+        },
+        setQuizMode(state, action) {
+            state.quizSettings.mode = action.payload; // "solo" | "1v1"
+        },
+        setQuizType(state, action) {
+            state.quizSettings.type = action.payload; // "best10" | "timed"
+        },
+        resetDetails(state) {
+                state.selectedId = null;
+                state.details = { promiseState: makePromiseState() };
+                state.characters = { promiseState: makePromiseState() };
+                state.quizSettings = { category: "name", mode: "solo", type: "best10" };
+            }
     },
+
     extraReducers: (builder) => {
 
         /* -------------------- DETAILS -------------------- */
@@ -124,5 +127,10 @@ export const detailsSlice = createSlice({
 /************************************************************
  * 3. Exports
  ************************************************************/
-export const { setSelectedAnimeId } = detailsSlice.actions;
+export const { 
+    setSelectedAnimeId,
+    setQuizCategory,
+    setQuizMode,
+    setQuizType,
+    resetDetails } = detailsSlice.actions;
 export default detailsSlice.reducer;
