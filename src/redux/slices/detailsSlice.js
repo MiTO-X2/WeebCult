@@ -74,7 +74,7 @@ export const detailsSlice = createSlice({
                 state.selectedId = null;
                 state.details = { promiseState: makePromiseState() };
                 state.characters = { promiseState: makePromiseState() };
-                state.quizSettings = { category: "name", mode: "solo", type: "best10" };
+                state.quizSettings = { category: null, mode: null, type: null };
             }
     },
 
