@@ -339,6 +339,17 @@ body {
     font-weight: 700;               /* Bold font weight */
 }
 
+/* Make the link inside modal-title look like plain text */
+.modal-title a {
+    color: inherit;                 /* Inherit the purple color */
+    text-decoration: none;          /* Remove underline */
+}
+
+/* Hover effect */
+.modal-title a:hover {
+    color: #9b4dff;                 /* Change to a warm/orange color on hover */
+}
+
 /* CLOSE BUTTON */
 .modal-close-button {
     position: absolute;             /* Position relative to modal-card */
