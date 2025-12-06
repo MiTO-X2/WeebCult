@@ -53,7 +53,7 @@ export function ReactRoot() {
             </div>
             
             <div>
-                <MainPagePresenter />
+                <RouterProvider router={router} />
             </div>
 
             <div>

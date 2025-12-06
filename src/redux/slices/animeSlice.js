@@ -40,7 +40,19 @@ const initialState = {
     trending: { promiseState: makePromiseState() },
     genres:   { promiseState: makePromiseState() },
     animeByGenre: {}, // e.g. { "Action": { promiseState }, "Comedy": { promiseState } }
-    genreLists: []    // The model pre-computed structure
+    genreLists: [],    // The model pre-computed structure
+    searchFilters: {
+        query: "",
+        selectedType: "",
+        selectedStatus: "",
+        selectedRating: "",
+        selectedGenres: [],
+        selectedOrderBy: "",
+        typeOptions: ["TV", "Movie", "OVA"],
+        statusOptions: ["Airing", "Completed", "Upcoming"],
+        ratingOptions: ["G", "PG", "PG-13", "R", "R+"],
+        orderByOptions: ["Title", "Score", "Popularity"]
+    }
 };
 
 
@@ -88,7 +100,26 @@ export const fetchAnimeByGenre = createAsyncThunk(
 export const animeSlice = createSlice({
     name: 'anime',// namn på slice
     initialState,
-    reducers: {},
+    reducers: {
+        setQuery(state, action) {
+            state.searchFilters.query = action.payload;
+        },
+        setSelectedType(state, action) {
+            state.searchFilters.selectedType = action.payload;
+        },
+        setSelectedStatus(state, action) {
+            state.searchFilters.selectedStatus = action.payload;
+        },
+        setSelectedRating(state, action) {
+            state.searchFilters.selectedRating = action.payload;
+        },
+        setSelectedGenres(state, action) {
+            state.searchFilters.selectedGenres = action.payload;
+        },
+        setSelectedOrderBy(state, action) {
+            state.searchFilters.selectedOrderBy = action.payload;
+        }
+    },
         // Inga vanliga reducers behövs just nu
         // all state hanteras via thunks och promiseState
     
@@ -109,6 +140,14 @@ export const animeSlice = createSlice({
                     promiseState.data = action.payload; // sätt data från payload
                     promiseState.error = null;
                     promiseState.promise = null;
+
+                    // Reset filters after search
+                    state.searchFilters.query = "";
+                    state.searchFilters.selectedType = "";
+                    state.searchFilters.selectedStatus = "";
+                    state.searchFilters.selectedRating = "";
+                    state.searchFilters.selectedGenres = [];
+                    state.searchFilters.selectedOrderBy = "";
             })
             .addCase(fetchSearch.rejected, (state, action) => {// när anropet misslyckas
                 const promiseState = state.search.promiseState;
@@ -237,6 +276,11 @@ export const animeSlice = createSlice({
 
 
 //************************ 6. Export reducer *****************/
+export const { 
+    setQuery,
+    setSelectedType,
+    setSelectedStatus,
+    setSelectedRating,
+    setSelectedGenres,
+    setSelectedOrderBy } = animeSlice.actions;
 export default animeSlice.reducer; // exportera reducer för store 
-
-        

@@ -17,8 +17,10 @@ function mapStateToProps(state) {
   return {
     trending: state.anime.trending.promiseState.data || [],
     genres: state.anime.genreLists || [],
+    searchResults: state.anime.search.promiseState.data || [],
     trendingPromise: state.anime.trending.promiseState.promise,
-    genresPromise: state.anime.genres.promiseState.promise
+    genresPromise: state.anime.genres.promiseState.promise,
+    searchPromise: state.anime.search.promiseState.promise
   };
 }
 
@@ -29,11 +31,12 @@ const mapDispatchToProps = {
 };
 
 function MainPagePresenterComponent({
-  trendingPromise, genresPromise, ...props
+  trendingPromise, genresPromise, searchPromise,
+  searchResults, ...props
 }) {
 
   // Suspense
-  if (trendingPromise || genresPromise) {
+  if (trendingPromise || genresPromise || searchPromise) {
     return <SuspenseView />;
   }
 
@@ -42,7 +45,13 @@ function MainPagePresenterComponent({
       props.setSelectedAnimeId(anime.id);
   };
 
-  return <MainPageView {...props} onSelectAnime={handleSelectAnimeACB} />;
+  return ( 
+    <MainPageView 
+      {...props} 
+      searchResults={searchResults}
+      onSelectAnime={handleSelectAnimeACB} 
+    />
+  );
 }
 
 export const MainPagePresenter = connect(
