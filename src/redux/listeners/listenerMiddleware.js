@@ -1,11 +1,13 @@
-import { createListenerMiddleware } from "@reduxjs/toolkit";
+import { createListenerMiddleware, createAction } from "@reduxjs/toolkit";
 import { fetchTrending, fetchGenres, fetchAnimeByGenre } from "../slices/animeSlice.js";
 
 export const listenerMiddleware = createListenerMiddleware();
 
+export const appInit = createAction("APP_INIT");
+
 // 1) App initialization listener
 listenerMiddleware.startListening({
-  predicate: (action) => action.type === "APP_INIT",
+  actionCreator: appInit,
   effect: async (_, listenerApi) => {
     listenerApi.dispatch(fetchTrending());
     listenerApi.dispatch(fetchGenres());

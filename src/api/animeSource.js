@@ -133,18 +133,33 @@ export function getAnimeById(animeID) {
     }
     })
     .then(checkStatusACB)
-    .then(handleAnimeSearchJSONACB); //Converts to standard anime format
-}                                    //Might need change depending on info left
+    .then(json => transformSingleAnimeCB(json.data)); 
+}                                    
 
 /***************************************************************
  *  TRANSFORMERS CHARACTER DATA
  ***************************************************************/
 // function for handling the JSON response of searchAnime
 function handleAnimeSearchJSONACB(json) {
-    return json.data.map(transformAnimeCB);
+    return json.data.map(transformSingleAnimeCB);
 }
 
-function transformAnimeCB(a) {
+// Transform single anime object into standard format
+function transformSingleAnimeCB(a) {
+    return {
+        id: a.mal_id,
+        title: a.title || a.titles?.[0]?.title || "Unknown Title",
+        image: a.images?.jpg?.image_url || "",
+        score: a.score,
+        year: a.year,
+        synopsis: a.synopsis,
+        episodes: a.episodes,
+        type: a.type,
+        rating: a.rating
+    };
+}
+
+/*function transformAnimeCB(a) {
     return {
         id: a.mal_id,
         title: a.title,
@@ -152,7 +167,8 @@ function transformAnimeCB(a) {
         score: a.score,
         year: a.year
     };
-}
+}*/
+
 
 // function for handling the JSON response of getAnimeCharacters
 function handleAnimeCharactersJSONACB(json) {
