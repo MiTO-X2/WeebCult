@@ -60,6 +60,11 @@ export const detailsSlice = createSlice({
         setSelectedAnimeId(state, action) {
             state.selectedId = action.payload;
             state.isOpen = !!action.payload; // open modal if an ID is set
+
+            if (!action.payload) {
+                // If closing modal, reset quiz settings
+                state.quizSettings = { category: null, mode: null, type: null };
+            }
         },
         setQuizCategory(state, action) {
             state.quizSettings.category = action.payload; // "name" | "age"
