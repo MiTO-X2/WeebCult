@@ -12,6 +12,10 @@ import { RowView } from "./rowView.jsx";
 
 export function MainPageView(props) {
 
+    function onAnimeSelectViewACB(anime) {
+        props.onSelectAnime(anime);
+    }
+
     return (
         <div className="main-page">
 
@@ -20,7 +24,7 @@ export function MainPageView(props) {
                 <RowView
                     title="Trending"
                     items={props.trending}
-                    onSelectItem={props.onSelectAnime}
+                    onSelectItem={onAnimeSelectViewACB}
                 />
             )}
 
@@ -30,7 +34,7 @@ export function MainPageView(props) {
                     key={g.label}
                     title={g.label}
                     items={g.items}
-                    onSelectItem={props.onSelectAnime}
+                    onSelectItem={onAnimeSelectViewACB}
                 />
             ))}
 

@@ -11,6 +11,7 @@ import { connect } from "react-redux";
 import { MainPageView } from "../views/mainPageView.jsx";
 import { SuspenseView } from "../views/suspenseView.jsx";
 import { fetchTrending, fetchGenres } from "../redux/slices/animeSlice.js";
+import { setSelectedAnimeId } from "../redux/slices/detailsSlice.js";
 
 function mapStateToProps(state) {
   return {
@@ -23,7 +24,8 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = {
   loadTrending: fetchTrending,
-  loadGenres: fetchGenres
+  loadGenres: fetchGenres,
+  setSelectedAnimeId
 };
 
 function MainPagePresenterComponent({
@@ -35,7 +37,12 @@ function MainPagePresenterComponent({
     return <SuspenseView />;
   }
 
-  return <MainPageView {...props} />;
+  // Handler when user clicks on a row item
+  const handleSelectAnimeACB = (anime) => {
+      props.setSelectedAnimeId(anime.id);
+  };
+
+  return <MainPageView {...props} onSelectAnime={handleSelectAnimeACB} />;
 }
 
 export const MainPagePresenter = connect(
