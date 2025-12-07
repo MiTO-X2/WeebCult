@@ -13,6 +13,7 @@
  ***********************************************************************/
 
 import "../style.css";
+import WeebCultLogo from "../WeebCultLogo.png";
 
 export function FooterView(props) {
     return (
@@ -21,7 +22,7 @@ export function FooterView(props) {
             {/* LOGO */}
             <div className="footer-logo" onClick={props.onNavigateHome}>
                 <img
-                    src="/WeebCultLogo.png"
+                    src={WeebCultLogo}
                     alt="WeebCult Logo"
                     className="footer-logo-img"
                 />

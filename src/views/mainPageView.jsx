@@ -20,6 +20,14 @@ export function MainPageView(props) {
     if (props.searchResults?.length > 0) {
         return (
             <div className="main-page">
+                {/* Sidebar Button (Top Right) */}
+                <button 
+                    className="sidebar-button"
+                    onClick={props.onOpenSidebar}
+                >
+                    Recent Quizzes
+                </button>
+
                 <div className="row-container">
                     <h2 className="row-title">Search Results</h2>
                     <div className="search-results-grid">
@@ -44,6 +52,14 @@ export function MainPageView(props) {
     // Otherwise show the normal main page rows
     return (
         <div className="main-page">
+
+            {/* Sidebar Button (Top Right) */}
+            <button 
+                className="sidebar-button"
+                onClick={props.onOpenSidebar}
+            >
+                Recent Quizzes
+            </button>
 
             {/* Trending */}
             {props.trending?.length > 0 && (

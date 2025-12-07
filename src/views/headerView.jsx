@@ -14,6 +14,7 @@
  ***********************************************************************/
 
 import "../style.css";
+import WeebCultLogo from "../WeebCultLogo.png";
 
 export function HeaderView(props) {
     function handleNavigateHomeACB() {
@@ -65,7 +66,7 @@ export function HeaderView(props) {
             {/* LEFT: Logo + Title */}
             <div className="header-left" onClick={handleNavigateHomeACB}>
                 <img
-                    src="/WeebCultLogo.png"
+                    src={WeebCultLogo}
                     alt="WeebCult Logo"
                     className="header-logo"
                 />
@@ -157,10 +158,11 @@ export function HeaderView(props) {
     );
 
     function renderOptionCB(option, i) {
-        return <option key={i} value={option}>{option}</option>;
+        return <option key={option} value={option}>{option}</option>;
     }
 
     function renderGenreCB(genre) {
-        return <option key={genre.mal_id} value={genre.name}>{genre.name}</option>;
+        const key = genre.mal_id || genre.name;
+        return <option key={key} value={genre.name}>{genre.name}</option>;
     }
 }

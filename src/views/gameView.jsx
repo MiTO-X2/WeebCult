@@ -19,6 +19,7 @@
 
 import "../style.css";
 import { CountdownCircleTimer } from "react-countdown-circle-timer"; 
+import WeebCultLogo from "../WeebCultLogo.png";
 
 export function GameView(props) {
   const q = props.question;
@@ -42,7 +43,7 @@ export function GameView(props) {
       <div className="top-bar">
         <div className="logo-title" onClick={props.onExit}>
           <img 
-            src="/WeebCultLogo.png"       
+            src={WeebCultLogo}       
             alt="WeebCult Logo"
             className="logo" 
           />

@@ -17,7 +17,7 @@
  *
  ***************************************************************/
 
-import { PROXY_URL, PROXY_KEY, GROUP_NUMBER } from "./apiConfig.js";
+import { PROXY_URL, PROXY_KEY, GROUP_NUMBER, PROXY_URL_FACTS } from "./apiConfig.js";
 
 /***************************************************************
  *  SEARCH ANIME BY NAME
@@ -190,7 +190,7 @@ function transformCharacterCB(c) {
  *  GET RANDOM ANIME FACT
  ***************************************************************/
 export function getRandomAnimeFact() {
-    const url = PROXY_URL + "/anime-facts";
+    const url = PROXY_URL_FACTS + "/all";
 
     return fetch(url, {
         method: "GET",
