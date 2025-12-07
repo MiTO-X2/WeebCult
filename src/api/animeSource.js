@@ -187,6 +187,46 @@ function transformCharacterCB(c) {
 }
 
 /***************************************************************
+ *  GET RANDOM ANIME FACT
+ ***************************************************************/
+export function getRandomAnimeFact() {
+    const url = PROXY_URL + "/anime-facts";
+
+    return fetch(url, {
+        method: "GET",
+        headers: {
+            "X-DH2642-Key": PROXY_KEY,
+            "X-DH2642-Group": GROUP_NUMBER
+        }
+    })
+    .then(checkStatusACB)
+    .then(transformAnimeFactJSONACB);
+}
+
+/***************************************************************
+ *  TRANSFORMER
+ *  Convert API response to a single random fact object
+ ***************************************************************/
+function transformAnimeFactJSONACB(json) {
+    // If no data, return empty values
+    if (!json?.data || json.data.length === 0) return { anime: null, fact: null };
+
+    // Pick a random anime
+    const randomAnime = json.data[Math.floor(Math.random() * json.data.length)];
+
+    // Pick a random fact from that anime
+    const factsArray = randomAnime?.facts || [];
+    const randomFact = factsArray.length > 0 
+        ? factsArray[Math.floor(Math.random() * factsArray.length)] 
+        : "No fact available.";
+
+    return {
+        anime: randomAnime.anime_name,
+        fact: randomFact
+    };
+}
+
+/***************************************************************
  *  STATUS CHECKER
  ***************************************************************/
 function checkStatusACB(response) {
