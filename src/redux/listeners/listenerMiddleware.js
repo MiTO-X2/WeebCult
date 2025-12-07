@@ -1,5 +1,5 @@
 import { createListenerMiddleware, createAction } from "@reduxjs/toolkit";
-import { fetchTrending, fetchGenres, fetchAnimeByGenre } from "../slices/animeSlice.js";
+import { fetchTrending, fetchGenres, fetchAllGenres, fetchAnimeByGenre } from "../slices/animeSlice.js";
 
 export const listenerMiddleware = createListenerMiddleware();
 
@@ -11,6 +11,11 @@ listenerMiddleware.startListening({
   effect: async (_, listenerApi) => {
     listenerApi.dispatch(fetchTrending());
     listenerApi.dispatch(fetchGenres());
+
+    // Delay heavy fetch
+    await new Promise(res => setTimeout(res, 5000)); // 5 seconds
+
+    listenerApi.dispatch(fetchAllGenres());
   }
 });
 

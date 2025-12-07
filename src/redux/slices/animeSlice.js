@@ -38,6 +38,7 @@ const MAIN_GENRES = ["Action", "Comedy", "Slice of Life", "Fantasy"];
 const initialState = {
     search:   { promiseState: makePromiseState() },
     trending: { promiseState: makePromiseState() },
+    allGenres: { promiseState: makePromiseState() },
     genres:   { promiseState: makePromiseState() },
     animeByGenre: {}, // e.g. { "Action": { promiseState }, "Comedy": { promiseState } }
     genreLists: [],    // The model pre-computed structure
@@ -74,6 +75,12 @@ export const fetchTrending = createAsyncThunk(
         const data = await getTopAnime();
         return data;
     }   
+);
+
+// All genres (for header filter)
+export const fetchAllGenres = createAsyncThunk(
+    'anime/fetchAllGenres',
+    async () => getGenres()  // all genres, no filtering
 );
 
 // Fetch list of genres (metadata only)
@@ -184,6 +191,28 @@ export const animeSlice = createSlice({
                     promiseState.promise = null;
             }); 
         
+        // -------- ALL GENRES (HEADER) --------
+        builder
+            .addCase(fetchAllGenres.pending, (state, action) => {
+                const ps = state.allGenres.promiseState;
+                ps.promise = action.meta.requestId;
+                ps.data = null;
+                ps.error = null;
+            })
+            .addCase(fetchAllGenres.fulfilled, (state, action) => {
+                const ps = state.allGenres.promiseState;
+                if (ps.promise !== action.meta.requestId) return;
+                ps.data = action.payload;
+                ps.error = null;
+                ps.promise = null;
+            })
+            .addCase(fetchAllGenres.rejected, (state, action) => {
+                const ps = state.allGenres.promiseState;
+                if (ps.promise !== action.meta.requestId) return;
+                ps.data = null;
+                ps.error = action.error;
+                ps.promise = null;
+            });
 
         // Hantera fetchGenres, för att uppdatera genres.promiseState
         builder

@@ -41,7 +41,7 @@ function mapStateToProps(state) {
     statusOptions: searchFilters.statusOptions || ["Airing", "Completed", "Upcoming"],
     ratingOptions: searchFilters.ratingOptions || ["G", "PG", "PG-13", "R", "R+"],
     orderByOptions: searchFilters.orderByOptions || ["Title", "Score", "Popularity"],
-    genreOptions: state.anime.genres.promiseState.data || []
+    genreOptions: state.anime.allGenres.promiseState.data || []
   };
 }
 
