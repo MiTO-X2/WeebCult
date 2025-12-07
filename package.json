@@ -6,15 +6,16 @@
     "serve": "vite preview"
   },
   "devDependencies": {
-    "vite": "latest",
-    "@vitejs/plugin-react": "latest"
+    "@vitejs/plugin-react": "latest",
+    "vite": "latest"
   },
   "dependencies": {
-    "firebase": "latest",
     "@reduxjs/toolkit": "latest",
-    "react-redux": "latest",
+    "firebase": "latest",
     "react": "latest",
+    "react-countdown-circle-timer": "^3.2.1",
     "react-dom": "latest",
+    "react-redux": "latest",
     "react-router-dom": "latest"
   }
 }
