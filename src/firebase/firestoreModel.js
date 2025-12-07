@@ -66,7 +66,7 @@ export function logout() {
 // TODO #2: saveUserStats
 // Implement saveUserStats(uid, stats):
 //   - Write to /users/{uid}/stats
-//   - stats: { quizzes: [ {score, total, category, mode, type, time, completedAt, animeImage}, ... ] }
+//   - stats: { quizzes: [ {score, total, category, mode, type, time, completedAt, animeId, animeTitle, animeImage}, ... ] }
 //   - const userRef = doc(db, "users", uid);
 //   - Use setDoc(userRef, { stats }, { merge: true })
 //   - Return the Promise

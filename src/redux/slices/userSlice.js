@@ -11,14 +11,14 @@
  ***********************************************************************/
 
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { loadUserStats, saveUserStats } from "../firebase/firestoreModel";
+// import { loadUserStats, saveUserStats } from '/src/firebase/firestoreModel';
 
 
 const initialState = {
     uid: null,
     stats: {
         quizzes: [], // Array of completed quizzes
-        // Each quiz: { score, category, mode, type, time, completedAt }
+        // Each quiz: { score, category, mode, type, time, completedAt, animeId, animeTitle, animeImg}
     },
     loading: false,
     error: null,
