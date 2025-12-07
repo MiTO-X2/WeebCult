@@ -63,23 +63,29 @@ export function logout() {
     return signOut(auth);
 }
 
-// TODO #2:
+// TODO #2: saveUserStats
 // Implement saveUserStats(uid, stats):
 //   - Write to /users/{uid}/stats
-//   - Use setDoc(..., { merge: true })
+//   - stats: { quizzes: [ {score, total, category, mode, type, time, completedAt, animeImage}, ... ] }
+//   - const userRef = doc(db, "users", uid);
+//   - Use setDoc(userRef, { stats }, { merge: true })
 //   - Return the Promise
 //   - No UI/Redux/business logic here
 
-// TODO #3:
+// TODO #3: loadUserStats
 // Implement loadUserStats(uid):
 //   - Read /users/{uid}/stats
+//   - const userRef = doc(db, "users", uid);
+//   - const snap = await getDoc(userRef);
 //   - If missing → return {}
+//   - if (!snap.exists()) return { quizzes: [] };
 //   - Must return a Promise resolving to a JS object
 
-// TODO #4:
+// TODO #4: saveUserSettings
 // Implement saveUserSettings(uid, settings):
 //   - Write to /users/{uid}/settings
-//   - Use setDoc(..., { merge: true })
+//   - const userRef = doc(db, "users", uid);
+//   - Use setDoc(userRef, { settings }, { merge: true });
 //   - Must return Promise
 
 // TODO #5:
@@ -88,3 +94,12 @@ export function logout() {
 // NO UI logic.
 // NO Redux usage.
 // NO presenter should import this file — only Redux thunks may call it.
+// | Field         | Description                                    |
+// | ------------- | ---------------------------------------------- |
+// | `score`       | How many points the user got (e.g., 9)         |
+// | `total`       | Total questions in that quiz (e.g., 10)        |
+// | `category`    | "Character Name" / "Character Age", etc.       |
+// | `mode`        | "solo" / "versus"                              |
+// | `type`        | "bestOf10" / "timed"                           |
+// | `time`        | Total duration in seconds or formatted string  |
+// | `completedAt` | Timestamp for sorting recent quizzes           |

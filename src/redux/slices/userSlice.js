@@ -10,131 +10,50 @@
  * 
  ***********************************************************************/
 
-// TODO:
-// 1. import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-// 2. Import firestoreModel functions:
-//       loadUserStats, saveUserStats, loadUserSettings, etc.
-//    import { auth } from "../firebase/firebaseConfig";
-//    import { onAuthStateChanged } from "firebase/auth";
-//
-// 3. Define initialState:
-//       { uid: null, profile: null, loading: false, error: null }
-//
-// 4. Define thunks:
-//    Thunk: loginUser(uid):
-//           - fetch Firestore user profile
-//           - return { uid, profile }
-//
-//       export const loginUser = createAsyncThunk(
-//         "user/loginUser",
-//         async (uid) => {
-//             const profile = await loadUserProfile(uid);
-//             return { uid, profile };
-//         }
-//       );
-//
-//    Thunk: logoutUser():
-//           - clear Redux state, maybe save stats
-//
-//           export const logoutUser = createAsyncThunk(
-//             "user/logoutUser",
-//             async () => {
-//               return true;  // nothing async needed
-//             }
-//           );
-//
-//    Thunk: saveUserProfile(profile):
-//           - write the profile to Firestore
-//
-//           export const saveUserProfile = createAsyncThunk(
-//             "user/saveUserProfile",
-//             async (profile, { getState }) => {
-//                const uid = getState().user.uid;
-//                await saveUserProfileToDB(uid, profile);
-//                return profile;
-//             }
-//           );
-//
-// 5. createSlice({
-//       name: 'user',
-//       initialState,
-//       reducers: {
-//             // If something needs manual reset
-//             clearUser(state) {
-//                 state.uid = null;
-//                 state.profile = null;
-//             }
-//       }
-//     })
-//
-// 6. Export actions & reducer
-//    export const { clearUser } = userSlice.actions;
-//    export userSlice.reducer;
-
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-// import { loadUserProfile, saveUserProfile } from '../../models/firestoreModel';
-// Placeholder imports for Firestore functions
-const loadUserProfile = async (uid) => {
-    // Simulate fetching user profile from Firestore
-    return { name: "Test User", settings: {} };
-};  
-const saveUserProfile = async (profile) => {    
-    // Simulate saving user profile to Firestore
-    return;
-};
+import { loadUserStats, saveUserStats } from "../firebase/firestoreModel";
 
-const initialState = {// 3. Define initialState:
-    // { uid: null, profile: null, loading: false, error: null }
-    // Placeholder values
+
+const initialState = {
     uid: null,
-    profile: null,
+    stats: {
+        quizzes: [], // Array of completed quizzes
+        // Each quiz: { score, category, mode, type, time, completedAt }
+    },
     loading: false,
     error: null,
 };  
 
+// ------------------------ Thunks ------------------------
 
-// 4. Define thunks:
-export const loginUser = createAsyncThunk(// loginUser(uid):
-    'user/loginUser',
-    async (uid, { rejectWithValue }) => {  //fetch Firestore user profile 
-        try {// return { uid, profile }
-            const profile = await loadUserProfile(uid);// Placeholder function
-            return { uid, profile };
-        } catch (error) {
-            return rejectWithValue(error.message);// Handle error
-        }           
-            return { uid, profile };// Placeholder return
+// --------------------------------------------------------
+// Load stats for a user
+// --------------------------------------------------------
+export const fetchUserStats = createAsyncThunk(
+  "user/fetchUserStats",
+  async (uid, { rejectWithValue }) => {
+    try {
+      const stats = await loadUserStats(uid);
+      return stats || { quizzes: [] };
+    } catch (error) {
+      return rejectWithValue(error.message);
     }
+  }
 );
 
-
-export const logoutUser = createAsyncThunk(// logoutUser():
-    'user/logoutUser',
-    async (_, { getState, rejectWithValue }) => { //clear state, maybe save stats   
-        try {
-            const state = getState();
-            const profile = state.user.profile;
-            await saveUserProfile(profile);// Placeholder function
-            return;
-        }   
-        catch (error) {
-            return rejectWithValue(error.message);// Handle error       
-        }
+// --------------------------------------------------------
+// Save stats for a user
+// --------------------------------------------------------
+export const updateUserStats = createAsyncThunk(
+  "user/updateUserStats",
+  async ({ uid, stats }, { rejectWithValue }) => {
+    try {
+      await saveUserStats(uid, stats);
+      return stats;
+    } catch (error) {
+      return rejectWithValue(error.message);
     }
-    
-);
-
-
-export const saveUserProfileThunk = createAsyncThunk(// saveUserProfile(profile):
-    'user/saveUserProfile',
-    async (profile, { rejectWithValue }) => { //write to Firestore  
-        try {
-            await saveUserProfile(profile);// Placeholder function
-            return profile;
-        } catch (error) {
-            return rejectWithValue(error.message);// Handle error
-        }
-    }
+  }
 );
 
  /************************ 5. createSlice *****************/
@@ -142,55 +61,62 @@ export const saveUserProfileThunk = createAsyncThunk(// saveUserProfile(profile)
 export const userSlice = createSlice({
     name: 'user',
     initialState,
-    reducers: {//       logout(state) { clear uid + profile }
-        logout(state) {//   
-            // clear uid + profile
-            state.uid = null;// clear uid
-            state.profile = null;// clear user data
+    reducers: {
+        // Set UID on login, called when Firebase auth fires login
+        setUid(state, action) {
+            state.uid = action.payload;
         },
-
+        // Reset everything on logout, called when Firebase auth fires logout
+        clearUser(state) {
+            state.uid = null;
+            state.stats = { quizzes: [] };
+            state.loading = false;
+            state.error = null;
+        },
+        // Add a new completed quiz to stats (local only; call updateUserStats to persist)
+        addQuizResult(state, action) {
+            state.stats.quizzes.unshift(action.payload); // newest first
+            if (state.stats.quizzes.length > 10) {
+                state.stats.quizzes = state.stats.quizzes.slice(0, 10); // keep last 10
+            }
+        },
     },
-    extraReducers:(builder) =>{
 
-        // Hantera loginUser() load profile and uid
-        builder 
-            .addCase(loginUser.pending, (state)=>{
+    extraReducers:(builder) =>{
+        // fetchUserStats
+        builder
+            .addCase(fetchUserStats.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(loginUser.fulfilled, (state,action)=>{//Osäker hur man kommer åt profile och uid
+            .addCase(fetchUserStats.fulfilled, (state, action) => {
                 state.loading = false;
-                state.profile = action.payload.profile;
-                state.uid = action.payload.uid ;
+                state.stats = action.payload;
             })
-            .addCase(loginUser.rejected, (state, action)=>{
+            .addCase(fetchUserStats.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.error;
+                state.error = action.payload;
             });
 
-        // Hantera saveUserProfileThunk()
+        // updateUserStats
         builder
-            .addCase(saveUserProfileThunk.pending, (state)=>{
+            .addCase(updateUserStats.pending, (state) => {
                 state.loading = true;
                 state.error = null;
-
             })
-            .addCase(saveUserProfileThunk.fulfilled, (state, action)=>{
+            .addCase(updateUserStats.fulfilled, (state, action) => {
                 state.loading = false;
-                state.profile = action.payload;
-                
+                state.stats = action.payload;
             })
-            .addCase(saveUserProfileThunk.rejected, (state, action)=>{
+            .addCase(updateUserStats.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.error;
-                
-            })
+                state.error = action.payload;
+            });
 
     }
 })
-export default userSlice.reducer
+
+export const { setUid, clearUser, addQuizResult } = userSlice.actions;
+export default userSlice.reducer;
   
             
-
-
-
