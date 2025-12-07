@@ -62,7 +62,7 @@ body {
     display: flex;                 /* Flex column for input + filters */
     flex-direction: column;        /* Stack vertically */
     justify-content: center;       /* Center content vertically */
-    width: 41%;                    /* Middle section width */
+    width: 46%;                    /* Middle section width */
     min-width: 250px;              /* Prevent collapsing on small screens */
 }
 
