@@ -440,3 +440,200 @@ body {
     background-color: #333;      /* Lighter gray on hover */
     color: #bb80ff;                   /* Purple text on hover */
 }
+
+/******************************** Game View ********************************/
+.game-view {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0;
+    font-family: "Arial", sans-serif;
+    background-color: #121212;
+    color: white;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* ----------------- Top Bar ----------------- */
+.top-bar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    border-bottom: 1px solid #1f1f1f;
+    background-color: #121212;
+    position: relative;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.logo {
+    width: 40px;
+    height: 40px;
+}
+
+.title {
+    font-size: 25px;
+    font-weight: 600;
+    color: #b673ff;
+}
+
+.title.flash-green { animation: flashTitleGreen 0.4s forwards; }
+.title.flash-red   { animation: flashTitleRed 0.4s forwards; }
+
+@keyframes flashTitleGreen {
+    0% { color: #14d914; }
+    100% { color: #b673ff; }
+}
+
+@keyframes flashTitleRed {
+    0% { color: #ff3b3b; }
+    100% { color: #b673ff; }
+}
+
+/* ----------------- Score & Timer ----------------- */
+.score-area, .versus-score {
+    display: flex;
+    gap: 20px;
+}
+
+.solo-score, .player-box {
+    padding: 10px 18px;
+    border-radius: 12px;
+    text-align: center;
+    min-width: 90px;
+    background-color: #1d1d1d;
+    color: white;
+    box-shadow: 0 0 8px #00000080;
+    transition: all 0.3s;
+    font-weight: 600;
+}
+
+.solo-score.active,
+.player-box.active {
+    box-shadow: 0 0 15px #9b4dff;
+    background-color: #2b2b2b;
+    transform: scale(1.05);
+}
+
+.player-box.inactive {
+    opacity: 0.5;
+    background-color: #1d1d1d;
+}
+
+.left-info {
+    position: absolute;
+    left: 20px;
+    top: 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.question-number {
+    font-size: 30px;
+    font-weight: 600;
+    color: #bb80ff;
+}
+
+.timer-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+}
+
+.timer-wrapper.flash-red {
+    animation: flashTimer 0.5s infinite alternate;
+}
+
+@keyframes flashTimer {
+    0% { color: #bb80ff; }
+    50% { color: #ff3b3b; }
+    100% { color: #bb80ff; }
+}
+
+.timer-text {
+    font-size: 22px;
+    color: #bb80ff;
+    font-weight: bold;
+    text-shadow: 0 0 8px #9b4dff66;
+}
+
+/* ----------------- Center Info ----------------- */
+.center-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.question-img {
+    width: 200px;
+    max-width: 75vw;
+    height: 270px;
+    object-fit: cover;
+    border-radius: 16px;
+    margin: 15px 0;
+    box-shadow: 0 0 20px #9b4dff66;
+}
+
+.question-prompt {
+    margin: 20px 0 25px;
+    font-size: 22px;
+    text-align: center;
+    font-weight: 600;
+    color: #d0d0d0;
+}
+
+/* ----------------- Answers Grid ----------------- */
+.answers-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    width: 60%;
+    max-width: 700px;
+    justify-items: center;
+}
+
+.answer-btn {
+    padding: 16px 12px;
+    border-radius: 14px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    background-color: #1d1d1d;
+    color: white;
+    border: 2px solid #2b2b2b;
+    box-shadow: 0 0 8px #00000080;
+}
+
+.answer-btn:hover {
+    background-color: #2b2b2b;
+    border-color: #9b4dff;
+    transform: scale(1.03);
+}
+
+/* Flash animations for answers */
+.answer-btn.flash-green { animation: flashCorrect 0.4s forwards; }
+.answer-btn.flash-red   { animation: flashWrong 0.4s forwards; }
+
+@keyframes flashCorrect {
+    0% { background-color: #14d914; border-color: #14d914; color: white; }
+    100% { background-color: #1d1d1d; border-color: #2b2b2b; color: white; }
+}
+
+@keyframes flashWrong {
+    0% { background-color: #ff3b3b; border-color: #ff3b3b; color: white; }
+    100% { background-color: #1d1d1d; border-color: #2b2b2b; color: white; }
+}
