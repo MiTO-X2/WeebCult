@@ -226,27 +226,48 @@ body {
     padding: 20px 20px 40px 20px;  /* Page padding */
 }
 
-/* SIDEBAR BUTTON (like Profile Button) */
-.sidebar-button {
-    background-color: #1d1d1d;      /* Dark button background */
-    border: 1px solid #2d2d2d;      /* Subtle border */
-    color: #d0d0d0;                 /* Light gray text */
-    padding: 7px 16px;              /* Button padding */
-    border-radius: 6px;             /* Rounded corners */
-    font-size: 13px;                /* Text size */
-    cursor: pointer;                /* Pointer on hover */
-    transition: 0.2s;               /* Smooth hover effect */
-    position: absolute;              /* Position absolute if needed in container */
-    top: 115px;                       /* Adjust top offset */
-    right: 20px;                     /* Adjust right offset */
-    z-index: 2000;                   /* Make sure it’s above other content */
+/* CONTAINER FOR FIXED TOP-RIGHT BUTTONS */
+.top-buttons {
+    position: fixed;       /* Fix container to viewport */
+    top: 200px;            /* Adjust starting point */
+    right: 0;              /* Stick to right edge */
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    z-index: 2000;
 }
 
-/* Hover effect */
-.sidebar-button:hover {
-    border-color: #9b4dff;          /* Purple border on hover */
-    color: #bb80ff;                  /* Purple text on hover */
-    background-color: #2a2a2a;      /* Slightly lighter background for hover */
+/* TOP BUTTON: Sidebar */
+.sidebar-button {
+    background-color: #1d1d1d; 
+    border: 1px solid #2d2d2d; 
+    color: #d0d0d0; 
+    padding: 10px 16px; 
+    border-radius: 8px 0 0 0;  /* Round top-left corner */
+    font-size: 13px; 
+    cursor: pointer; 
+    transition: 0.2s; 
+    border-bottom: 1px solid #2d2d2d;        
+}
+
+/* BOTTOM BUTTON: Leaderboard */
+.leaderboard-button {
+    background-color: #1d1d1d; 
+    border: 1px solid #2d2d2d; 
+    color: #d0d0d0; 
+    padding: 10px 16px; 
+    border-radius: 0 0 0 8px;  /* Round bottom-left corner */
+    font-size: 13px; 
+    cursor: pointer; 
+    transition: 0.2s; 
+    border-top: 1px solid #2d2d2d;  /* connect seamlessly with top button */
+}
+
+/* Hover effect for both buttons */
+.sidebar-button:hover,
+.leaderboard-button:hover {
+    border-color: #9b4dff; 
+    color: #bb80ff; 
+    background-color: #2a2a2a; 
 }
 
 /* Row container */
@@ -825,4 +846,100 @@ body {
     border-left: 4px solid #b673ff;
     border-radius: 6px;
     margin: 6px 0 0 0;
+}
+
+
+/****************************************Leaderboard****************************************/
+/* LEADERBOARD CARD SPECIFIC */
+.leaderboard-card {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;            
+    max-height: 70vh;         /* limit total modal height */
+    overflow: visible; 
+}
+
+/* TABLE CONTAINER */
+.leaderboard-table-container {
+    overflow-x: auto; /* Allow horizontal scrolling if needed */
+    border-radius: 12px;
+    max-height: 50vh;         /* shrink table height */
+
+    /* Hide scrollbar for all browsers */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+}
+
+.leaderboard-table-container::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
+}
+
+/* LEADERBOARD TABLE */
+.leaderboard-table {
+    width: 100%;
+    border-collapse: collapse; /* Remove double borders */
+    background-color: #2a2a2a; /* Slightly lighter than modal background */
+    border-radius: 12px;
+    overflow: hidden; /* Clip rounded corners */
+    box-shadow: 0 0 10px rgba(0,0,0,0.4); /* Subtle table shadow */
+    font-size: 13px;          /* smaller font to reduce size */
+}
+
+/* TABLE HEAD */
+.leaderboard-table th {
+    background-color: #3b3b3b; /* Darker header */
+    color: #b673ff; /* Purple accent */
+    font-weight: 700;
+    font-size: 14px;
+    padding: 8px 12px;
+    text-align: left;
+}
+
+/* TABLE ROWS */
+.leaderboard-table td {
+    padding: 6px 12px;
+    font-size: 13px;
+    color: #ddd;
+    border-bottom: 1px solid #444;
+}
+
+/* HOVER EFFECT ON ROWS */
+.leaderboard-table tbody tr:hover {
+    background-color: #3a1dff1a; /* Soft purple hover */
+}
+
+/* STRIPED EFFECT */
+.leaderboard-table tbody tr:nth-child(even) {
+    background-color: #222;
+}
+
+/* YOUR STANDING SECTION */
+.your-standing-container {
+    background-color: #2c2c2c;
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.3);
+}
+
+.your-standing-container h3 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    color: #b673ff;
+    font-size: 20px;
+}
+
+.your-standing-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    font-size: 13px;
+}
+
+.your-standing-label {
+    font-weight: 600;
+    color: #ccc;
+}
+
+.your-standing-value {
+    color: #fff;
 }
