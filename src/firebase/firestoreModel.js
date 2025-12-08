@@ -71,15 +71,19 @@ export function logout() {
 //   - Use setDoc(userRef, { stats }, { merge: true })
 //   - Return the Promise
 //   - No UI/Redux/business logic here
+//
+//   - After saving stats, Redux thunks are responsible for calling updateLeaderboardEntry()
+//   - DO NOT call leaderboard functions from inside saveUserStats (keeps layers clean).
 
 // TODO #3: loadUserStats
 // Implement loadUserStats(uid):
 //   - Read /users/{uid}/stats
 //   - const userRef = doc(db, "users", uid);
 //   - const snap = await getDoc(userRef);
-//   - If missing → return {}
+//   - If missing -> return {}
 //   - if (!snap.exists()) return { quizzes: [] };
 //   - Must return a Promise resolving to a JS object
+//   - No business logic (sorting, ranking, etc).
 
 // TODO #4: saveUserSettings
 // Implement saveUserSettings(uid, settings):
@@ -88,7 +92,38 @@ export function logout() {
 //   - Use setDoc(userRef, { settings }, { merge: true });
 //   - Must return Promise
 
-// TODO #5:
+// TODO #5: updateLeaderboardEntry
+// Implement updateLeaderboardEntry(uid, leaderboardData):
+//   PURPOSE:
+//     - Create/update a user's public leaderboard entry
+//     - Stored under /leaderboard/{uid}
+//   leaderboardData = {
+//       username: string,
+//       bestScore: number,
+//       quizzesCompleted: number,
+//       lastUpdated: timestamp
+//   };
+//   - const ref = doc(db, "leaderboard", uid);
+//   - Use setDoc(ref, leaderboardData, { merge: true });
+//   - Must return Promise
+//   - NO ranking logic here (ranking is computed by Redux/Presenter)
+
+// TODO #6: loadLeaderboard, Returns array -> Presenter sorts -> View displays.
+// Implement loadLeaderboard():
+//   - Read ALL documents from /leaderboard collection
+//   - Return array of entries:
+//       [{ uid, username, bestScore, quizzesCompleted, lastUpdated }, ...]
+//   - Sorting happens in Presenter, NOT here
+//   - Must return a Promise resolving to an array
+//   - Do NOT include any ranking logic here
+
+// TODO #7: loadLeaderboardEntry(uid), Useful for checking if user already has an entry
+// OPTIONAL helper:
+//   - Read /leaderboard/{uid}
+//   - If missing -> return null
+//   - Used by Redux if needed to show "Your Rank"
+
+// TODO #8:
 // All functions must return Promises only.
 // NO business logic.
 // NO UI logic.
@@ -103,3 +138,18 @@ export function logout() {
 // | `type`        | "bestOf10" / "timed"                           |
 // | `time`        | Total duration in seconds or formatted string  |
 // | `completedAt` | Timestamp for sorting recent quizzes           |
+
+
+/**
+ * Leaderboard table in the leaderboardView/Presenter must contain:
+ *    - Rank (#1, #2, ...)
+ *    - Username (Google Auth displayName)
+ *    - Best score (highest)
+ *    - Total quizzes completed
+ * 
+ * And below the table:
+ *    - Your rank
+ *    - Your username
+ *    - Your best score
+ *    - Your total completed quizzes
+ */
