@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getRandomAnimeFact } from "/src/api/animeSource.js"; // your API function
+import { getRandomAnimeFact } from "/src/api/animeSource.js";
 
 // Thunk to fetch a random fact
 export const fetchRandomFact = createAsyncThunk(

@@ -1,3 +1,6 @@
+// 3rd-party spinner React component (component made by others)
+import { MoonLoader } from "react-spinners";
+
 export function SuspenseView(props) {
     // Case 1: No promise
     if (!props.promise) {
@@ -10,5 +13,9 @@ export function SuspenseView(props) {
     }
 
     // Case 3: Promise exists and is pending (no error yet)
-    return <img src="https://brfenergi.se/iprog/loading.gif" alt="Loading..." />;
+    return (
+        <div className="suspense-loader">
+            <MoonLoader size={100} color="#b673ff" />
+        </div>
+    );
 }

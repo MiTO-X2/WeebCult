@@ -18,6 +18,7 @@
  ***********************************************************************/
 
 import "../style.css";
+// 3rd-party countdown timer React component (component made by others)
 import { CountdownCircleTimer } from "react-countdown-circle-timer"; 
 import WeebCultLogo from "../WeebCultLogo.png";
 
