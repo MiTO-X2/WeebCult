@@ -99,10 +99,11 @@ async function saveUserSettings(uid,settings){
     return;
 }
 
-function updateLeaderboardEntry(uid,leaderboardData){
+async function updateLeaderboardEntry(uid,leaderboardData){
 
-    const ref = doc(db,"leaderboard",uid)
-    return setDoc(ref, leaderboardData, {merge: true});
+    const ref = doc(db,"leaderboard",uid);
+    await setDoc(ref, leaderboardData, {merge: true});
+    return;
 
 
 }
@@ -117,6 +118,16 @@ async function loadLeaderboard(){
 
     return entries;
 
+}
+
+async function loadLeaderboardEntry(uid){
+
+    
+    const snap = await getDoc(doc(db,"leaderboard",uid));
+    if(!snap.exists())
+        return null;
+   
+    return;
 }
 
 // TODO #2: saveUserStats
