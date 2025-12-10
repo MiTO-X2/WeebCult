@@ -10,8 +10,8 @@
 
 import { connect } from "react-redux";
 import { LeaderboardView } from "../views/leaderboardView.jsx";
-// TODO: import leaderboard thunks from leaderboardSlice
 import { SuspenseView } from "../views/suspenseView.jsx";
+import { fetchLeaderboard, fetchUserLeaderboardEntry } from "../redux/slices/leaderboardSlice.js";
 
 // ------------------- mapStateToProps -------------------
 function mapStateToProps(state) {
@@ -32,9 +32,9 @@ const mapDispatchToProps = {
     // TODO: close leaderboard modal
     onClose: () => (""),
     // TODO: fetch leaderboard entries
-    fetchLeaderboard: () => (""),
+    onfetchLeaderboard: () => (fetchLeaderboard),
     // TODO: fetch user's own leaderboard entry
-    fetchUserEntry: () => ("")
+    fetchUserEntry: () => (fetchUserLeaderboardEntry)
 };
 
 // ------------------- Presenter Component -------------------
