@@ -16,7 +16,7 @@
 
 
 import { initializeApp } from "firebase/app";
-import { getFirestore, doc, setDoc, updateDoc, getDoc } from "firebase/firestore";
+import { getFirestore, doc, setDoc, updateDoc, getDoc, Timestamp } from "firebase/firestore";
 import{ firebaseConfig } from "/src/firebase/firebaseConfig.js"
 import { getAuth,  onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut} from "firebase/auth"
 
@@ -61,6 +61,71 @@ export function login() {
 
 export function logout() {
     return signOut(auth);
+}
+
+
+function saveUserStats(uid,stats){
+
+    if (model.ready && model.user){
+        const userRef = doc(db, "users", uid)
+        stats: {quizzes: [{score,total,category,mode,type,time,completedAt,animeId}]}
+        return setDoc( userRef, {stats}, {merge: true})
+    }
+    return 
+
+}
+
+async function loadUserStats(uid){
+    if (model.ready && model.user){
+        const userRef = doc(db,"users",uid)
+        const snap = await getDoc(userRef)
+
+        if(!snap.exists())
+            return {quizzes : []};
+
+        return getDoc(userRef)
+    }
+}
+
+function saveUserSettings(uid,settings){
+
+    if(model.ready && model.user){
+        const userRef = doc(db,"users",uid)
+        return setDoc(userRef,{settings}, {merge: true})
+    }
+
+
+
+}
+
+function updateLeaderboardEntry(uid,leaderboardData){
+
+    const ref = doc(db,"leaderboard",uid)
+
+    leaderboardData = {
+        username: String,
+        bestScore: Number,
+        quizzesCompleted: Number,
+        lastUpdated: Timestamp
+    }
+    return setDoc(ref, leaderboardData, {merge: true});
+
+
+}
+
+async function loadLeaderboard(){
+
+    const snap = await getDoc(doc(db,"leaderboard"));
+    
+    return Object.values(snap.data);
+    // TODO #6: loadLeaderboard, Returns array -> Presenter sorts -> View displays.
+// Implement loadLeaderboard():
+//   - Read ALL documents from /leaderboard collection
+//   - Return array of entries:
+//       [{ uid, username, bestScore, quizzesCompleted, lastUpdated }, ...]
+//   - Sorting happens in Presenter, NOT here
+//   - Must return a Promise resolving to an array
+//   - Do NOT include any ranking logic here
 }
 
 // TODO #2: saveUserStats
