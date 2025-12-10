@@ -13,6 +13,78 @@
  *  - Does NOT handle ranking or sorting (LeaderboardPresenter does that)
  *  - NO JSX, NO UI logic, NO data fetching
  **********************************************************************/
+import { connect } from "react-redux";
+import { GameView } from "../views/gameView.jsx";  
+import {
+  initializeQuiz,// <-- to start quiz
+  setQuestionAnswers,// <-- to set possible answers
+  submitAnswer,//<-- to submit user answer
+  nextQuestion,//<-- to move to next question
+  loadCurrentQuestion,//<-- to load current question
+  timeExpired,//<-- to handle timer expiry
+} from "/src/redux/quizSlice.js";
+
+import {
+  addQuizResult,// <-- to add completed quiz to user stats
+  updateUserStats,// <-- to persist updated stats to Firestore
+} from "/src/redux/slices/userSlice.js";
+
+import {
+  saveUserLeaderboardEntry,// <-- to update user's leaderboard entry
+} from "/src/redux/slices/leaderboardSlice.js";
+
+/********************************************************************************
+ * import {
+ *   initializeQuiz,
+ *  setQuestionAnswers,
+ *   submitAnswer,
+ *   nextQuestion,
+ *   loadCurrentQuestion,
+ *   timeExpired,
+ *   addQuizResult,
+ *   updateUserStats,
+ *   saveUserLeaderboardEntry,
+ * } from "/src/redux/quizSlice.js";
+ *********************************************************************************  */ 
+/********************************************************************************
+ * Utility: Generate 3 random wrong answers
+ **********************************************************************/
+function generateWrongAnswers(characters, currentQ, category) {
+  const correct = currentQ.correct;
+  const pool = characters
+    .map(c => (category === "name" ? c.name : c.role))// get names or roles
+    .filter(ans => ans && ans !== correct);// exclude correct answer and null/undefined
+
+  return pool.sort(() => 0.5 - Math.random()).slice(0, 3);// shuffle and take first 3
+}
+
+/**********************************************************************
+ * mapStateToProps — what the View reads
+ **********************************************************************/
+function mapStateToProps(state) {
+  return {
+    quizActive: state.quiz.quizActive,// is quiz ongoing
+    quizFinished: state.quiz.quizFinished,// is quiz over
+    question: state.quiz.currentQuestion,// current question object
+    score: state.quiz.score,// current score
+    questionIndex: state.quiz.questionIndex,// current question number (0-based)
+    total: state.quiz.questions.length,// total questions
+    answers: state.quiz.answersShuffled,// possible answers for current question
+    category: state.quiz.category,// quiz category
+    mode: state.quiz.mode,// quiz mode
+    type: state.quiz.type,// quiz type
+    timeLimit: state.quiz.timeLimit,// time limit per question
+    selectedAnswer: state.quiz.selectedAnswer,// user's selected answer
+    isCorrect: state.quiz.isCorrect,// was the selected answer correct
+    disableAnswers: !state.quiz.quizActive || state.quiz.isCorrect !== null// disable answer buttons
+  };
+}
+
+/**********************************************************************
+ * mapDispatchToProps — what the View can DO (callbacks)
+ * These callbacks contain all QUIZ ORCHESTRATION logic.  
+ * **********************************************************************/
+
 
 /**********************************************************************
  * import { connect } from "react-redux";
