@@ -16,7 +16,7 @@
 
 
 import { initializeApp } from "firebase/app";
-import { getFirestore, doc, setDoc, updateDoc, getDoc, Timestamp } from "firebase/firestore";
+import { getFirestore, doc, setDoc, updateDoc, getDoc, Timestamp, collection, getDocs } from "firebase/firestore";
 import{ firebaseConfig } from "/src/firebase/firebaseConfig.js"
 import { getAuth,  onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut} from "firebase/auth"
 
@@ -64,14 +64,14 @@ export function logout() {
 }
 
 
-function saveUserStats(uid,stats){
+async function saveUserStats(uid,stats){
 
     if (model.ready && model.user){
         const userRef = doc(db, "users", uid)
-        stats: {quizzes: [{score,total,category,mode,type,time,completedAt,animeId}]}
-        return setDoc( userRef, {stats}, {merge: true})
+        await setDoc( userRef, {stats}, {merge: true});
+        return;
     }
-    return 
+    return ;
 
 }
 
@@ -83,31 +83,25 @@ async function loadUserStats(uid){
         if(!snap.exists())
             return {quizzes : []};
 
-        return getDoc(userRef)
+        return snap.data().stats
     }
+
+    return {quizzes: []};
 }
 
-function saveUserSettings(uid,settings){
+async function saveUserSettings(uid,settings){
 
     if(model.ready && model.user){
         const userRef = doc(db,"users",uid)
-        return setDoc(userRef,{settings}, {merge: true})
+        await setDoc(userRef,{settings}, {merge: true});
+        return;
     }
-
-
-
+    return;
 }
 
 function updateLeaderboardEntry(uid,leaderboardData){
 
     const ref = doc(db,"leaderboard",uid)
-
-    leaderboardData = {
-        username: String,
-        bestScore: Number,
-        quizzesCompleted: Number,
-        lastUpdated: Timestamp
-    }
     return setDoc(ref, leaderboardData, {merge: true});
 
 
@@ -115,17 +109,14 @@ function updateLeaderboardEntry(uid,leaderboardData){
 
 async function loadLeaderboard(){
 
-    const snap = await getDoc(doc(db,"leaderboard"));
-    
-    return Object.values(snap.data);
-    // TODO #6: loadLeaderboard, Returns array -> Presenter sorts -> View displays.
-// Implement loadLeaderboard():
-//   - Read ALL documents from /leaderboard collection
-//   - Return array of entries:
-//       [{ uid, username, bestScore, quizzesCompleted, lastUpdated }, ...]
-//   - Sorting happens in Presenter, NOT here
-//   - Must return a Promise resolving to an array
-//   - Do NOT include any ranking logic here
+    const snap = await getDocs(collection(db,"leaderboard"));
+    const entries = snap.docs.map(doc =>({
+        id: doc.id,
+        ...doc.data()
+    }));
+
+    return entries;
+
 }
 
 // TODO #2: saveUserStats
