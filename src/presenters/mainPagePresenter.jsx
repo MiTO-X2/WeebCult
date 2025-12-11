@@ -59,7 +59,7 @@ function MainPagePresenterComponent({
           searchAnimeAndGetStreamingLinks 
       }) => {
 
-          // TEST search → streaming links for "Naruto"
+          // TEST search streaming links for "Naruto"
           searchAnimeAndGetStreamingLinks("Naruto")
               .then(result => {
                   console.log("=== TEST: Naruto streaming links ===", result);

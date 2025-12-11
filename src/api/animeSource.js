@@ -248,7 +248,7 @@ function checkStatusACB(response) {
  * Returns normalized array of anime objects
  */
 export function searchAnimeLinkAPI(query) {
-    const url = `${PROXY_URL_LINK}/anime?filter[text]=${encodeURIComponent(query)}`;
+    const url = `${PROXY_URL_LINK}/anime?${encodeURIComponent("filter[text]")}=${encodeURIComponent(query)}&${encodeURIComponent("page[limit]")}=20`;
 
     return fetch(url, {
         method: "GET",
