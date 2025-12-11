@@ -83,6 +83,7 @@ const initialState = {
     userEntry: null,      // logged-in user's leaderboard info
     loading: false,
     error: null,
+    isOpen: false
 };
 
 export const leaderboardSlice = createSlice({
@@ -95,6 +96,9 @@ export const leaderboardSlice = createSlice({
             state.userEntry = null;
             state.loading = false;
             state.error = null;
+        },
+        closeLeaderboard(state){
+            state.isOpen = false
         }
     },
 

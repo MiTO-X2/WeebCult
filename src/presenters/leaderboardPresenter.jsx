@@ -30,11 +30,11 @@ function mapStateToProps(state) {
 // ------------------- mapDispatchToProps -------------------
 const mapDispatchToProps = {
     // TODO: close leaderboard modal
-    onClose: () => (""),
+    onClose: closeLeaderboard ,
     // TODO: fetch leaderboard entries
-    onfetchLeaderboard: () => (fetchLeaderboard),
+    onfetchLeaderboard: fetchLeaderboard,
     // TODO: fetch user's own leaderboard entry
-    fetchUserEntry: () => (fetchUserLeaderboardEntry)
+    fetchUserEntry: fetchUserLeaderboardEntry
 };
 
 // ------------------- Presenter Component -------------------
