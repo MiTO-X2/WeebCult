@@ -26,6 +26,8 @@ import { AnimeDetailsPresenter } from "./presenters/animeDetailsPresenter.jsx";
 import { HeaderPresenter } from "./presenters/headerPresenter.jsx";
 import { FooterView } from "./views/footerView.jsx";
 
+import { GamePresenter } from "./presenters/gamePresenter.jsx";
+
 export function ReactRoot() {
     const router = createHashRouter([
         {
@@ -35,12 +37,12 @@ export function ReactRoot() {
         {
             path: "/main",
             element: <MainPagePresenter />
-        }
-        /*{
+        },
+        {
             path: "/game",
             element: <GamePresenter />
         },
-        {
+        /*{
             path: "/login",
             element: <AuthPresenter />
         }*/

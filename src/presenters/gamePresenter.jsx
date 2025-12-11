@@ -22,7 +22,7 @@ import {
   nextQuestion,//<-- to move to next question
   loadCurrentQuestion,//<-- to load current question
   timeExpired,//<-- to handle timer expiry
-} from "/src/redux/quizSlice.js";
+} from "/src/redux/slices/quizSlice.js";
 
 import {
   addQuizResult,// <-- to add completed quiz to user stats
