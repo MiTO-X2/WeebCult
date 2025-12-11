@@ -33,19 +33,7 @@ import {
   saveUserLeaderboardEntry,// <-- to update user's leaderboard entry
 } from "/src/redux/slices/leaderboardSlice.js";
 
-/********************************************************************************
- * import {
- *   initializeQuiz,
- *  setQuestionAnswers,
- *   submitAnswer,
- *   nextQuestion,
- *   loadCurrentQuestion,
- *   timeExpired,
- *   addQuizResult,
- *   updateUserStats,
- *   saveUserLeaderboardEntry,
- * } from "/src/redux/quizSlice.js";
- *********************************************************************************  */ 
+
 /********************************************************************************
  * Utility: Generate 3 random wrong answers
  **********************************************************************/
@@ -133,27 +121,54 @@ function mapDispatchToProps(dispatch, ownProps) {
           wrong: generateWrongAnswers(characters, newQ, category)
         }));  
       },
-      
+
       /*************************************************************
        * Called by timer in GameView
        * *************************************************************/ 
+      timerExpiredACB(characters, category) {
+        
+        // 1. Mark incorrect
+        dispatch(timeExpired());
+        const state = ownProps.store.getState().quiz;
+        
+        if(state.quizFinished){
+          // Quiz finished → handle in view (redirect back)
+          dispatch(quizfinishedACB( ownProps.store.getState() ));
+          return;
+        } 
+       
+        // 2. Move next
+        dispatch(nextQuestion());
+       
+        // 3. Load next question
+        dispatch(loadCurrentQuestion());
+        const newQ = ownProps.store.getState().quiz.currentQuestion;
+       
+        // Generate Wrong answers
+        dispatch(setQuestionAnswers({
+          correct: newQ.correct,
+          wrong: generateWrongAnswers(characters, newQ, category)
+        }));  
+      },
+
+      /*************************************************************/
+      onExit() {
+        // Any cleanup if needed when exiting game view
+        window.location.href = "#/";// simple redirect to home
+        }
+    };
+           
+
+  /*************************************************************
+   * Called when quiz is finished to update user stats and leaderboard
+   * *************************************************************/
 
 
-      }
-    }
-/**********************************************************************
- * import { connect } from "react-redux";
- * import { GameView } from "./gameView.jsx";
- *
- * import {
- *   initializeQuiz,
- *  setQuestionAnswers,
- *   submitAnswer,
- *   nextQuestion,
- *   loadCurrentQuestion,
- *   timeExpired,
- * } from "/src/redux/quizSlice.js";
- **********************************************************************/
+  
+}
+
+
+
 /*******************************************************************************
  * 1. mapStateToProps
  *    (What the View reads)
