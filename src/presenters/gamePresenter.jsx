@@ -37,13 +37,28 @@ import {
 /********************************************************************************
  * Utility: Generate 3 random wrong answers
  **********************************************************************/
-function generateWrongAnswers(characters, currentQ, category) {
-  const correct = currentQ.correct;
-  const pool = characters
-    .map(c => (category === "name" ? c.name : c.role))// get names or roles
-    .filter(ans => ans && ans !== correct);// exclude correct answer and null/undefined
+function generateWrongAnswers(characters, correctQuestion, category) {
+  const wrongAnswers = new Set();
 
-  return pool.sort(() => 0.5 - Math.random()).slice(0, 3);// shuffle and take first 3
+  while (wrongAnswers.size < 3) {// until we have 3 unique wrong answers
+    const randIndex = Math.floor(Math.random() * characters.length);// random index
+    const candidate = characters[randIndex];// get character
+    if (!candidate) continue;// safety check
+
+    // Get the answer based on category
+
+    const candidateAnswer =// extract answer
+      category === "name" ? candidate.name: candidate.role || "Unknown";// default to "Unknown" if role missing
+
+    // Avoid duplicates and the correct answer itself
+    // Add to set if unique, and not the correct answer, and not already in the set
+    if (candidateAnswer && candidateAnswer !== correctQuestion.correct && !wrongAnswers.has(candidateAnswer)) 
+      {
+         wrongAnswers.add(candidateAnswer);// add to set
+      }
+  }
+
+  return Array.from(wrongAnswers);// convert Set to Array
 }
 
 /**********************************************************************
@@ -64,7 +79,13 @@ function mapStateToProps(state) {
     timeLimit: state.quiz.timeLimit,// time limit per question
     selectedAnswer: state.quiz.selectedAnswer,// user's selected answer
     isCorrect: state.quiz.isCorrect,// was the selected answer correct
-    disableAnswers: !state.quiz.quizActive || state.quiz.isCorrect !== null// disable answer buttons
+    disableAnswers: !state.quiz.quizActive || state.quiz.isCorrect !== null,// disable answer buttons
+
+    // Anime info (added in quizSlice)
+    animeId: state.quiz.animeId,
+    animeTitle: state.quiz.animeTitle,
+    animeImg: state.quiz.animeImg,
+
   };
 }
 
@@ -79,10 +100,10 @@ function mapDispatchToProps(dispatch, ownProps) {
        * Called once when Game screen starts
        * characters come from animeDetails slice (ownProps) 
        * *************************************************************/
-      startQuizACB({ characters, category, mode, type }) {
+      startQuizACB({ characters, category, mode, type, anime }) {
        
         // 1. Initialize base quiz state
-        dispatch(initializeQuiz({ characters, category, mode, type }));
+        dispatch(initializeQuiz({ characters, category, mode, type, anime }));
        
         // 2. Load first question object
         dispatch(loadCurrentQuestion());
@@ -102,8 +123,9 @@ function mapDispatchToProps(dispatch, ownProps) {
         // 1. Mark correct/wrong
         dispatch(submitAnswer(answer));
         const state = ownProps.store.getState().quiz;
+        
         if(quizState.quizFinished){
-          // Quiz finished → handle in view (redirect back)
+          // Quiz finished → handle result in view (redirect back)
           dispatch(quizfinishedACB( ownProps.store.getState() ));
           return;
         }
@@ -151,21 +173,63 @@ function mapDispatchToProps(dispatch, ownProps) {
         }));  
       },
 
+
+
       /*************************************************************/
       onExit() {
         // Any cleanup if needed when exiting game view
         window.location.href = "#/";// simple redirect to home
         }
     };
-           
+  }
+  
+  
 
   /*************************************************************
    * Called when quiz is finished to update user stats and leaderboard
-   * *************************************************************/
+   * Finalize quiz and update Firestore
+ **********************************************************************/
+function gamePresenterFinishQuizACB(fullState) {
+  return async function (dispatch) {
+    const quizState = fullState.quiz;
+    const userState = fullState.user;
 
+    const finalQuizResult = {
+      score: quizState.score,
+      total: quizState.questions.length,
+      category: quizState.category,
+      mode: quizState.mode,
+      type: quizState.type,
+      time: quizState.timeLimit,
+      completedAt: Date.now(),
+      animeId: quizState.animeId,
+      animeTitle: quizState.animeTitle,
+      animeImg: quizState.animeImg,
+    };
+
+    //1. Add to local Redux user stats
+    dispatch(addQuizResult(finalQuizResult));
+
+    //2. Persist to Firestore (user stats)
+    const uid = userState.uid;
+    const stats = userState.stats;
+    dispatch(updateUserStats({ uid, stats }));
+
+    //3. Update leaderboard entry
+    const leaderboardData = {
+      username: userState.profile?.displayName || "Anonymous",
+      bestScore: finalQuizResult.score,
+      quizzesCompleted: stats.quizzes.length,
+      lastUpdated: Date.now(),
+    };
+    dispatch(saveUserLeaderboardEntry({ uid, leaderboardData }));
+  };
 
   
 }
+
+// Export the connected GamePresenter -> View
+export const GamePresenter = connect(mapStateToProps, mapDispatchToProps)(GameView);
 
 
 
