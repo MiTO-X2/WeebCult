@@ -84,8 +84,63 @@ function mapStateToProps(state) {
  * mapDispatchToProps — what the View can DO (callbacks)
  * These callbacks contain all QUIZ ORCHESTRATION logic.  
  * **********************************************************************/
+function mapDispatchToProps(dispatch, ownProps) {
+
+  return {  
+      /*************************************************************
+       * Called once when Game screen starts
+       * characters come from animeDetails slice (ownProps) 
+       * *************************************************************/
+      startQuizACB({ characters, category, mode, type }) {
+       
+        // 1. Initialize base quiz state
+        dispatch(initializeQuiz({ characters, category, mode, type }));
+       
+        // 2. Load first question object
+        dispatch(loadCurrentQuestion());
+        const q = ownProps.store.getState().quiz.currentQuestion;
+       
+        // Generate Wrong answers
+        dispatch(setQuestionAnswers({
+          correct: q.correct,
+          wrong: generateWrongAnswers(characters, q, category)
+        }));
+      },
+
+      /*************************************************************
+       * Called when user clicks an answer button
+       * *************************************************************/
+      answerACB(answer, characters, category) {
+        // 1. Mark correct/wrong
+        dispatch(submitAnswer(answer));
+        const state = ownProps.store.getState().quiz;
+        if(quizState.quizFinished){
+          // Quiz finished → handle in view (redirect back)
+          dispatch(quizfinishedACB( ownProps.store.getState() ));
+          return;
+        }
+        
+        // 2. Move to next question
+        dispatch(nextQuestion());
+        
+        // 3. Load next question
+        dispatch(loadCurrentQuestion());
+        const newQ = ownProps.store.getState().quiz.currentQuestion;
+        
+        // Generate Wrong answers
+        dispatch(setQuestionAnswers({
+          correct: newQ.correct,
+          wrong: generateWrongAnswers(characters, newQ, category)
+        }));  
+      },
+      
+      /*************************************************************
+       * Called by timer in GameView
+       * *************************************************************/ 
 
 
+      }
+    }
 /**********************************************************************
  * import { connect } from "react-redux";
  * import { GameView } from "./gameView.jsx";
