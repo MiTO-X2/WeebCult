@@ -26,7 +26,13 @@ const initialState = {
 
     score: 0,
     isCorrect: null,         // true | false | null
-    quizFinished: false
+    quizFinished: false,
+
+
+    // Added for anime info (used in GamePresenter)
+    animeId: null,
+    animeTitle: null,
+    animeImg: null
 };
 
 export const quizSlice = createSlice({
@@ -39,11 +45,20 @@ export const quizSlice = createSlice({
          * Creates the full question list ONCE
          ************************************************************/
         initializeQuiz(state, action) {
-            const { characters, category, mode, type } = action.payload;
+            const { characters, category, mode, type, anime } = action.payload;
 
             state.category = category;
             state.mode = mode;
             state.type = type;
+
+
+            // Save selected anime info for later (quiz result & leaderboard)
+            if (anime) {
+                state.animeId = anime.id;
+                state.animeTitle = anime.title;
+                state.animeImg = anime.image; // field name consistent with API
+            }
+            
 
             state.questions = characters.map((c) => ({
                 id: c.id,
