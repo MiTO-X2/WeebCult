@@ -7,6 +7,7 @@
  *   - Show suspense (Loader) when promiseState is pending
  ***********************************************************************/
 
+import React from "react";
 import { connect } from "react-redux";
 import { MainPageView } from "../views/mainPageView.jsx";
 import { SuspenseView } from "../views/suspenseView.jsx";
@@ -39,6 +40,35 @@ function MainPagePresenterComponent({
   searchError, ...props
 }) {
 
+  /***************************************************************
+ * DEMO SECTION – For testing Kitsu streaming link functions
+ * -------------------------------------------------------------
+ * This will run once when the component mounts.
+ * It tests:
+ *   - searchAnimeLinkAPI()
+ *   - getStreamingLinksByAnimeId()
+ *   - searchAnimeAndGetStreamingLinks()
+ ***************************************************************/
+  const [demoResult, setDemoResult] = React.useState(null);
+
+  React.useEffect(() => {
+      // Lazy import so the file loads instantly
+      import("../api/animeSource.js").then(({ 
+          searchAnimeLinkAPI, 
+          getStreamingLinksByAnimeId, 
+          searchAnimeAndGetStreamingLinks 
+      }) => {
+
+          // TEST search → streaming links for "Naruto"
+          searchAnimeAndGetStreamingLinks("Naruto")
+              .then(result => {
+                  console.log("=== TEST: Naruto streaming links ===", result);
+                  setDemoResult(result);
+              })
+              .catch(err => console.error("Demo error:", err));
+      });
+  }, []);
+
   // Combine promises and errors
   const isPending = trendingPromise || genresPromise || searchPromise;
   const combinedError = trendingError || genresError || searchError;
@@ -53,12 +83,43 @@ function MainPagePresenterComponent({
       props.setSelectedAnimeId(anime.id);
   };
 
-  return ( 
-    <MainPageView 
-      {...props} 
-      searchResults={searchResults}
-      onSelectAnime={handleSelectAnimeACB} 
-    />
+  return (
+    <div style={{ padding: "1rem" }}>
+      {/* DEMO DISPLAY BLOCK */}
+      {demoResult && (
+        <div style={{
+          background: "#222",
+          padding: "1rem",
+          borderRadius: "10px",
+          marginBottom: "1rem",
+          color: "white"
+        }}>
+          <h2 style={{ marginTop: 0 }}> Kitsu Streaming Demo</h2>
+          <p><b>Anime:</b> {demoResult.anime?.title}</p>
+
+          <p><b>Streaming Links:</b></p>
+          {demoResult.streamingLinks.length === 0 && (
+            <p>No streaming links found.</p>
+          )}
+
+          {demoResult.streamingLinks.map((link) => (
+            <div key={link.id} style={{ marginBottom: "0.5rem" }}>
+              <b>{link.site}</b>:{" "}
+              <a href={link.url} target="_blank" rel="noreferrer" style={{ color: "cyan" }}>
+                {link.url}
+              </a>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* EXISTING VIEW */}
+      <MainPageView 
+        {...props} 
+        searchResults={searchResults}
+        onSelectAnime={handleSelectAnimeACB} 
+      />
+    </div>
   );
 }
 

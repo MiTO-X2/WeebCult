@@ -17,7 +17,7 @@
  *
  ***************************************************************/
 
-import { PROXY_URL, PROXY_KEY, GROUP_NUMBER, PROXY_URL_FACTS } from "./apiConfig.js";
+import { PROXY_URL, PROXY_KEY, GROUP_NUMBER, PROXY_URL_FACTS, PROXY_URL_LINK } from "./apiConfig.js";
 
 /***************************************************************
  *  SEARCH ANIME BY NAME
@@ -239,6 +239,105 @@ function checkStatusACB(response) {
     return response.json();
 }
 
+/***************************************************************
+ *  Streaming Link API (Kitsu via DH2642 Proxy)
+ ***************************************************************/
+
+/**
+ * Search Kitsu for anime by text query
+ * Returns normalized array of anime objects
+ */
+export function searchAnimeLinkAPI(query) {
+    const url = `${PROXY_URL_LINK}/anime?filter[text]=${encodeURIComponent(query)}`;
+
+    return fetch(url, {
+        method: "GET",
+        headers: {
+            "X-DH2642-Key": PROXY_KEY,
+            "X-DH2642-Group": GROUP_NUMBER,
+            "Accept": "application/vnd.api+json",
+            "Content-Type": "application/vnd.api+json"
+        }
+    })
+    .then(checkStatusACB)
+    .then(json => {
+        if (!json?.data) return [];
+        return json.data.map(transformKitsuAnimeCB);
+    });
+}
+
+/**
+ * Given a Kitsu anime id, fetch streaming links
+ */
+export function getStreamingLinksByAnimeId(animeId) {
+    const url = `${PROXY_URL_LINK}/anime/${animeId}?include=streamingLinks`;
+
+    return fetch(url, {
+        method: "GET",
+        headers: {
+            "X-DH2642-Key": PROXY_KEY,
+            "X-DH2642-Group": GROUP_NUMBER,
+            "Accept": "application/vnd.api+json",
+            "Content-Type": "application/vnd.api+json"
+        }
+    })
+    .then(checkStatusACB)
+    .then(json => {
+        const included = json.included || [];
+        return included
+            .filter(item => item.type === "streamingLinks" || item.type === "streaming-links" || item.type === "streaming_link")
+            .map(transformStreamingLinkCB);
+    });
+}
+
+/**
+ * Search anime by query and fetch first match streaming links
+ */
+export function searchAnimeAndGetStreamingLinks(query) {
+    return searchAnimeLinkAPI(query)
+        .then(results => {
+            if (!results || results.length === 0) return { anime: null, streamingLinks: [] };
+
+            const first = results[0];
+            const kitsuId = first.kitsuId || first.id;
+
+            return getStreamingLinksByAnimeId(kitsuId)
+                .then(links => ({
+                    anime: first,
+                    streamingLinks: links
+                }));
+        });
+}
+
+/***************************************************************
+ * Transformers
+ ***************************************************************/
+function transformKitsuAnimeCB(kitsuObj) {
+    const attrs = kitsuObj.attributes || {};
+    const poster = attrs.posterImage || {};
+    return {
+        kitsuId: kitsuObj.id,
+        id: kitsuObj.id,
+        title: attrs.canonicalTitle || attrs.titles?.en || attrs.titles?.[0] || "Unknown Title",
+        image: poster.large || poster.medium || poster.small || "",
+        synopsis: attrs.synopsis || "",
+        episodes: attrs.episodeCount || attrs.episodes || null,
+        type: attrs.showType || attrs.subtype || attrs.type || null,
+        score: attrs.averageRating ? Number(attrs.averageRating) : null,
+        raw: kitsuObj
+    };
+}
+
+function transformStreamingLinkCB(item) {
+    const attrs = item.attributes || {};
+    return {
+        id: item.id,
+        site: attrs.site || attrs.name || null,
+        url: attrs.url || attrs.link || null,
+        subtype: attrs.sub_type || attrs.type || null,
+        raw: item
+    };
+}   
 
 /** 
  * searchAnime(query)

@@ -10,5 +10,8 @@ export const PROXY_URL = `https://brfenergi.se/iprog/group/${GROUP_NUMBER}/https
 // API 2
 export const PROXY_URL_FACTS = `https://brfenergi.se/iprog/group/${GROUP_NUMBER}/https://anime-facts-rest-api.herokuapp.com/api/v1`;
 
+// Link API
+export const PROXY_URL_LINK = `https://brfenergi.se/iprog/group/${GROUP_NUMBER}/https://kitsu.io/api/edge`;
+
 // Same key used in the lab
 export const PROXY_KEY="3d2a031b4cmsh5cd4e7b939ada54p19f679jsn9a775627d767"
