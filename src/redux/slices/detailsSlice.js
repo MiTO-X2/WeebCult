@@ -22,7 +22,7 @@ const initialState = {
     details: { promiseState: makePromiseState() },
     characters: { promiseState: makePromiseState() },
     quizSettings: {                 // Store selected quiz options
-        category: null,             // "name" | "age"
+        category: null,             // "name" | "role"
         mode: null,                 // "solo" | "1v1"
         type: null                  // "best10" | "timed"
     }
@@ -67,7 +67,7 @@ export const detailsSlice = createSlice({
             }
         },
         setQuizCategory(state, action) {
-            state.quizSettings.category = action.payload; // "name" | "age"
+            state.quizSettings.category = action.payload; // "name" | "role"
         },
         setQuizMode(state, action) {
             state.quizSettings.mode = action.payload; // "solo" | "1v1"
