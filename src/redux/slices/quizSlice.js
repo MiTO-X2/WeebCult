@@ -12,7 +12,7 @@ function shuffle(array) {
 
 const initialState = {
     quizActive: false,
-    category: null,          // "name" | "age"
+    category: null,          // "name" | "role"
     mode: null,              // "solo" | "1v1"
     type: null,              // "best10" | "timed"
     timeLimit: 10,           // seconds per question (if timed)
@@ -28,6 +28,11 @@ const initialState = {
     isCorrect: null,         // true | false | null
     quizFinished: false,
 
+    characters: [], // store all characters for generating wrong answers
+
+    player1: 0,
+    player2: 0,
+    turn: "p1",    // player 1 ALWAYS starts
 
     // Added for anime info (used in GamePresenter)
     animeId: null,
@@ -51,7 +56,6 @@ export const quizSlice = createSlice({
             state.mode = mode;
             state.type = type;
 
-
             // Save selected anime info for later (quiz result & leaderboard)
             if (anime) {
                 state.animeId = anime.id;
@@ -63,11 +67,15 @@ export const quizSlice = createSlice({
             state.questions = characters.map((c) => ({
                 id: c.id,
                 image: c.image,
-                correct: category === "name" ? c.name : c.role,
+                correct: category === "name" ? c.name : c.role || "Unknown",
                 // Wrong answers are handled in the presenter (easier)
                 // Presenter must send: [correct, wrong1, wrong2, wrong3]
             }));
 
+            state.characters = characters;
+            state.player1 = 0;
+            state.player2 = 0;
+            state.turn = "p1";
             state.questionIndex = 0;
             state.score = 0;
             state.quizFinished = false;
@@ -95,8 +103,20 @@ export const quizSlice = createSlice({
             state.selectedAnswer = userAnswer;
             state.isCorrect = userAnswer === correct;
 
-            if (state.isCorrect) {
-                state.score += 1;
+            if (state.mode === "solo") {
+                if (state.isCorrect) state.score += 1;
+            }
+
+            if (state.mode === "1v1") {
+                if (state.turn === "p1" && state.isCorrect) {
+                    state.player1 += 1;
+                }
+                if (state.turn === "p2" && state.isCorrect) {
+                    state.player2 += 1;
+                }
+
+                // switch turn always after answering
+                state.turn = state.turn === "p1" ? "p2" : "p1";
             }
         },
 
@@ -114,6 +134,9 @@ export const quizSlice = createSlice({
                 state.quizActive = false;
                 return;
             }
+
+            // IMPORTANT: reset answers for next question
+            state.answersShuffled = [];
         },
 
         /************************************************************
