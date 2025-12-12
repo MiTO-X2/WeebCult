@@ -11,15 +11,13 @@
  *   - NO presenters or views imported here
  ***************************************************************/
 
-import React from "react";
 import { createRoot } from "react-dom/client";
-
-// TODO: import the top-level App wrapper component
 import { ReactRoot } from "./reactRoot.jsx";
-
-// TODO: import Redux Provider + configured store
 import { Provider } from "react-redux";
 import { store } from "./redux/store.js";
+import { listenToAuthChangesThunk } from "./redux/thunks/userThunks.js";
+
+store.dispatch(listenToAuthChangesThunk());
 
 // Dispatch APP_INIT once at startup
 store.dispatch({ type: "APP_INIT" });

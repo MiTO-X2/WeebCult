@@ -20,12 +20,11 @@
 
 import { createHashRouter, RouterProvider } from "react-router-dom";
 import { MainPagePresenter } from "./presenters/mainPagePresenter.jsx";
-// import { SearchPresenter } from "./presenters/searchPresenter.jsx";
 import { AnimeDetailsPresenter } from "./presenters/animeDetailsPresenter.jsx";
-// import { AuthPresenter } from "./presenters/authPresenter.jsx";
+import { SidebarPresenter } from "./presenters/sidebarPresenter.jsx";
+import { LeaderboardPresenter } from "./presenters/leaderboardPresenter.jsx";
 import { HeaderPresenter } from "./presenters/headerPresenter.jsx";
 import { FooterView } from "./views/footerView.jsx";
-
 import { GamePresenter } from "./presenters/gamePresenter.jsx";
 
 export function ReactRoot() {
@@ -41,11 +40,7 @@ export function ReactRoot() {
         {
             path: "/game",
             element: <GamePresenter />
-        },
-        /*{
-            path: "/login",
-            element: <AuthPresenter />
-        }*/
+        }
     ]);
 
     return (
@@ -60,6 +55,14 @@ export function ReactRoot() {
 
             <div>
                 <AnimeDetailsPresenter />
+            </div>
+
+            <div>
+                <SidebarPresenter />
+            </div>
+
+            <div>
+                <LeaderboardPresenter />
             </div>
 
             <div>
