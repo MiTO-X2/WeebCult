@@ -9,7 +9,7 @@
 
 import { connect } from "react-redux";
 import { SidebarView } from "../views/sidebarView";
-import { fetchRandomFact, closeSidebar } from "../redux/slices/factSlice.js";
+//import { fetchRandomFact, closeSidebar } from "../redux/slices/factSlice.js";
 
 function mapStateToProps(state) {
     return {
