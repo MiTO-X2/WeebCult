@@ -248,15 +248,13 @@ function checkStatusACB(response) {
  * Returns normalized array of anime objects
  */
 export function searchAnimeLinkAPI(query) {
-    const url = `${PROXY_URL_LINK}/anime?${encodeURIComponent("filter[text]")}=${encodeURIComponent(query)}&${encodeURIComponent("page[limit]")}=20`;
+    const url = `${PROXY_URL_LINK}/anime?${encodeURIComponent("filter[text]")}=${encodeURIComponent(query)}`;
 
     return fetch(url, {
         method: "GET",
         headers: {
             "X-DH2642-Key": PROXY_KEY,
-            "X-DH2642-Group": GROUP_NUMBER,
-            "Accept": "application/vnd.api+json",
-            "Content-Type": "application/vnd.api+json"
+            "X-DH2642-Group": GROUP_NUMBER
         }
     })
     .then(checkStatusACB)
@@ -266,9 +264,6 @@ export function searchAnimeLinkAPI(query) {
     });
 }
 
-/**
- * Given a Kitsu anime id, fetch streaming links
- */
 export function getStreamingLinksByAnimeId(animeId) {
     const url = `${PROXY_URL_LINK}/anime/${animeId}?include=streamingLinks`;
 
@@ -276,9 +271,7 @@ export function getStreamingLinksByAnimeId(animeId) {
         method: "GET",
         headers: {
             "X-DH2642-Key": PROXY_KEY,
-            "X-DH2642-Group": GROUP_NUMBER,
-            "Accept": "application/vnd.api+json",
-            "Content-Type": "application/vnd.api+json"
+            "X-DH2642-Group": GROUP_NUMBER
         }
     })
     .then(checkStatusACB)
