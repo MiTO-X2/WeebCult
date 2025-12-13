@@ -11,17 +11,16 @@
  ***********************************************************************/
 
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-// import { loadUserStats, saveUserStats } from '/src/firebase/firestoreModel';
+import { loadUserStats, saveUserStats } from '/src/firebase/firestoreModel';
 
 
 const initialState = {
     uid: null,
-    stats: {
-        quizzes: [], // Array of completed quizzes
-        // Each quiz: { score, category, mode, type, time, completedAt, animeId, animeTitle, animeImg}
-    },
+    userData: null,   // Firestore “users/{uid}” document
+    stats: { quizzes: [] }, // Array of completed quizzes, each quiz: { score, category, mode, type, time, completedAt, animeId, animeTitle, animeImg}
     loading: false,
     error: null,
+    ready: false,      // Firebase auth listener sets this
 };  
 
 // ------------------------ Thunks ------------------------
@@ -56,7 +55,7 @@ export const updateUserStats = createAsyncThunk(
   }
 );
 
- /************************ 5. createSlice *****************/
+/************************ 5. createSlice *****************/
 
 export const userSlice = createSlice({
     name: 'user',
@@ -69,9 +68,16 @@ export const userSlice = createSlice({
         // Reset everything on logout, called when Firebase auth fires logout
         clearUser(state) {
             state.uid = null;
+            state.userData = null;
             state.stats = { quizzes: [] };
             state.loading = false;
             state.error = null;
+        },
+        setUserData(state, action) {
+            state.userData = action.payload;
+        },
+        setReady(state, action) {
+            state.ready = action.payload;
         },
         // Add a new completed quiz to stats (local only; call updateUserStats to persist)
         addQuizResult(state, action) {
@@ -116,7 +122,6 @@ export const userSlice = createSlice({
     }
 })
 
-export const { setUid, clearUser, addQuizResult } = userSlice.actions;
+export const { setUid, clearUser, setUserData, setReady, addQuizResult } = userSlice.actions;
 export default userSlice.reducer;
   
-            
