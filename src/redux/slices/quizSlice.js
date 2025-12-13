@@ -12,7 +12,7 @@ function shuffle(array) {
 
 const initialState = {
     quizActive: false,
-    category: null,          // "name" | "role"
+    category: null,          // "name" | "role" | "voiceActor"
     mode: null,              // "solo" | "1v1"
     type: null,              // "best10" | "timed"
     timeLimit: 10,           // seconds per question (if timed)
@@ -67,7 +67,12 @@ export const quizSlice = createSlice({
             state.questions = characters.map((c) => ({
                 id: c.id,
                 image: c.image,
-                correct: category === "name" ? c.name : c.role || "Unknown",
+                correct:
+                    category === "name" ? c.name :
+                    category === "role" ? c.role || "Unknown" :
+                    category === "voiceActor" ? c.voice_actors?.find(a => a.language === "Japanese")?.name || "Unknown" :
+                    "Unknown",
+                category: category
                 // Wrong answers are handled in the presenter (easier)
                 // Presenter must send: [correct, wrong1, wrong2, wrong3]
             }));
@@ -153,6 +158,11 @@ export const quizSlice = createSlice({
             if (state.type === "timed") {
                 state.isCorrect = false;
                 state.selectedAnswer = null;
+
+                if (state.mode === "1v1") {
+                    // switch turn even if player didn't answer
+                    state.turn = state.turn === "p1" ? "p2" : "p1";
+                }
             }
         }
     }
