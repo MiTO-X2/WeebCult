@@ -19,7 +19,6 @@ import WeebCultLogo from "../WeebCultLogo.png";
 export function HeaderView(props) {
     function handleNavigateHomeACB() {
         console.log("HeaderView: navigateHomeACB triggered");
-        //props.onNavigateHome();
         window.location.href = "/";
     }
 
@@ -34,9 +33,13 @@ export function HeaderView(props) {
     }
 
     function handleProfileClickACB() {
-        console.log("HeaderView: profileACB triggered");
-        //props.onProfile();
-        window.location.href = "/";
+        console.log("Profile button clicked. isLoggedIn =", props.isLoggedIn);
+
+        if (props.isLoggedIn) {
+            props.onLogout?.();   // call logout
+        } else {
+            props.onLogin?.();    // call login
+        }
     }
 
     function handleTypeChangeACB(e) {
@@ -150,7 +153,7 @@ export function HeaderView(props) {
             {/* RIGHT: Profile Button */}
             <div className="header-right">
                 <button onClick={handleProfileClickACB} className="profile-button">
-                    Profile
+                    {props.isLoggedIn ? "Logout" : "Login"}
                 </button>
             </div>
 

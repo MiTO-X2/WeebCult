@@ -1,6 +1,6 @@
 /***********************************************************************
  * Pure UI modal popup for choosing:
- *   - Category (character name OR age)
+ *   - Category (character name OR role)
  *   - Mode (Solo OR 1v1)
  *   - Type (Best of 10 OR Best of 10 Timed)
  *
@@ -20,6 +20,16 @@ export function AnimeDetailsView(props) {
         if (e.target.classList.contains("modal-overlay")) {
             props.onClose();
         }
+    }
+
+    function handleOnPlayACB() {
+        if (!props.quizSettings.category || !props.quizSettings.mode || !props.quizSettings.type) {
+            alert("Please select category, mode, and type before playing!");
+            return;
+        }
+
+        props.onPlay();
+        window.location.href = "#/game";
     }
 
     return (
@@ -46,13 +56,13 @@ export function AnimeDetailsView(props) {
                     {/* CATEGORY */}
                     <div className="details-column">
                         <h4 className="details-heading">Category</h4>
-                        {["name", "age"].map(value => (
+                        {["name", "role", "voiceActor"].map(value => (
                             <div
                                 key={value}
                                 className={`option-box ${props.quizSettings.category === value ? "selected" : ""}`}
                                 onClick={() => props.onSelectCategory(value)}
                             >
-                                {value === "name" ? "Character names" : "Character age"}
+                                {value === "name" ? "Character names" : value === "role" ? "Character role" : "Voice actors"}
                             </div>
                         ))}
                     </div>
@@ -88,7 +98,7 @@ export function AnimeDetailsView(props) {
 
                 {/* PLAY BUTTON */}
                 <div className="play-button-container">
-                    <button className="play-button" onClick={props.onPlay}>Play</button>
+                    <button className="play-button" onClick={handleOnPlayACB}>Play</button>
                 </div>
 
             </div>
