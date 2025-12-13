@@ -13,7 +13,7 @@
  ***********************************************************************/
 
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-// import { updateLeaderboardEntry, loadLeaderboard, loadLeaderboardEntry } from "/src/firebase/firestoreModel";
+import { updateLeaderboardEntry, loadLeaderboard, loadLeaderboardEntry } from "/src/firebase/firestoreModel";
 
 
 //  Thunks
@@ -149,6 +149,11 @@ export const leaderboardSlice = createSlice({
             .addCase(saveUserLeaderboardEntry.fulfilled, (state, action) => {
                 state.loading = false;
                 state.userEntry = action.payload;  // update userEntry
+
+                // Update global leaderboard list
+                state.entries = state.entries.map(e => 
+                    e.uid === action.payload.uid ? action.payload : e
+                );
             })
             .addCase(saveUserLeaderboardEntry.rejected, (state, action) => {
                 state.loading = false;
@@ -157,5 +162,5 @@ export const leaderboardSlice = createSlice({
     }
 });
 
-export const { clearLeaderboard } = leaderboardSlice.actions;
+export const { clearLeaderboard, closeLeaderboard } = leaderboardSlice.actions;
 export default leaderboardSlice.reducer;

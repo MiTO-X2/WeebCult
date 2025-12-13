@@ -11,8 +11,7 @@
 import { connect } from "react-redux";
 import { HeaderView } from "../views/headerView.jsx";
 import { fetchSearch } from "../redux/slices/animeSlice.js";
-
-// Optional: store filters in Redux (could be part of a searchSlice)
+import { loginUserThunk, logoutUserThunk } from "../redux/thunks/userThunks.js";
 import { setSelectedType, setSelectedStatus, setSelectedRating, setSelectedGenres, setSelectedOrderBy } from "../redux/slices/animeSlice.js";
 
 function mapStateToProps(state) {
@@ -28,7 +27,8 @@ function mapStateToProps(state) {
     statusOptions: searchFilters.statusOptions || ["Airing", "Completed", "Upcoming"],
     ratingOptions: searchFilters.ratingOptions || ["G", "PG", "PG-13", "R", "R+"],
     orderByOptions: searchFilters.orderByOptions || ["Title", "Score", "Popularity"],
-    genreOptions: state.anime.allGenres.promiseState.data || []
+    genreOptions: state.anime.allGenres.promiseState.data || [],
+    isLoggedIn: !!state.user.uid 
   };
 }
 
@@ -41,6 +41,9 @@ const mapDispatchToProps = (dispatch) => ({
   onRatingChange: (value) => dispatch(setSelectedRating(value)),
   onGenresChange: (selected) => dispatch(setSelectedGenres(selected)),
   onOrderByChange: (value) => dispatch(setSelectedOrderBy(value)),
+  // --- Login/Logout ---
+  onLogin: () => dispatch(loginUserThunk()),
+  onLogout: () => dispatch(logoutUserThunk())
 });
 
 export const HeaderPresenter = connect(mapStateToProps, mapDispatchToProps)(HeaderView);

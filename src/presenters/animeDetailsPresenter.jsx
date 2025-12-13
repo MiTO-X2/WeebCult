@@ -37,7 +37,7 @@ const mapDispatchToProps = (dispatch) => ({
   onSelectMode: (value) => dispatch(setQuizMode(value)),
   onSelectType: (value) => dispatch(setQuizType(value)),
 
-  // Start quiz using the GamePresenter thunk
+  // Start quiz using the quizThunks thunk
   onPlay: (characters, quizSettings, anime) => {
     if (!characters || !quizSettings.category || !quizSettings.mode || !quizSettings.type) {
       console.warn("Cannot start quiz: missing data or settings");
@@ -57,7 +57,7 @@ const mapDispatchToProps = (dispatch) => ({
       }
     }
 
-    // Dispatch the thunk from GamePresenter
+    // Dispatch the thunk from the quizThunks
     dispatch(
       startQuizThunk({
         characters: filteredCharacters,
