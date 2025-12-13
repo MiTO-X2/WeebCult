@@ -20,18 +20,25 @@ import {
  * Utility: Generate 3 random wrong answers
  **********************************************************************/
 function generateWrongAnswers(characters, correctAnswer, category) {
-  const wrongSet = new Set();
+  let candidates;
 
-  // This prevents issues when there are fewer than 4 characters.
-  while (wrongSet.size < 3 && wrongSet.size < characters.length - 1) {
-    const candidateChar = characters[Math.floor(Math.random() * characters.length)];
-    const candidate = category === "name" ? candidateChar.name : candidateChar.role || "Unknown";
-    if (candidate && candidate !== correctAnswer) {
-      wrongSet.add(candidate);
-    }
+  if (category === "name") {
+    candidates = characters.map(c => c.name);
+  } else if (category === "role") {
+    candidates = characters.map(c => c.role || "Unknown");
+  } else if (category === "voiceActor") {
+    // Only take Japanese voice actors
+    candidates = characters
+      .map(c => c.voice_actors?.find(a => a.language === "Japanese")?.name)
+      .filter(Boolean); // remove undefined
   }
 
-  return Array.from(wrongSet);
+  // Remove duplicates and the correct answer
+  const wrongCandidates = Array.from(new Set(candidates)).filter(c => c !== correctAnswer);
+
+  // Shuffle and take up to 3
+  const shuffled = wrongCandidates.sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, 3);
 }
 
 /************************************************************
@@ -94,24 +101,32 @@ export function finishQuizThunk() {
  * Start quiz thunk
  ************************************************************/
 export function startQuizThunk({ characters, category, mode, type, anime, questionCount = 10 }) {
-  const shuffled = [...characters].sort(() => Math.random() - 0.5);
+    const filtered = characters.filter(c => category !== "voiceActor" || c.voice_actors?.some(a => a.language === "Japanese"));
+    const shuffled = [...filtered].sort(() => Math.random() - 0.5);
+    const selected = shuffled.slice(0, questionCount);
 
-  // Take only "questionCount" characters
-  const selected = shuffled.slice(0, questionCount);
 
-  return (dispatch) => {
-    dispatch(initializeQuiz({ characters: selected, category, mode, type, anime }));
-    dispatch(loadCurrentQuestion());
+    return (dispatch) => {
+        dispatch(initializeQuiz({ characters: selected, category, mode, type, anime }));
+        dispatch(loadCurrentQuestion());
 
-    const q = selected[0]; // first question
-    const correctAnswer = category === "name" ? q.name : q.role;
-    dispatch(
-      setQuestionAnswers({
-        correct: correctAnswer,
-        wrong: generateWrongAnswers(selected, correctAnswer, category)
-      })
-    );
-  };
+        const q = selected[0]; // first question
+
+        // Pick correct answer based on category
+        let correctAnswer;
+        if (category === "name") correctAnswer = q.name;
+        else if (category === "role") correctAnswer = q.role;
+        else if (category === "voiceActor") {
+            correctAnswer = q.voice_actors?.find(a => a.language === "Japanese")?.name;
+        }
+
+        dispatch(
+            setQuestionAnswers({
+                correct: correctAnswer,
+                wrong: generateWrongAnswers(selected, correctAnswer, category)
+            })
+        );
+    };
 }
 
 /************************************************************
