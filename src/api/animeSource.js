@@ -182,7 +182,12 @@ function transformCharacterCB(c) {
     id: c.character.mal_id,                     // Character ID from MyAnimeList
     name: c.character.name,                     // Character name
     image: c.character.images.jpg.image_url,    // Character image URL
-    role: c.role                                // Role in the anime (main, supporting, etc.)
+    role: c.role,                               // Role in the anime (main, supporting, etc.)
+    voice_actors: (c.voice_actors || []).map(va => ({
+            id: va.person.mal_id,
+            name: va.person.name,
+            language: va.language
+        }))
     };
 }
 

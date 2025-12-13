@@ -11,7 +11,7 @@
  ***********************************************************************/
 
 import { connect } from "react-redux";
-import { AnimeDetailsView } from "../views/AnimeDetailsView.jsx";
+import { AnimeDetailsView } from "../views/animeDetailsView.jsx";
 import {
   setSelectedAnimeId,
   setQuizCategory,
@@ -44,10 +44,23 @@ const mapDispatchToProps = (dispatch) => ({
       return;
     }
 
+    // Close modal FIRST
+    dispatch(setSelectedAnimeId(null));
+
+    // Filter for voice actor category
+    let filteredCharacters = characters;
+    if (quizSettings.category === "voiceActor") {
+      filteredCharacters = characters.filter(c => c.voice_actors && c.voice_actors.length > 0);
+      if (filteredCharacters.length === 0) {
+        alert("No voice actor data available for this anime. Please choose another category.");
+        return;
+      }
+    }
+
     // Dispatch the thunk from GamePresenter
     dispatch(
       startQuizThunk({
-        characters,
+        characters: filteredCharacters,
         category: quizSettings.category,
         mode: quizSettings.mode,
         type: quizSettings.type,
