@@ -34,9 +34,6 @@ export function GameView(props) {
     return "";
   };
 
-  // Timer flash class when less than 3 seconds
-  const timerFlashClass = props.type === "timed" && props.timeLimit <= 3 ? "flash-red" : "";
-
   return (
     <div className="game-view">
 
@@ -59,7 +56,7 @@ export function GameView(props) {
             </div>
           )}
 
-          {props.mode === "versus" && (
+          {props.mode === "1v1" && (
             <div className="versus-score">
               <div className={`player-box ${props.turn === "p1" ? "active" : "inactive"}`}>
                 <div>Player 1</div>
@@ -79,7 +76,7 @@ export function GameView(props) {
         <div className="question-number">Question {props.index + 1}</div>
 
         {props.type === "timed" && (
-          <div className={`timer-wrapper ${timerFlashClass}`}>
+          <div className= "timer-wrapper">
             <CountdownCircleTimer
               key={props.index}               
               isPlaying
@@ -92,7 +89,9 @@ export function GameView(props) {
               }}
             >
               {({ remainingTime }) => (
-                <div className="timer-text">{remainingTime}</div>
+                <div className={`timer-text ${remainingTime <= 3 ? "flash-red" : ""}`}>
+                  {remainingTime}
+                </div>
               )}
             </CountdownCircleTimer>
           </div>
