@@ -11,11 +11,24 @@
  *   - NO logic, NO Redux, NO Firestore calls
  ***********************************************************************/
 
+import { useState } from "react";
+import CardFlip from "react-card-flip";
+
 export function SidebarView(props) {
+    const [flippedIndexes, setFlippedIndexes] = useState([]);
+
     function handleOverlayClickACB(e) {
         if (e.target.classList.contains("sidebar-overlay")) {
             props.onClose();
         }
+    }
+
+    function handleFlipACB(index) {
+        setFlippedIndexes(prev =>
+            prev.includes(index)
+                ? prev.filter(i => i !== index)
+                : [...prev, index]
+        );
     }
 
     return (
@@ -34,20 +47,30 @@ export function SidebarView(props) {
                     )}
 
                     {props.quizzes.map((quiz, index) => (
-                        <div key={index} className="quiz-item">
-
-                            <div className="quiz-info">
-                                <p><strong>{quiz.score}/{quiz.total}</strong> — {quiz.category}</p>
-                                <p>{quiz.mode} | {quiz.type}</p>
-                                <p className="quiz-date">
-                                    {new Date(quiz.completedAt).toLocaleString()}
-                                </p>
+                        <CardFlip
+                            key={index}
+                            isFlipped={flippedIndexes.includes(index)}
+                            flipDirection="horizontal"
+                        >
+                            {/* FRONT SIDE */}
+                            <div className="quiz-item" onClick={() => handleFlipACB(index)}>
+                                <div className="quiz-info">
+                                    <p><strong>{quiz.score}/{quiz.total}</strong> — {quiz.category}</p>
+                                    <p>{quiz.mode} | {quiz.type}</p>
+                                    <p className="quiz-date">
+                                        {new Date(quiz.completedAt).toLocaleString()}
+                                    </p>
+                                </div>
+                                {quiz.animeImage && (
+                                    <img className="quiz-thumb" src={quiz.animeImage} alt="" />
+                                )}
                             </div>
 
-                            {quiz.animeImage && (
-                                <img className="quiz-thumb" src={quiz.animeImage} alt="" />
-                            )}
-                        </div>
+                            {/* BACK SIDE */}
+                            <div className="quiz-item quiz-back" onClick={() => handleFlipACB(index)}>
+                                <p>More info or fun details here!</p>
+                            </div>
+                        </CardFlip>
                     ))}
                 </div>
 

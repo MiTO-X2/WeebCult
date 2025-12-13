@@ -13,6 +13,7 @@
     "@reduxjs/toolkit": "latest",
     "firebase": "latest",
     "react": "latest",
+    "react-card-flip": "^1.2.3",
     "react-countdown-circle-timer": "^3.2.1",
     "react-dom": "latest",
     "react-redux": "latest",
