@@ -24,8 +24,12 @@ function mapStateToProps(state) {
   const q = state.quiz.currentQuestion;
   const questionPrompt = q
   ? q.category === "role"
-    ? `Which character has the role "${q.correct}"?`
-    : `Who is this character?`
+    ? `What is the role of this character"?`
+    : q.category === "name"
+      ? `Who is this character?`
+      : q.category === "voiceActor"
+        ? `Who is the Japanese voice actor for this character?`
+        : `Who is this character?`
   : "";
 
   return {
