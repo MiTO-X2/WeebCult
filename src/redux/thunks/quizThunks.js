@@ -25,7 +25,17 @@ function generateWrongAnswers(characters, correctAnswer, category) {
   if (category === "name") {
     candidates = characters.map(c => c.name);
   } else if (category === "role") {
-    candidates = characters.map(c => c.role || "Unknown");
+    const ROLE_OPTIONS = [
+      "Main",
+      "Supporting",
+      "Antagonist",
+      "Protagonist",
+      "Minor",
+      "Background",
+      "Cameo"
+    ];
+
+    candidates = ROLE_OPTIONS;
   } else if (category === "voiceActor") {
     // Only take Japanese voice actors
     candidates = characters
@@ -33,7 +43,7 @@ function generateWrongAnswers(characters, correctAnswer, category) {
       .filter(Boolean); // remove undefined
   }
 
-  // Remove duplicates and the correct answer
+  // Remove duplicates and the correct answer 
   const wrongCandidates = Array.from(new Set(candidates)).filter(c => c !== correctAnswer);
 
   // Shuffle and take up to 3
@@ -80,20 +90,28 @@ export function finishQuizThunk() {
       animeImg: quiz.animeImg
     };
 
+    // Update local stats first
     dispatch(addQuizResult(finalQuizResult));
 
     const uid = user.uid;
-    const newStats = [...user.stats.quizzes, finalQuizResult];
+    const updatedUser = getState().user;
+    const newStats = [...updatedUser.stats.quizzes];
 
-    dispatch(updateUserStats({ uid, stats: newStats }));
+    try {
+      // Await Firestore update to ensure it succeeds
+      await dispatch(updateUserStats({ uid, stats: newStats })).unwrap();
 
-    const leaderboardData = {
-      username: user.profile?.displayName || "Anonymous",
-      bestScore: Math.max(user.stats.bestScore || 0, finalQuizResult.score),
-      quizzesCompleted: newStats.length,
-      lastUpdated: Date.now()
-    };
-    dispatch(saveUserLeaderboardEntry({ uid, leaderboardData }));
+      const leaderboardData = {
+        username: user.userData?.displayName || "Anonymous",
+        bestScore: Math.max(user.stats.bestScore || 0, finalQuizResult.score),
+        quizzesCompleted: newStats.length,
+        lastUpdated: Date.now()
+      };
+
+      await dispatch(saveUserLeaderboardEntry({ uid, leaderboardData })).unwrap();
+    } catch (err) {
+      console.error("Failed to update stats or leaderboard:", err);
+    }
   };
 }
 
