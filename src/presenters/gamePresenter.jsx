@@ -14,7 +14,8 @@
  *  - NO JSX, NO UI logic, NO data fetching
  **********************************************************************/
 import { connect } from "react-redux";
-import { GameView } from "../views/gameView.jsx";  
+import { GameView } from "../views/gameView.jsx"; 
+import { GameScorePresenter } from "./gameScorePresenter.jsx"; 
 import { startQuizThunk, answerThunk, timerExpiredThunk } from "/src/redux/thunks/quizThunks.js"; 
 
 /**********************************************************************
@@ -72,12 +73,17 @@ function mapDispatchToProps(dispatch) {
   return {
     startQuiz: (payload) => dispatch(startQuizThunk(payload)),
     onAnswer: (answer) => dispatch(answerThunk(answer)),
-    onTimeUp: () => dispatch(timerExpiredThunk()),
-    onExit: () => {
-      /* handle cleanup / navigation */
-    }
+    onTimeUp: () => dispatch(timerExpiredThunk())
   };
 }
 
+function GamePresenterComponent(props) {
+  if (props.quizFinished) {
+    return <GameScorePresenter />;
+  }
+
+  return <GameView {...props} />;
+}
+
 // Export the connected GamePresenter -> View
-export const GamePresenter = connect(mapStateToProps, mapDispatchToProps)(GameView);
+export const GamePresenter = connect(mapStateToProps, mapDispatchToProps)(GamePresenterComponent);
