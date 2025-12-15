@@ -50,8 +50,8 @@ const initialState = {
         selectedGenres: [],
         selectedOrderBy: "",
         typeOptions: ["TV", "Movie", "OVA"],
-        statusOptions: ["Airing", "Completed", "Upcoming"],
-        ratingOptions: ["G", "PG", "PG-13", "R", "R+"],
+        statusOptions: ["Airing", "Complete", "Upcoming"],
+        ratingOptions: ["G", "PG", "PG13", "R", "RX"],
         orderByOptions: ["Title", "Score", "Popularity"]
     }
 };
@@ -61,10 +61,27 @@ const initialState = {
 // Sök anime baserat på namn (query)
 export const fetchSearch = createAsyncThunk(
     'anime/fetchSearch',    
-    async (query) => {
-        // query kan vara tom / null, hantera det uppåt i presenter vid behov
-        const data = await searchAnime(query);
-        return data;// blir action.payload i fulfilled
+    async (_, { getState }) => {
+        const filters = getState().anime.searchFilters;
+        const allGenres = getState().anime.allGenres.promiseState.data || [];
+        
+        // Map selected genre names to their MAL IDs
+        const genreIDs = filters.selectedGenres
+        .map(name => {
+            const g = allGenres.find(x => x.name === name);
+            return g ? g.id : null;
+        })
+        .filter(Boolean); // remove nulls
+
+        const data = await searchAnime(filters.query, {
+            type: filters.selectedType,
+            status: filters.selectedStatus,
+            rating: filters.selectedRating,
+            // genres: filters.selectedGenres,
+            genres: genreIDs,
+            orderBy: filters.selectedOrderBy,
+        });
+        return data;
     }   
 );
 
@@ -149,12 +166,12 @@ export const animeSlice = createSlice({
                     promiseState.promise = null;
 
                     // Reset filters after search
-                    state.searchFilters.query = "";
-                    state.searchFilters.selectedType = "";
-                    state.searchFilters.selectedStatus = "";
-                    state.searchFilters.selectedRating = "";
-                    state.searchFilters.selectedGenres = [];
-                    state.searchFilters.selectedOrderBy = "";
+                    // state.searchFilters.query = "";
+                    // state.searchFilters.selectedType = "";
+                    // state.searchFilters.selectedStatus = "";
+                    // state.searchFilters.selectedRating = "";
+                    // state.searchFilters.selectedGenres = [];
+                    // state.searchFilters.selectedOrderBy = "";
             })
             .addCase(fetchSearch.rejected, (state, action) => {// när anropet misslyckas
                 const promiseState = state.search.promiseState;
