@@ -16,8 +16,8 @@ import animeReducer from './slices/animeSlice.js';
 import detailsReducer from './slices/detailsSlice.js';
 import quizReducer from './slices/quizSlice.js';  
 import factReducer from './slices/factSlice.js';
-import leaderboardReducer from './slices/leaderboardSlice.js';     
-
+import sidebarReducer from './slices/sidebarSlice.js';  
+import leaderboardReducer from './slices/leaderboardSlice.js';
 
 // 3. Combine reducers into a single root reducer (EXPORT ONLY)
 export default combineReducers({
@@ -26,6 +26,7 @@ export default combineReducers({
         details: detailsReducer, // Detailed view data
         quiz: quizReducer,       // Quiz system state
         fact: factReducer,
+        sidebar: sidebarReducer,
         leaderboard: leaderboardReducer
    });
 

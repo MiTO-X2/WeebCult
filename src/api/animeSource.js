@@ -23,8 +23,23 @@ import { PROXY_URL, PROXY_KEY, GROUP_NUMBER, PROXY_URL_FACTS, PROXY_URL_LINK } f
  *  SEARCH ANIME BY NAME
  *  Example: searchAnime("naruto")
  ***************************************************************/
-export function searchAnime(query) {
-    const url = PROXY_URL + "/anime?q=" + encodeURIComponent(query) + "&limit=20";
+export function searchAnime(query, filters = {}) {
+    const params = new URLSearchParams();
+    if (query) params.append("q", query);
+    params.append("limit", 20);
+
+    // Optional filters
+    if (filters.type) params.append("type", filters.type);        // TV, Movie, OVA
+    if (filters.status) params.append("status", filters.status);  // Airing, Completed, Upcoming
+    if (filters.rating) params.append("rating", filters.rating);  // G, PG, R, etc.
+    if (filters.genres && filters.genres.length > 0) {
+        // Assuming API allows comma-separated genres
+        params.append("genres", filters.genres.join(","));
+    }
+    if (filters.orderBy) params.append("order_by", filters.orderBy.toLowerCase());
+
+    // const url = PROXY_URL + "/anime?q=" + encodeURIComponent(query) + "&limit=20";
+    const url = `${PROXY_URL}/anime?${params.toString()}`;
 
     return fetch(url, {
     method: "GET",

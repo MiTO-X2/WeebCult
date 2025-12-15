@@ -18,6 +18,7 @@
  *
  ***********************************************************************/
 
+import { Outlet } from "react-router-dom";
 import { createHashRouter, RouterProvider } from "react-router-dom";
 import { MainPagePresenter } from "./presenters/mainPagePresenter.jsx";
 import { AnimeDetailsPresenter } from "./presenters/animeDetailsPresenter.jsx";
@@ -26,29 +27,29 @@ import { LeaderboardPresenter } from "./presenters/leaderboardPresenter.jsx";
 import { HeaderPresenter } from "./presenters/headerPresenter.jsx";
 import { FooterView } from "./views/footerView.jsx";
 import { GamePresenter } from "./presenters/gamePresenter.jsx";
+import { GameScorePresenter } from "./presenters/gameScorePresenter.jsx";
 
 export function ReactRoot() {
     const router = createHashRouter([
-        {
-            path: "/",
-            element: <MainPagePresenter />
-        },
-        {
-            path: "/main",
-            element: <MainPagePresenter />
-        },
-        {
-            path: "/game",
-            element: <GamePresenter />
-        }
+    {
+        element: <MainLayout />,
+        children: [
+            { path: "/", element: <MainPagePresenter /> },
+            { path: "/main", element: <MainPagePresenter /> }
+        ]
+    },
+    {
+        path: "/game",
+        element: <GamePresenter />
+    },
+    {
+        path: "/score",
+        element: <GameScorePresenter />
+    }
     ]);
 
     return (
         <div className="App-background">
-            <div>
-                <HeaderPresenter />
-            </div>
-            
             <div>
                 <RouterProvider router={router} />
             </div>
@@ -64,10 +65,18 @@ export function ReactRoot() {
             <div>
                 <LeaderboardPresenter />
             </div>
-
-            <div>
-                <FooterView onNavigateHome={() => window.location.href = "/"} />
-            </div>
         </div>
     );
+}
+
+function MainLayout() {
+  return (
+    <>
+      <HeaderPresenter />
+
+      <Outlet />
+
+      <FooterView onNavigateHome={() => window.location.href = "/"} />
+    </>
+  );
 }
