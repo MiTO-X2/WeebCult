@@ -77,8 +77,21 @@ export function finishQuizThunk() {
   return async (dispatch, getState) => {
     const { quiz, user } = getState();
 
+    if (!user.uid) {
+      console.log("Anonymous user -> stats not persisted");
+      return;
+    }
+
+    // Determine score depending on mode
+    let finalScore;
+    if (quiz.mode === "solo") {
+      finalScore = quiz.score;
+    } else if (quiz.mode === "1v1") {
+      finalScore = quiz.player1; // logged-in user is player 1
+    }
+
     const finalQuizResult = {
-      score: quiz.score,
+      score: finalScore,
       total: quiz.questions.length,
       category: quiz.category,
       mode: quiz.mode,
@@ -90,25 +103,27 @@ export function finishQuizThunk() {
       animeImg: quiz.animeImg
     };
 
-    // Update local stats first
+    // Update local Redux stats first (slice ensures only 10 are kept)
     dispatch(addQuizResult(finalQuizResult));
 
-    const uid = user.uid;
-    const updatedUser = getState().user;
-    const newStats = [...updatedUser.stats.quizzes];
+    // Get latest stats immediately
+    const { stats } = getState().user;
 
     try {
-      // Await Firestore update to ensure it succeeds
-      await dispatch(updateUserStats({ uid, stats: newStats })).unwrap();
+      // Persist current Redux stats to Firestore
+      await dispatch(updateUserStats(stats)).unwrap();
 
+      // Update leaderboard
+      const bestScore = stats.quizzes.reduce((max, q) => Math.max(max, q.score), 0);
       const leaderboardData = {
-        username: user.userData?.displayName || "Anonymous",
-        bestScore: Math.max(user.stats.bestScore || 0, finalQuizResult.score),
-        quizzesCompleted: newStats.length,
+        username: user.userData.displayName,
+        bestScore,
+        quizzesCompleted: stats.quizzes.length,
         lastUpdated: Date.now()
       };
 
-      await dispatch(saveUserLeaderboardEntry({ uid, leaderboardData })).unwrap();
+      await dispatch(saveUserLeaderboardEntry({ uid: user.uid, leaderboardData })).unwrap();
+      console.log("Finished quiz & stats saved!");
     } catch (err) {
       console.error("Failed to update stats or leaderboard:", err);
     }
@@ -156,7 +171,14 @@ export function answerThunk(answer) {
 
     const { quiz } = getState();
 
-    if (quiz.quizFinished) {
+    // Check if this is the last question BEFORE advancing
+    const isLastQuestion = quiz.questionIndex === quiz.questions.length - 1;
+
+    if (isLastQuestion) {
+      // Mark quiz as finished
+      dispatch(nextQuestion()); // this sets quizFinished = true
+
+      // Persist stats & leaderboard
       dispatch(finishQuizThunk());
       return;
     }
@@ -174,7 +196,14 @@ export function timerExpiredThunk() {
     dispatch(timeExpired());
 
     const { quiz } = getState();
-    if (quiz.quizFinished) {
+
+    const isLastQuestion = quiz.questionIndex === quiz.questions.length - 1;
+
+    if (isLastQuestion) {
+      // Mark quiz as finished
+      dispatch(nextQuestion()); // this sets quizFinished = true
+
+      // Persist stats & leaderboard
       dispatch(finishQuizThunk());
       return;
     }

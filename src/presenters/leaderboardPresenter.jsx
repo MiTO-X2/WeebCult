@@ -35,9 +35,14 @@ function LeaderboardPresenterComponent(props) {
 
     if (props.isLoading) return <SuspenseView />;
 
+    // Take top 10
+    //const top10 = props.leaderboardEntries.slice(0, 10);
+
     return (
         <LeaderboardView
-            {...props}
+            entries={props.leaderboardEntries}
+            userEntry={props.userEntry}
+            onClose={props.onClose}
         />
     );
 }

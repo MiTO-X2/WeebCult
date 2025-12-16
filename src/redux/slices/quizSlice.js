@@ -132,13 +132,13 @@ export const quizSlice = createSlice({
             state.selectedAnswer = null;
             state.isCorrect = null;
 
-            state.questionIndex += 1;
-
-            if (state.questionIndex >= state.questions.length) {
+            if (state.questionIndex >= state.questions.length - 1) {
                 state.quizFinished = true;
                 state.quizActive = false;
                 return;
             }
+
+            state.questionIndex += 1;
 
             // IMPORTANT: reset answers for next question
             state.answersShuffled = [];

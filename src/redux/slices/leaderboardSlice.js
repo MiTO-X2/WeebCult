@@ -117,7 +117,16 @@ export const leaderboardSlice = createSlice({
             })
             .addCase(fetchLeaderboard.fulfilled, (state, action) => {
                 state.loading = false;
-                state.entries = action.payload;
+                
+                // Sort descending by bestScore
+                const sorted = (action.payload || []).sort((a,b) => b.bestScore - a.bestScore);
+
+                // Add rank to each entry
+                sorted.forEach((entry, index) => {
+                    entry.rank = index + 1;
+                });
+
+                state.entries = sorted;
             })
             .addCase(fetchLeaderboard.rejected, (state, action) => {
                 state.loading = false;
