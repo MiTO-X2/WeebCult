@@ -10,8 +10,9 @@
 import { connect } from "react-redux";
 import { MainPageView } from "../views/mainPageView.jsx";
 import { SuspenseView } from "../views/suspenseView.jsx";
-import { fetchTrending, fetchGenres } from "../redux/slices/animeSlice.js";
 import { setSelectedAnimeId } from "../redux/slices/detailsSlice.js";
+import { openSidebar } from "../redux/slices/sidebarSlice.js";
+import { fetchLeaderboard, fetchUserLeaderboardEntry } from "../redux/slices/leaderboardSlice.js";
 
 function mapStateToProps(state) {
   return {
@@ -23,14 +24,30 @@ function mapStateToProps(state) {
     searchPromise: state.anime.search.promiseState.promise,
     trendingError: state.anime.trending.promiseState.error,
     genresError: state.anime.genres.promiseState.error,
-    searchError: state.anime.search.promiseState.error
+    searchError: state.anime.search.promiseState.error,
+    userUid: state.user.uid // User UID for fetching leaderboard
   };
 }
 
 const mapDispatchToProps = {
-  loadTrending: fetchTrending,
-  loadGenres: fetchGenres,
-  setSelectedAnimeId
+  setSelectedAnimeId,
+
+  onOpenSidebar: openSidebar,
+
+  onOpenLeaderboard: () => (dispatch, getState) => {
+    const { user } = getState();
+
+    // open leaderboard
+    dispatch({ type: "leaderboard/openLeaderboard" });
+
+    // fetch global leaderboard
+    dispatch(fetchLeaderboard());
+
+    // fetch user's leaderboard entry
+    if (user?.uid) {
+      dispatch(fetchUserLeaderboardEntry(user.uid));
+    }
+  }
 };
 
 function MainPagePresenterComponent({

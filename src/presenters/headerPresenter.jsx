@@ -23,10 +23,10 @@ function mapStateToProps(state) {
     selectedRating: searchFilters.selectedRating || "",
     selectedGenres: searchFilters.selectedGenres || [],
     selectedOrderBy: searchFilters.selectedOrderBy || "",
-    typeOptions: searchFilters.typeOptions || ["TV", "Movie", "OVA"],
-    statusOptions: searchFilters.statusOptions || ["Airing", "Completed", "Upcoming"],
-    ratingOptions: searchFilters.ratingOptions || ["G", "PG", "PG-13", "R", "R+"],
-    orderByOptions: searchFilters.orderByOptions || ["Title", "Score", "Popularity"],
+    typeOptions: searchFilters.typeOptions,
+    statusOptions: searchFilters.statusOptions,
+    ratingOptions: searchFilters.ratingOptions,
+    orderByOptions: searchFilters.orderByOptions,
     genreOptions: state.anime.allGenres.promiseState.data || [],
     isLoggedIn: !!state.user.uid 
   };
@@ -35,7 +35,7 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = (dispatch) => ({
   onQueryChange: (query) => dispatch({ type: "anime/setQuery", payload: query }),
-  onSearch: (query) => dispatch(fetchSearch(query)),
+  onSearch: () => dispatch(fetchSearch()),
   onTypeChange: (value) => dispatch(setSelectedType(value)),
   onStatusChange: (value) => dispatch(setSelectedStatus(value)),
   onRatingChange: (value) => dispatch(setSelectedRating(value)),
