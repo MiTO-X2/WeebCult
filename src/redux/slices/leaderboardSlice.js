@@ -99,6 +99,9 @@ export const leaderboardSlice = createSlice({
         },
         closeLeaderboard(state){
             state.isOpen = false
+        },
+        openLeaderboard(state) {
+            state.isOpen = true;
         }
     },
 
@@ -162,5 +165,5 @@ export const leaderboardSlice = createSlice({
     }
 });
 
-export const { clearLeaderboard, closeLeaderboard } = leaderboardSlice.actions;
+export const { clearLeaderboard, closeLeaderboard, openLeaderboard } = leaderboardSlice.actions;
 export default leaderboardSlice.reducer;
