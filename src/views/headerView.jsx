@@ -25,11 +25,12 @@ export function HeaderView(props) {
     function handleQueryChangeACB(event) {
         console.log("HeaderView: queryChangeACB triggered, new query =", event.target.value);
         props.onQueryChange(event.target.value);
+        //props.onSearch(); // auto-search on typing
     }
 
     function handleSearchClickACB() {
         console.log("HeaderView: searchACB triggered with query =", props.query);
-        props.onSearch(props.query);
+        props.onSearch();
     }
 
     function handleProfileClickACB() {
@@ -42,25 +43,9 @@ export function HeaderView(props) {
         }
     }
 
-    function handleTypeChangeACB(e) {
-        props.onTypeChange(e.target.value);
-    }
-
-    function handleStatusChangeACB(e) {
-        props.onStatusChange(e.target.value);
-    }
-
-    function handleRatingChangeACB(e) {
-        props.onRatingChange(e.target.value);
-    }
-
-    function handleOrderByChangeACB(e) {
-        props.onOrderByChange(e.target.value);
-    }
-
-    function handleGenresChangeACB(e) {
-        const selected = e.target.value;
-        props.onGenresChange([selected]);
+    function handleFilterChangeACB(action, value) {
+        action(value);
+        props.onSearch(); // trigger search automatically
     }
 
     return (
@@ -97,13 +82,13 @@ export function HeaderView(props) {
                 </div>
 
                 {/* FILTERS (only show if user typed something) */}
-                {props.query?.length > 0 && (
+                {/*props.query?.length > 0 && (*/}
                     <div className="search-filters">
 
                         {/* TYPE */}
                         <select
                             value={props.selectedType || ""}
-                            onChange={handleTypeChangeACB}
+                            onChange={e => handleFilterChangeACB(props.onTypeChange, e.target.value)}
                         >
                             <option value="">Type</option>
                             {props.typeOptions?.map(renderOptionCB)}
@@ -112,7 +97,7 @@ export function HeaderView(props) {
                         {/* STATUS */}
                         <select
                             value={props.selectedStatus || ""}
-                            onChange={handleStatusChangeACB}
+                            onChange={e => handleFilterChangeACB(props.onStatusChange, e.target.value)}
                         >
                             <option value="">Status</option>
                             {props.statusOptions?.map(renderOptionCB)}
@@ -121,7 +106,7 @@ export function HeaderView(props) {
                         {/* RATING */}
                         <select
                             value={props.selectedRating || ""}
-                            onChange={handleRatingChangeACB}
+                            onChange={e => handleFilterChangeACB(props.onRatingChange, e.target.value)}
                         >
                             <option value="">Rating</option>
                             {props.ratingOptions?.map(renderOptionCB)}
@@ -130,7 +115,7 @@ export function HeaderView(props) {
                         {/* GENRES (multi-select) */}
                         <select
                             value={props.selectedGenres[0] || ""}
-                            onChange={handleGenresChangeACB}
+                            onChange={e => handleFilterChangeACB(props.onGenresChange, [e.target.value])}
                         >
                             <option value="">Genre</option>
                             {props.genreOptions?.map(renderGenreCB)}
@@ -139,14 +124,14 @@ export function HeaderView(props) {
                         {/* ORDER BY */}
                         <select
                             value={props.selectedOrderBy || ""}
-                            onChange={handleOrderByChangeACB}
+                            onChange={e => handleFilterChangeACB(props.onOrderByChange, e.target.value)}
                         >
                             <option value="">Order By</option>
                             {props.orderByOptions?.map(renderOptionCB)}
                         </select>
 
                     </div>
-                )}
+                {/*})}*/}
 
             </div>
 
@@ -160,7 +145,7 @@ export function HeaderView(props) {
         </header>
     );
 
-    function renderOptionCB(option, i) {
+    function renderOptionCB(option) {
         return <option key={option} value={option}>{option}</option>;
     }
 

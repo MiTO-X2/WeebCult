@@ -13,6 +13,7 @@
 
 import { useState } from "react";
 import CardFlip from "react-card-flip";
+import WeebCultLogo from "../WeebCultLogo.png";
 
 export function SidebarView(props) {
     const [flippedIndexes, setFlippedIndexes] = useState([]);
@@ -43,7 +44,7 @@ export function SidebarView(props) {
                 {/* RECENT QUIZZES */}
                 <div className="sidebar-list">
                     {props.quizzes.length === 0 && (
-                        <p className="sidebar-empty">No quizzes yet.</p>
+                        <p className="sidebar-empty">🎉 No quizzes yet! Start your first quiz and see your scores here. 🚀</p>
                     )}
 
                     {props.quizzes.map((quiz, index) => (
@@ -61,8 +62,8 @@ export function SidebarView(props) {
                                         {new Date(quiz.completedAt).toLocaleString()}
                                     </p>
                                 </div>
-                                {quiz.animeImage && (
-                                    <img className="quiz-thumb" src={quiz.animeImage} alt="" />
+                                {quiz.animeImg && (
+                                    <img className="quiz-thumb" src={quiz.animeImg} alt="" />
                                 )}
                             </div>
 
@@ -74,14 +75,13 @@ export function SidebarView(props) {
                     ))}
                 </div>
 
-                {/* RANDOM ANIME FACT */}
-                <div className="sidebar-fact">
-                    {props.loadingFact && <p>Loading random fact...</p>}
-                    {!props.loadingFact && props.fact && (
-                        <blockquote>
-                            <strong>{props.fact.anime}</strong>: {props.fact.fact}
-                        </blockquote>
-                    )}
+                {/* WeebCult Logo */}
+                <div className="sidebar-logo">
+                    <img
+                        src={WeebCultLogo}
+                        alt="WeebCult Logo"
+                        className="sidebar-logo-img"
+                    />
                 </div>
 
             </div>

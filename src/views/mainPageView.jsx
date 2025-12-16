@@ -23,7 +23,7 @@ export function MainPageView(props) {
             <div className="top-buttons">
                 <button 
                     className="sidebar-button"
-                    onClick={props.onOpenSidebar}
+                    onClick={() => props.onOpenSidebar()}
                 >
                     <i className="fa-solid fa-angles-left"></i>
                 </button>

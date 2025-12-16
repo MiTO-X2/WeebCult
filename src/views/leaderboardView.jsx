@@ -33,7 +33,7 @@ export function LeaderboardView(props) {
                 <h2 className="modal-title">Leaderboard</h2>
 
                 {/* CLOSE BUTTON */}
-                <button className="modal-close-button" onClick={props.onClose}>✕</button>
+                <button className="modal-close-button" onClick={() => props.onClose()}>✕</button>
 
                 {/* TOP 10 TABLE */}
                 <div className="leaderboard-table-container">
@@ -48,7 +48,7 @@ export function LeaderboardView(props) {
                         </thead>
 
                         <tbody>
-                            {props.entries.slice(0, 10).map(entry => (
+                            {(props.entries || []).slice(0, 10).map(entry => (
                                 <tr key={entry.uid}>
                                     <td>{entry.rank}</td>
                                     <td>{entry.username}</td>
