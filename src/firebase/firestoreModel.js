@@ -24,6 +24,19 @@ const app= initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 
+export async function loadUserProfile(uid) {
+    const ref = doc(db, "users", uid);
+    const snap = await getDoc(ref);
+
+    if (!snap.exists()) {
+        const newData = { createdAt: Date.now() };
+        await setDoc(ref, newData);
+        return newData;
+    }
+
+    return snap.data();
+}
+
 /** LOGIN / LOGOUT **/
 export function login() {
     const provider = new GoogleAuthProvider();
@@ -40,6 +53,7 @@ export function logout() {
  ***************************************************/
 export function saveUserStats(uid,stats){
     const userRef = doc(db, "users", uid)
+    console.log("Saving stats to Firestore:", uid, stats);
     return setDoc( userRef, {stats}, {merge: true});
 }
 

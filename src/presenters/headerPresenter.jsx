@@ -12,7 +12,7 @@ import { connect } from "react-redux";
 import { HeaderView } from "../views/headerView.jsx";
 import { fetchSearch } from "../redux/slices/animeSlice.js";
 import { loginUserThunk, logoutUserThunk } from "../redux/thunks/userThunks.js";
-import { setSelectedType, setSelectedStatus, setSelectedRating, setSelectedGenres, setSelectedOrderBy } from "../redux/slices/animeSlice.js";
+import { setQuery, setSelectedType, setSelectedStatus, setSelectedRating, setSelectedGenres, setSelectedOrderBy } from "../redux/slices/animeSlice.js";
 
 function mapStateToProps(state) {
   const searchFilters = state.anime.searchFilters || {};
@@ -34,7 +34,8 @@ function mapStateToProps(state) {
 
 
 const mapDispatchToProps = (dispatch) => ({
-  onQueryChange: (query) => dispatch({ type: "anime/setQuery", payload: query }),
+  //onQueryChange: (query) => dispatch({ type: "anime/setQuery", payload: query }),
+  onQueryChange: (query) => dispatch(setQuery(query)),
   onSearch: () => dispatch(fetchSearch()),
   onTypeChange: (value) => dispatch(setSelectedType(value)),
   onStatusChange: (value) => dispatch(setSelectedStatus(value)),

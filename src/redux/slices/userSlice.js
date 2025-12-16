@@ -15,8 +15,8 @@ import { loadUserStats, saveUserStats } from '/src/firebase/firestoreModel';
 
 
 const initialState = {
-    uid: null,
-    userData: null,   // Firestore “users/{uid}” document
+    uid: undefined,
+    userData: undefined,   // Firestore “users/{uid}” document
     stats: { quizzes: [] }, // Array of completed quizzes, each quiz: { score, category, mode, type, time, completedAt, animeId, animeTitle, animeImg}
     loading: false,
     error: null,
@@ -45,12 +45,16 @@ export const fetchUserStats = createAsyncThunk(
 // --------------------------------------------------------
 export const updateUserStats = createAsyncThunk(
   "user/updateUserStats",
-  async ({ uid, stats }, { rejectWithValue }) => {
+  async (stats, { getState, rejectWithValue }) => {
+    const { uid } = getState().user;
+    if (!uid) return rejectWithValue("Not logged in");
+
     try {
+      console.log("Saving stats to Firestore:", uid, stats); // debug
       await saveUserStats(uid, stats);
       return stats;
-    } catch (error) {
-      return rejectWithValue(error.message);
+    } catch (err) {
+      return rejectWithValue(err.message);
     }
   }
 );
@@ -72,6 +76,7 @@ export const userSlice = createSlice({
             state.stats = { quizzes: [] };
             state.loading = false;
             state.error = null;
+            state.ready = true;
         },
         setUserData(state, action) {
             state.userData = action.payload;
