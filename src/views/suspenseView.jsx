@@ -4,7 +4,7 @@ import { MoonLoader } from "react-spinners";
 export function SuspenseView(props) {
     // Case 1: No promise
     if (!props.promise) {
-        return <span>no data</span>;
+        return <span>No data available. Try refreshing the page.</span>;
     }
 
     // Case 2: Promise exists but has an error

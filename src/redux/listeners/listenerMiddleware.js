@@ -1,32 +1,40 @@
 import { createListenerMiddleware, createAction } from "@reduxjs/toolkit";
-import { fetchTrending, fetchGenres, fetchAllGenres, fetchAnimeByGenre } from "../slices/animeSlice.js";
+import { fetchTrending, fetchAllGenres, fetchAnimeByGenre, appInitialized } from "../slices/animeSlice.js";
 
 export const listenerMiddleware = createListenerMiddleware();
 
 export const appInit = createAction("APP_INIT");
 
-// 1) App initialization listener
+const MAIN_GENRES = ["Action", "Comedy", "Slice of Life", "Fantasy"];
+
 listenerMiddleware.startListening({
   actionCreator: appInit,
   effect: async (_, listenerApi) => {
-    listenerApi.dispatch(fetchTrending());
-    listenerApi.dispatch(fetchGenres());
+    const state = listenerApi.getState();
 
-    // Delay heavy fetch
-    await new Promise(res => setTimeout(res, 5000)); // 5 seconds
+    if (state.anime.appInitialized) return;
 
-    listenerApi.dispatch(fetchAllGenres());
-  }
-});
+    listenerApi.cancelActiveListeners();
+    listenerApi.dispatch(appInitialized());
 
-// 2) When genres load, fetch anime by genre automatically
-listenerMiddleware.startListening({
-  actionCreator: fetchGenres.fulfilled,
-  effect: async (action, listenerApi) => {
-    const genres = action.payload; // already filtered in slice
-    for (const genre of genres) {
-      listenerApi.dispatch(fetchAnimeByGenre({ genreID: genre.id, genreName: genre.name }));
-      await new Promise(res => setTimeout(res, 1000)); // 1000ms delay between calls
+    try {
+      await listenerApi.dispatch(fetchTrending()).unwrap();
+
+      if (listenerApi.signal.aborted) return;
+
+      const allGenres = await listenerApi.dispatch(fetchAllGenres()).unwrap();
+      const mainGenres = allGenres.filter(g => MAIN_GENRES.includes(g.name));
+
+      for (const genre of mainGenres) {
+        await listenerApi
+          .dispatch(fetchAnimeByGenre({ genreID: genre.id, genreName: genre.name }))
+          .unwrap();
+        await new Promise(res => setTimeout(res, 1000));
+
+        if (listenerApi.signal.aborted) return;
+      }
+    } catch (err) {
+      console.error("App init failed:", err);
     }
   }
 });

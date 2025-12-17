@@ -13,17 +13,19 @@ import { SuspenseView } from "../views/suspenseView.jsx";
 import { setSelectedAnimeId } from "../redux/slices/detailsSlice.js";
 import { openSidebar } from "../redux/slices/sidebarSlice.js";
 import { fetchLeaderboard, fetchUserLeaderboardEntry } from "../redux/slices/leaderboardSlice.js";
+import { selectGenreLists } from "../redux/slices/animeSlice.js";
 
 function mapStateToProps(state) {
   return {
     trending: state.anime.trending.promiseState.data || [],
-    genres: state.anime.genreLists || [],
+    trendingLoaded: state.anime.trending.loaded,
+    genres: selectGenreLists(state),
     searchResults: state.anime.search.promiseState.data || [],
     trendingPromise: state.anime.trending.promiseState.promise,
-    genresPromise: state.anime.genres.promiseState.promise,
+    allGenresPromise: state.anime.allGenres.promiseState.promise,
     searchPromise: state.anime.search.promiseState.promise,
     trendingError: state.anime.trending.promiseState.error,
-    genresError: state.anime.genres.promiseState.error,
+    allGenresError: state.anime.allGenres.promiseState.error,
     searchError: state.anime.search.promiseState.error,
     userUid: state.user.uid // User UID for fetching leaderboard
   };
@@ -50,34 +52,27 @@ const mapDispatchToProps = {
   }
 };
 
-function MainPagePresenterComponent({
-  trendingPromise, genresPromise, searchPromise,
-  searchResults, trendingError, genresError,
-  searchError, ...props
-}) {
+function MainPagePresenterComponent(props) {
 
-  // Combine promises and errors
-  const isPending = trendingPromise || genresPromise || searchPromise;
-  const combinedError = trendingError || genresError || searchError;
+  const genresNotReady = props.genres.length === 0 || props.genres.some(g => !g.items || g.items.length === 0)
 
-  // Show SuspenseView if any promise is pending or there’s an error
+  const isPending = !props.trendingLoaded || !!props.trendingPromise  || !!props.allGenresPromise  || genresNotReady;
+  const combinedError = props.trendingError || props.allGenresError || props.searchError;
+
   if (isPending || combinedError) {
     return <SuspenseView promise={isPending} error={combinedError} />;
   }
 
-  // Handler when user clicks on a row item
-  const handleSelectAnimeACB = (anime) => {
-      props.setSelectedAnimeId(anime.id);
-  };
+  const handleSelectAnimeACB = (anime) => props.setSelectedAnimeId(anime.id);
 
-  return ( 
+  return (
     <MainPageView 
       {...props} 
-      searchResults={searchResults}
       onSelectAnime={handleSelectAnimeACB} 
     />
   );
 }
+
 
 export const MainPagePresenter = connect(
   mapStateToProps,

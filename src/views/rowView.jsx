@@ -10,9 +10,9 @@ export function RowView(props) {
             <h2 className="row-title">{props.title}</h2>
 
             <div className="row-scroll">
-                {props.items?.map(item =>
+                {props.items?.map((item, index) =>
                     <div
-                        key={item.id}
+                        key={`${props.title}-${item.id}-${index}`}
                         className="row-item"
                         onClick={() => props.onSelectItem(item)}
                     >

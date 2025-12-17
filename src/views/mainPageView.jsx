@@ -41,9 +41,9 @@ export function MainPageView(props) {
                 <div className="row-container">
                     <h2 className="row-title">Search Results</h2>
                     <div className="search-results-grid">
-                        {props.searchResults.map((a) => (
+                        {props.searchResults.map((a, index) => (
                             <div
-                                key={a.id}
+                                key={`${a.id}-${index}`}
                                 className="row-item"
                                 onClick={() => onAnimeSelectViewACB(a)}
                             >
