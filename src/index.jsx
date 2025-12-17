@@ -25,7 +25,7 @@ store.dispatch({ type: "APP_INIT" });
 // Create the React root
 const root = createRoot(document.getElementById("root"));
 
-// TODO: Render the application wrapped in Redux Provider
+// Render the application wrapped in Redux Provider
 root.render(
     <Provider store={store}>
         <ReactRoot />

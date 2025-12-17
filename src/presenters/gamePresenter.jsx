@@ -70,4 +70,5 @@ function GamePresenterComponent(props) {
 }
 
 // Export the connected GamePresenter -> View
-export const GamePresenter = connect(mapStateToProps, mapDispatchToProps)(GamePresenterComponent);
+export const GamePresenter = 
+    connect(mapStateToProps, mapDispatchToProps)(GamePresenterComponent);

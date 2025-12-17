@@ -34,4 +34,5 @@ function GameScorePresenterComponent(props) {
   return <GameScoreView {...props} onPlayAgain={handlePlayAgainACB} />;
 }
 
-export const GameScorePresenter = connect(mapStateToProps, mapDispatchToProps)(GameScorePresenterComponent);
+export const GameScorePresenter = 
+    connect(mapStateToProps, mapDispatchToProps)(GameScorePresenterComponent);

@@ -47,4 +47,5 @@ const mapDispatchToProps = (dispatch) => ({
   onLogout: () => dispatch(logoutUserThunk())
 });
 
-export const HeaderPresenter = connect(mapStateToProps, mapDispatchToProps)(HeaderView);
+export const HeaderPresenter = 
+    connect(mapStateToProps, mapDispatchToProps)(HeaderView);

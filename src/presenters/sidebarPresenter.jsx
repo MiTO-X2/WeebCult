@@ -10,32 +10,14 @@
 import { connect } from "react-redux";
 import { SidebarView } from "../views/sidebarView";
 import { closeSidebar } from "../redux/slices/sidebarSlice.js";
-
+import { selectRecentQuizzes } from "../redux/selectors/quizSelectors.js";
 
 function mapStateToProps(state) {
-    // Ensure we have quizzes array
-    const allQuizzes = state.user.stats.quizzes || [];
-
-    // Sort newest first by completedAt (descending)
-    const sortedQuizzes = [...allQuizzes].sort((a, b) => b.completedAt - a.completedAt);
-
-    // Take latest 3
-    const quizzes = sortedQuizzes.slice(0, 3).map(q => ({
-        score: q.score ?? 0,
-        total: q.total ?? 0,
-        category: q.category ?? "Unknown",
-        mode: q.mode ?? "Solo",
-        type: q.type ?? "Best10",
-        completedAt: q.completedAt ?? Date.now(),
-        animeImg: q.animeImg ?? null
-    }));
-
     return {
-        quizzes,
+        quizzes: selectRecentQuizzes(state),
         isOpen: state.sidebar.sidebarOpen,
     };
 }
-
 
 const mapDispatchToProps = dispatch => ({
     // Close the sidebar 

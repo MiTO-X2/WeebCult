@@ -12,7 +12,7 @@ import { MainPageView } from "../views/mainPageView.jsx";
 import { SuspenseView } from "../views/suspenseView.jsx";
 import { setSelectedAnimeId } from "../redux/slices/detailsSlice.js";
 import { openSidebar } from "../redux/slices/sidebarSlice.js";
-import { fetchLeaderboard, fetchUserLeaderboardEntry } from "../redux/slices/leaderboardSlice.js";
+import { openLeaderboardThunk } from "../redux/slices/leaderboardSlice.js";
 import { selectGenreLists } from "../redux/slices/animeSlice.js";
 
 function mapStateToProps(state) {
@@ -33,23 +33,8 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = {
   setSelectedAnimeId,
-
   onOpenSidebar: openSidebar,
-
-  onOpenLeaderboard: () => (dispatch, getState) => {
-    const { user } = getState();
-
-    // open leaderboard
-    dispatch({ type: "leaderboard/openLeaderboard" });
-
-    // fetch global leaderboard
-    dispatch(fetchLeaderboard());
-
-    // fetch user's leaderboard entry
-    if (user?.uid) {
-      dispatch(fetchUserLeaderboardEntry(user.uid));
-    }
-  }
+  onOpenLeaderboard: openLeaderboardThunk
 };
 
 function MainPagePresenterComponent(props) {
@@ -74,7 +59,5 @@ function MainPagePresenterComponent(props) {
 }
 
 
-export const MainPagePresenter = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MainPagePresenterComponent);
+export const MainPagePresenter = 
+    connect(mapStateToProps, mapDispatchToProps)(MainPagePresenterComponent);

@@ -56,7 +56,7 @@ function AnimeDetailsPresenterComponent(props) {
 
     // Close modal first
     onClose();
-    
+
     // Start quiz
     dispatch(startQuizThunk({ characters, quizSettings, anime }));
   };
@@ -65,4 +65,4 @@ function AnimeDetailsPresenterComponent(props) {
 }
 
 export const AnimeDetailsPresenter =
-  connect(mapStateToProps, mapDispatchToProps)(AnimeDetailsPresenterComponent);
+    connect(mapStateToProps, mapDispatchToProps)(AnimeDetailsPresenterComponent);
