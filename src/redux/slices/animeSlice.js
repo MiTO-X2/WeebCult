@@ -47,6 +47,12 @@ const initialState = {
         statusOptions: ["Airing", "Complete", "Upcoming"],
         ratingOptions: ["G", "PG", "PG13", "R", "RX"],
         orderByOptions: ["Title", "Score", "Popularity"]
+    },
+
+    cache: {
+        trendingFetchedAt: null,
+        genresFetchedAt: null,
+        genreAnimeFetchedAt: {}
     }
 };
 
@@ -164,6 +170,8 @@ export const animeSlice = createSlice({
                 ps.data = action.payload;
                 ps.promise = null;
                 state.trending.loaded = true;
+
+                state.cache.trendingFetchedAt = Date.now();
             })
             .addCase(fetchTrending.rejected, (state, action) => {
                 const ps = state.trending.promiseState;
@@ -184,6 +192,8 @@ export const animeSlice = createSlice({
                 ps.data = action.payload;
                 ps.promise = null;
                 state.allGenres.loaded = true;
+
+                state.cache.genresFetchedAt = Date.now();
 
                 const mainGenres = action.payload.filter(g =>
                     MAIN_GENRES.includes(g.name)
@@ -222,6 +232,8 @@ export const animeSlice = createSlice({
                 ps.data = data;
                 ps.promise = null;
                 state.animeByGenre[genreName].loaded = true;
+
+                state.cache.genreAnimeFetchedAt[genreName] = Date.now();
 
                 state.genreLists = state.genreLists.map(g =>
                     g.label === genreName ? { ...g, items: data } : g
