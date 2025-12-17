@@ -96,7 +96,7 @@ function MainLayout() {
 
       <Outlet />
 
-      <FooterView onNavigateHome={() => window.location.href = "/"} />
+      <FooterView />
     </>
   );
 }

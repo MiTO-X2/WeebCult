@@ -14,7 +14,7 @@ const initialState = {
     quizActive: false,
     category: null,          // "name" | "role" | "voiceActor"
     mode: null,              // "solo" | "1v1"
-    type: null,              // "best10" | "timed"
+    type: null,              // "best10" | "timed" | "best25" | "best25-timed"
     timeLimit: 10,           // seconds per question (if timed)
 
     questions: [],           // array of prepared question objects
@@ -68,9 +68,9 @@ export const quizSlice = createSlice({
                 id: c.id,
                 image: c.image,
                 correct:
-                    category === "name" ? c.name :
-                    category === "role" ? c.role || "Unknown" :
-                    category === "voiceActor" ? c.voice_actors?.find(a => a.language === "Japanese")?.name || "Unknown" :
+                    category === "Name" ? c.name :
+                    category === "Role" ? c.role || "Unknown" :
+                    category === "VoiceActor" ? c.voice_actors?.find(a => a.language === "Japanese")?.name || "Unknown" :
                     "Unknown",
                 category: category
                 // Wrong answers are handled in the presenter (easier)
@@ -108,7 +108,7 @@ export const quizSlice = createSlice({
             state.selectedAnswer = userAnswer;
             state.isCorrect = userAnswer === correct;
 
-            if (state.mode === "solo") {
+            if (state.mode === "Solo") {
                 if (state.isCorrect) state.score += 1;
             }
 
@@ -155,7 +155,7 @@ export const quizSlice = createSlice({
          * Timer expired (timed mode)
          ************************************************************/
         timeExpired(state) {
-            if (state.type === "timed") {
+            if (state.type === "Best10 Timed" || state.type === "Best25 Timed") {
                 state.isCorrect = false;
                 state.selectedAnswer = null;
 

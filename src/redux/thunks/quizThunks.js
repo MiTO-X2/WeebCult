@@ -22,9 +22,9 @@ import {
 function generateWrongAnswers(characters, correctAnswer, category) {
   let candidates;
 
-  if (category === "name") {
+  if (category === "Name") {
     candidates = characters.map(c => c.name);
-  } else if (category === "role") {
+  } else if (category === "Role") {
     const ROLE_OPTIONS = [
       "Main",
       "Supporting",
@@ -36,7 +36,7 @@ function generateWrongAnswers(characters, correctAnswer, category) {
     ];
 
     candidates = ROLE_OPTIONS;
-  } else if (category === "voiceActor") {
+  } else if (category === "VoiceActor") {
     // Only take Japanese voice actors
     candidates = characters
       .map(c => c.voice_actors?.find(a => a.language === "Japanese")?.name)
@@ -84,7 +84,7 @@ export function finishQuizThunk() {
 
     // Determine score depending on mode
     let finalScore;
-    if (quiz.mode === "solo") {
+    if (quiz.mode === "Solo") {
       finalScore = quiz.score;
     } else if (quiz.mode === "1v1") {
       finalScore = quiz.player1; // logged-in user is player 1
@@ -133,33 +133,56 @@ export function finishQuizThunk() {
 /************************************************************
  * Start quiz thunk
  ************************************************************/
-export function startQuizThunk({ characters, category, mode, type, anime, questionCount = 10 }) {
-    const filtered = characters.filter(c => category !== "voiceActor" || c.voice_actors?.some(a => a.language === "Japanese"));
-    const shuffled = [...filtered].sort(() => Math.random() - 0.5);
-    const selected = shuffled.slice(0, questionCount);
+export function startQuizThunk({ characters, quizSettings, anime }) {
+  return (dispatch) => {
+      const { category, mode, type, questionCount: qc } = quizSettings;
 
-
-    return (dispatch) => {
-        dispatch(initializeQuiz({ characters: selected, category, mode, type, anime }));
-        dispatch(loadCurrentQuestion());
-
-        const q = selected[0]; // first question
-
-        // Pick correct answer based on category
-        let correctAnswer;
-        if (category === "name") correctAnswer = q.name;
-        else if (category === "role") correctAnswer = q.role;
-        else if (category === "voiceActor") {
-            correctAnswer = q.voice_actors?.find(a => a.language === "Japanese")?.name;
+      // Filter characters for VoiceActor category
+      let filtered = characters;
+      if (category === "VoiceActor") {
+        filtered = characters.filter(c => c.voice_actors?.some(a => a.language === "Japanese"));
+        if (filtered.length === 0) {
+          alert("No Japanese voice actor data available for this anime.");
+          return;
         }
+      }
 
-        dispatch(
-            setQuestionAnswers({
-                correct: correctAnswer,
-                wrong: generateWrongAnswers(selected, correctAnswer, category)
-            })
-        );
-    };
+      // Shuffle characters
+      const shuffled = [...filtered].sort(() => Math.random() - 0.5);
+
+      // Determine number of questions
+      let questionCount = qc;
+      if (type === "Best10" || type === "Best10 Timed") questionCount = 10;
+      else if (type === "Best25" || type === "Best25 Timed") questionCount = 25;
+      else questionCount = 10; // fallback default
+
+      const selected = shuffled.slice(0, questionCount);
+
+      // Dispatch initialization
+      dispatch(initializeQuiz({ characters: selected, category, mode, type, anime }));
+
+      // Load first question
+      dispatch(loadCurrentQuestion());
+
+      const q = selected[0];
+      if (!q) return;
+
+      // Pick correct answer based on category
+      let correctAnswer;
+      if (category === "Name") correctAnswer = q.name;
+      else if (category === "Role") correctAnswer = q.role;
+      else if (category === "VoiceActor") {
+        correctAnswer = q.voice_actors?.find(a => a.language === "Japanese")?.name;
+      }
+
+      // Generate wrong answers and set question answers
+      dispatch(
+        setQuestionAnswers({
+          correct: correctAnswer,
+          wrong: generateWrongAnswers(selected, correctAnswer, category)
+        })
+      );
+  };
 }
 
 /************************************************************
