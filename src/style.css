@@ -9,7 +9,9 @@ body {
     padding-bottom: 10px;        /* Small space above footer */
 }
 
-/************************************* Header View *************************************/
+/**************************************************************************
+* HEADER VIEW 
+**************************************************************************/
 /* HEADER BAR */
 .header-bar {
     top: 0;                             /* Align to very top of page */
@@ -281,7 +283,9 @@ body {
     }
 }
 
-/************************************* Footer View *************************************/
+/************************************************************************** 
+* FOOTER VIEW 
+**************************************************************************/
 /* FOOTER BAR */
 .footer-bar {
     bottom: 0;                     /* Align to bottom of page */
@@ -336,7 +340,9 @@ body {
     line-height: 1.1;              /* Compact line spacing */
 }
 
-/**************************** Main Page View **************************************/
+/************************************************************************** 
+* MAIN PAGE VIEW 
+**************************************************************************/
 .main-page {
     display: flex;                 /* Main layout uses flexbox */
     flex-direction: column;        /* Stack rows vertically */
@@ -474,6 +480,9 @@ body {
   padding: 10px 0;              /* vertical padding */
 }
 
+/************************************************************************** 
+* ANIME DETAILS VIEW POPUP 
+**************************************************************************/
 /* MODAL OVERLAY + BLUR */
 .modal-overlay {
     position: fixed;               /* Keep overlay in place relative to viewport */
@@ -603,7 +612,335 @@ body {
     color: #bb80ff;                   /* Purple text on hover */
 }
 
-/******************************** Game View ********************************/
+/**************************************************************************
+* SIDEBAR VIEW POPUP
+**************************************************************************/
+/* SIDEBAR OVERLAY */
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.55);
+    backdrop-filter: blur(6px);
+    display: flex;
+    justify-content: flex-end;
+    z-index: 5000;
+    animation: fadeIn 0.2s ease-out;
+    overflow: hidden; /* no scrolling anywhere */
+}
+
+/* Overlay fade-in */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* SIDEBAR PANEL */
+.sidebar-panel {
+    width: 350px;
+    max-width: 90%;
+    height: 100%;
+    background-color: #1b1b1d;               /* Dark modal background */
+    color: #eee;                             /* Default text color */
+    padding: 28px 28px 16px;
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid #2b2b2f;
+    box-shadow: -8px 0 25px rgba(0,0,0,0.45);
+    border-radius: 0 18px 18px 0;
+    transform: translateX(100%);
+    animation: slideIn 0.28s forwards ease-out;
+    overflow: hidden;
+    box-sizing: border-box; /* include padding in width */
+}
+
+/* SLIDE-IN ANIMATION */
+@keyframes slideIn {
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
+}
+
+/* CLOSE BUTTON */
+.sidebar-close-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #29292d;
+    color: #dcdcdc;
+    border: none;
+    font-size: 15px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.sidebar-close-button:hover {
+    background-color: #3a3a3e;
+    color: #c38aff;  /* Purple hover accent */
+}
+
+/* TITLE */
+.sidebar-title {
+    margin-top: 10px;
+    margin-bottom: 25px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #b673ff;
+    letter-spacing: 0.5px;
+}
+
+/* QUIZ LIST */
+.sidebar-list {
+    display: flex;
+    flex-direction: column;
+    padding-top: 8px; /* give space for hover lift */
+    gap: 16px;
+    margin-bottom: 0;
+    overflow: hidden;
+    flex: 1;
+}
+
+.sidebar-empty {
+    font-style: italic;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #f2c94c;           /* Bright gold/yellow to stand out */
+    background-color: rgba(255, 255, 255, 0.05); /* subtle highlight */
+    padding: 12px 14px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+/* QUIZ CARD FLIP */
+/* PARENT CONTAINER */
+.quiz-item {
+    perspective: 1000px;
+    min-height: 80px;       /* front/back same height */
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+/* FRONT AND BACK SIDES */
+.quiz-front,
+.quiz-back {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 12px;
+    border-radius: 14px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    backface-visibility: hidden;
+    cursor: pointer;
+    min-height: 80px; /* ensures same height */
+    box-sizing: border-box;
+}
+
+/* FRONT SIDE */
+.quiz-front {
+    background: linear-gradient(145deg, #2c2c34, #1b1b23);
+    color: #e0dfff;
+    font-weight: 600;
+}
+
+.quiz-front:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.55);
+}
+
+.quiz-front-content {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.quiz-front-content p {
+    font-size: 0.95rem;
+    line-height: 1.3rem;
+}
+
+/* BACK SIDE */
+.quiz-back {
+    background: linear-gradient(135deg, #1c1c22, #2f2b38);
+    color: #f2f2f2;
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    border-radius: 14px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    backface-visibility: hidden;
+}
+
+.quiz-back:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+}
+
+.quiz-back-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+
+/* BACK CONTENT DETAILS */
+.quiz-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+    font-size: 0.85rem;
+    line-height: 1.2rem;
+}
+
+.quiz-info p {
+    margin: 2px 0;
+}
+
+.quiz-thumb {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    object-fit: cover;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+
+.quiz-date {
+    font-size: 0.7rem;
+    color: #b1a8ff;
+}
+
+/* WEBCULT LOGO */
+.sidebar-logo {
+    margin-top: 20px;     
+    display: flex;
+    justify-content: center;
+    padding: 12px 0;
+}
+
+.sidebar-logo-img {
+    max-width: 160px;
+    max-height: 80px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    cursor: pointer;
+}
+
+.sidebar-logo:hover img {
+    filter: brightness(1.2);       /* Brighten logo on hover */
+    transition: 0.2s;              /* Smooth effect */
+}
+
+/**************************************************************************
+* LEADERBOARD VIEW POPUP
+**************************************************************************/
+/* LEADERBOARD CARD SPECIFIC */
+.leaderboard-card {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;            
+    max-height: 70vh;         /* limit total modal height */
+    overflow: visible; 
+}
+
+/* TABLE CONTAINER */
+.leaderboard-table-container {
+    overflow-x: auto;
+    border-radius: 12px;
+    max-height: 50vh;         /* shrink table height */
+
+    /* Hide scrollbar for all browsers */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+}
+
+.leaderboard-table-container::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
+}
+
+/* LEADERBOARD TABLE */
+.leaderboard-table {
+    width: 100%;
+    border-collapse: collapse; /* Remove double borders */
+    background-color: #2a2a2a; /* Slightly lighter than modal background */
+    border-radius: 12px;
+    overflow: hidden; /* Clip rounded corners */
+    box-shadow: 0 0 10px rgba(0,0,0,0.4); /* Subtle table shadow */
+    font-size: 13px;          /* smaller font to reduce size */
+}
+
+/* TABLE HEAD */
+.leaderboard-table th {
+    background-color: #3b3b3b; /* Darker header */
+    color: #b673ff; /* Purple accent */
+    font-weight: 700;
+    font-size: 14px;
+    padding: 8px 12px;
+    text-align: left;
+}
+
+/* TABLE ROWS */
+.leaderboard-table td {
+    padding: 6px 12px;
+    font-size: 13px;
+    color: #ddd;
+    border-bottom: 1px solid #444;
+}
+
+/* HOVER EFFECT ON ROWS */
+.leaderboard-table tbody tr:hover {
+    background-color: #3a1dff1a; /* Soft purple hover */
+}
+
+/* STRIPED EFFECT */
+.leaderboard-table tbody tr:nth-child(even) {
+    background-color: #222;
+}
+
+/* USERS STANDING SECTION */
+.your-standing-container {
+    background-color: #2c2c2c;
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.3);
+}
+
+.your-standing-container h3 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    color: #b673ff;
+    font-size: 20px;
+}
+
+.your-standing-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    font-size: 13px;
+}
+
+.your-standing-label {
+    font-weight: 600;
+    color: #ccc;
+}
+
+.your-standing-value {
+    color: #fff;
+}
+
+/**************************************************************************
+* GAME VIEW 
+**************************************************************************/
 .game-view {
     display: flex;
     flex-direction: column;
@@ -617,7 +954,7 @@ body {
     position: relative;
 }
 
-/* ----------------- Top Bar ----------------- */
+/* TOP BAR */
 .top-bar {
     width: 100%;
     display: flex;
@@ -649,7 +986,7 @@ body {
     color: #b673ff;
 }
 
-/* ----------------- Score & Timer ----------------- */
+/* SCORE & TIMER */
 .score-area, .versus-score {
     display: flex;
     gap: 20px;
@@ -719,7 +1056,7 @@ body {
     transition: color 0.3s;
 }
 
-/* ----------------- Center Info ----------------- */
+/* CENTER INFO */
 .center-info {
     display: flex;
     flex-direction: column;
@@ -745,7 +1082,7 @@ body {
     color: #d0d0d0;
 }
 
-/* ----------------- Answers Grid ----------------- */
+/* ANSWERS GRID */
 .answers-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -780,7 +1117,7 @@ body {
     transform: scale(1.03);
 }
 
-/* Flash animations for answers */
+/* FLASH ANIMATIONS FOR ANSWERS */
 .answer-btn.flash-green { animation: flashCorrect 0.4s forwards; }
 .answer-btn.flash-red   { animation: flashWrong 0.4s forwards; }
 
@@ -902,343 +1239,9 @@ body {
   }
 }
 
-/*************************************SidebarView Popup***************************************/
-/*****************************
- * SIDEBAR OVERLAY
- *****************************/
-.sidebar-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0,0,0,0.55);
-    backdrop-filter: blur(6px);
-    display: flex;
-    justify-content: flex-end;
-    z-index: 5000;
-    animation: fadeIn 0.2s ease-out;
-    overflow: hidden; /* no scrolling anywhere */
-}
-
-/* Overlay fade-in */
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-/*****************************
- * SIDEBAR PANEL
- *****************************/
-.sidebar-panel {
-    width: 350px;
-    max-width: 90%;
-    height: 100%;
-    background-color: #1b1b1d;               /* Dark modal background */
-    color: #eee;                             /* Default text color */
-    padding: 28px 28px 16px;
-    display: flex;
-    flex-direction: column;
-    border-left: 1px solid #2b2b2f;
-    box-shadow: -8px 0 25px rgba(0,0,0,0.45);
-    border-radius: 0 18px 18px 0;
-    transform: translateX(100%);
-    animation: slideIn 0.28s forwards ease-out;
-    overflow: hidden;
-    box-sizing: border-box; /* include padding in width */
-}
-
-/* Slide-in animation */
-@keyframes slideIn {
-    from { transform: translateX(100%); }
-    to { transform: translateX(0); }
-}
-
-/*****************************
- * CLOSE BUTTON
- *****************************/
-.sidebar-close-button {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: #29292d;
-    color: #dcdcdc;
-    border: none;
-    font-size: 15px;
-    padding: 6px 14px;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.sidebar-close-button:hover {
-    background-color: #3a3a3e;
-    color: #c38aff;  /* Purple hover accent */
-}
-
-/*****************************
- * TITLE
- *****************************/
-.sidebar-title {
-    margin-top: 10px;
-    margin-bottom: 25px;
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #b673ff;
-    letter-spacing: 0.5px;
-}
-
-/*****************************
- * QUIZ LIST
- *****************************/
-.sidebar-list {
-    display: flex;
-    flex-direction: column;
-    padding-top: 8px; /* give space for hover lift */
-    gap: 16px;
-    margin-bottom: 0;
-    overflow: hidden;
-    flex: 1;
-}
-
-.sidebar-empty {
-    font-style: italic;
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #f2c94c;           /* Bright gold/yellow to stand out */
-    background-color: rgba(255, 255, 255, 0.05); /* subtle highlight */
-    padding: 12px 14px;
-    border-radius: 12px;
-    text-align: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-}
-
-/*****************************
- * QUIZ CARD FLIP
- *****************************/
-/* parent container */
-.quiz-item {
-    perspective: 1000px;
-    min-height: 80px;       /* front/back same height */
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
-}
-
-/* front and back sides */
-.quiz-front,
-.quiz-back {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px 12px;
-    border-radius: 14px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    backface-visibility: hidden;
-    cursor: pointer;
-    min-height: 80px; /* ensures same height */
-    box-sizing: border-box;
-}
-
-/* FRONT SIDE */
-.quiz-front {
-    background: linear-gradient(145deg, #2c2c34, #1b1b23);
-    color: #e0dfff;
-    font-weight: 600;
-}
-
-.quiz-front:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.55);
-}
-
-.quiz-front-content {
-    display: flex;
-    flex: 1;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-}
-
-.quiz-front-content p {
-    font-size: 0.95rem;
-    line-height: 1.3rem;
-}
-
-/* BACK SIDE */
-.quiz-back {
-    background: linear-gradient(135deg, #1c1c22, #2f2b38);
-    color: #f2f2f2;
-    display: flex;
-    align-items: center;
-    padding: 10px 12px;
-    border-radius: 14px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    backface-visibility: hidden;
-}
-
-.quiz-back:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 18px rgba(0,0,0,0.6);
-}
-
-.quiz-back-content {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    width: 100%;
-}
-
-/* BACK CONTENT DETAILS */
-.quiz-info {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    flex: 1;
-    font-size: 0.85rem;
-    line-height: 1.2rem;
-}
-
-.quiz-info p {
-    margin: 2px 0;
-}
-
-.quiz-thumb {
-    width: 60px;
-    height: 60px;
-    border-radius: 12px;
-    object-fit: cover;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
-}
-
-.quiz-date {
-    font-size: 0.7rem;
-    color: #b1a8ff;
-}
-
-/*****************************
- * WEBCULT LOGO
- *****************************/
-.sidebar-logo {
-    margin-top: 20px;     
-    display: flex;
-    justify-content: center;
-    padding: 12px 0;
-}
-
-.sidebar-logo-img {
-    max-width: 160px;
-    max-height: 80px;
-    width: auto;
-    height: auto;
-    object-fit: contain;
-    cursor: pointer;
-}
-
-.sidebar-logo:hover img {
-    filter: brightness(1.2);       /* Brighten logo on hover */
-    transition: 0.2s;              /* Smooth effect */
-}
-
-/****************************************Leaderboard****************************************/
-/* LEADERBOARD CARD SPECIFIC */
-.leaderboard-card {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;            
-    max-height: 70vh;         /* limit total modal height */
-    overflow: visible; 
-}
-
-/* TABLE CONTAINER */
-.leaderboard-table-container {
-    overflow-x: auto; /* Allow horizontal scrolling if needed */
-    border-radius: 12px;
-    max-height: 50vh;         /* shrink table height */
-
-    /* Hide scrollbar for all browsers */
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE 10+ */
-}
-
-.leaderboard-table-container::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Edge */
-}
-
-/* LEADERBOARD TABLE */
-.leaderboard-table {
-    width: 100%;
-    border-collapse: collapse; /* Remove double borders */
-    background-color: #2a2a2a; /* Slightly lighter than modal background */
-    border-radius: 12px;
-    overflow: hidden; /* Clip rounded corners */
-    box-shadow: 0 0 10px rgba(0,0,0,0.4); /* Subtle table shadow */
-    font-size: 13px;          /* smaller font to reduce size */
-}
-
-/* TABLE HEAD */
-.leaderboard-table th {
-    background-color: #3b3b3b; /* Darker header */
-    color: #b673ff; /* Purple accent */
-    font-weight: 700;
-    font-size: 14px;
-    padding: 8px 12px;
-    text-align: left;
-}
-
-/* TABLE ROWS */
-.leaderboard-table td {
-    padding: 6px 12px;
-    font-size: 13px;
-    color: #ddd;
-    border-bottom: 1px solid #444;
-}
-
-/* HOVER EFFECT ON ROWS */
-.leaderboard-table tbody tr:hover {
-    background-color: #3a1dff1a; /* Soft purple hover */
-}
-
-/* STRIPED EFFECT */
-.leaderboard-table tbody tr:nth-child(even) {
-    background-color: #222;
-}
-
-/* YOUR STANDING SECTION */
-.your-standing-container {
-    background-color: #2c2c2c;
-    padding: 16px;
-    border-radius: 12px;
-    box-shadow: 0 0 8px rgba(0,0,0,0.3);
-}
-
-.your-standing-container h3 {
-    margin-top: 0;
-    margin-bottom: 8px;
-    color: #b673ff;
-    font-size: 20px;
-}
-
-.your-standing-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 4px 0;
-    font-size: 13px;
-}
-
-.your-standing-label {
-    font-weight: 600;
-    color: #ccc;
-}
-
-.your-standing-value {
-    color: #fff;
-}
-
-/********************************************GameScoreView********************************************/
+/**************************************************************************
+* GAME SCORE VIEW
+**************************************************************************/
 .score-screen {
   position: fixed;       /* stays in place, covers everything */
   top: 0;
@@ -1325,7 +1328,7 @@ body {
   margin-top: 28px;
 }
 
-/* Shared base style */
+/* SHARED BASE STYLE */
 .play-again-btn,
 .return-btn {
   margin-top: 18px;

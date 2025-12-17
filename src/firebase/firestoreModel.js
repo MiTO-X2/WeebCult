@@ -53,7 +53,6 @@ export function logout() {
  ***************************************************/
 export function saveUserStats(uid,stats){
     const userRef = doc(db, "users", uid)
-    console.log("Saving stats to Firestore:", uid, stats);
     return setDoc( userRef, {stats}, {merge: true});
 }
 

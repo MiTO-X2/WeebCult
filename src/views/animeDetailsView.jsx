@@ -56,43 +56,25 @@ export function AnimeDetailsView(props) {
                     {/* CATEGORY */}
                     <div className="details-column">
                         <h4 className="details-heading">Category</h4>
-                        {["Name", "Role", "VoiceActor"].map(value => (
-                            <div
-                                key={value}
-                                className={`option-box ${props.quizSettings.category === value ? "selected" : ""}`}
-                                onClick={() => props.onSelectCategory(value)}
-                            >
-                                {value}
-                            </div>
-                        ))}
+                        {["Name", "Role", "VoiceActor"].map(value => 
+                            renderOptionCB(value, props.quizSettings.category, props.onSelectCategory)
+                        )}
                     </div>
 
                     {/* MODE */}
                     <div className="details-column">
                         <h4 className="details-heading">Mode</h4>
-                        {["Solo", "1v1"].map(value => (
-                            <div
-                                key={value}
-                                className={`option-box ${props.quizSettings.mode === value ? "selected" : ""}`}
-                                onClick={() => props.onSelectMode(value)}
-                            >
-                                {value}
-                            </div>
-                        ))}
+                        {["Solo", "1v1"].map(value => 
+                            renderOptionCB(value, props.quizSettings.mode, props.onSelectMode)
+                        )}
                     </div>
 
                     {/* TYPE */}
                     <div className="details-column">
                         <h4 className="details-heading">Type</h4>
-                        {["Best10", "Best10 Timed", "Best25", "Best25 Timed"].map(value => (
-                            <div
-                                key={value}
-                                className={`option-box ${props.quizSettings.type === value ? "selected" : ""}`}
-                                onClick={() => props.onSelectType(value)}
-                            >
-                                {value}
-                            </div>
-                        ))}
+                        {["Best10", "Best10 Timed", "Best25", "Best25 Timed"].map(value =>
+                            renderOptionCB(value, props.quizSettings.type, props.onSelectType)
+                        )}
                     </div>
                 </div>
 
@@ -104,4 +86,16 @@ export function AnimeDetailsView(props) {
             </div>
         </div>
     );
+
+    function renderOptionCB(value, selectedValue, onSelect) {
+        return (
+            <div
+                key={value}
+                className={`option-box ${selectedValue === value ? "selected" : ""}`}
+                onClick={() => onSelect(value)}
+            >
+                {value}
+            </div>
+        );
+    }
 }

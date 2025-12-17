@@ -47,34 +47,7 @@ export function SidebarView(props) {
                         <p className="sidebar-empty">🎉 No quizzes yet! Start your first quiz and see your scores here. 🚀</p>
                     )}
 
-                    {props.quizzes.map((quiz, index) => (
-                        <CardFlip
-                            key={index}
-                            isFlipped={flippedIndexes.includes(index)}
-                            flipDirection="horizontal"
-                        >
-                            {/* FRONT SIDE */}
-                            <div className="quiz-item quiz-front" onClick={() => handleFlipACB(index)}>
-                                <div className="quiz-front-content">
-                                    <p>Tap to see your score and details! 🎯</p>
-                                </div>
-                            </div>
-
-                            {/* BACK SIDE */}
-                            <div className="quiz-item quiz-back" onClick={() => handleFlipACB(index)}>
-                                <div className="quiz-back-content">
-                                    {quiz.animeImg && <img className="quiz-thumb" src={quiz.animeImg} alt="" />}
-                                    <div className="quiz-info">
-                                        <p><strong>Score:</strong> {quiz.score}/{quiz.total}</p>
-                                        <p>{quiz.category} | {quiz.mode} | {quiz.type}</p>
-                                        <p className="quiz-date">
-                                            {new Date(quiz.completedAt).toLocaleString()}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </CardFlip>
-                    ))}
+                    {props.quizzes.map(renderQuizItemCB)}
                 </div>
 
                 {/* WeebCult Logo */}
@@ -89,4 +62,35 @@ export function SidebarView(props) {
             </div>
         </div>
     );
+
+    function renderQuizItemCB(quiz, index) {
+        const key = quiz.completedAt || index;
+
+        return (
+            <CardFlip
+                key={key}
+                isFlipped={flippedIndexes.includes(index)}
+                flipDirection="horizontal"
+            >
+                {/* FRONT SIDE */}
+                <div className="quiz-item quiz-front" onClick={() => handleFlipACB(index)}>
+                    <div className="quiz-front-content">
+                        <p>Tap to see your score and details! 🎯</p>
+                    </div>
+                </div>
+
+                {/* BACK SIDE */}
+                <div className="quiz-item quiz-back" onClick={() => handleFlipACB(index)}>
+                    <div className="quiz-back-content">
+                        {quiz.animeImg && <img className="quiz-thumb" src={quiz.animeImg} alt="" />}
+                        <div className="quiz-info">
+                            <p><strong>Score:</strong> {quiz.score}/{quiz.total}</p>
+                            <p>{quiz.category} | {quiz.mode} | {quiz.type}</p>
+                            <p className="quiz-date">{new Date(quiz.completedAt).toLocaleString()}</p>
+                        </div>
+                    </div>
+                </div>
+            </CardFlip>
+        );
+    }
 }
