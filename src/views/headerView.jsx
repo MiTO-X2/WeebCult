@@ -25,7 +25,6 @@ export function HeaderView(props) {
     function handleQueryChangeACB(event) {
         console.log("HeaderView: queryChangeACB triggered, new query =", event.target.value);
         props.onQueryChange(event.target.value);
-        props.onSearch(); // auto-search on typing
     }
 
     function handleSearchClickACB() {
