@@ -12,15 +12,15 @@ import { connect } from "react-redux";
 import { LeaderboardView } from "../views/leaderboardView.jsx";
 import { SuspenseView } from "../views/suspenseView.jsx";
 import { closeLeaderboard } from "../redux/slices/leaderboardSlice.js";
+import { selectRankedLeaderboard, selectUserRankedEntry } from "../redux/selectors/leaderboardSelectors.js";
 
 // ------------------- mapStateToProps -------------------
 function mapStateToProps(state) {
     return {
-        leaderboardEntries: state.leaderboard.entries || [],
-        userEntry: state.leaderboard.userEntry,
+        leaderboardEntries: selectRankedLeaderboard(state),      // already sorted + ranked
+        userEntry: selectUserRankedEntry(state, state.user.uid),        // user's ranked entry
         isOpen: state.leaderboard.isOpen,
-        isLoading: state.leaderboard.loading,
-        userUid: state.user.uid
+        isLoading: state.leaderboard.loading
     };
 }
 
@@ -35,8 +35,6 @@ function LeaderboardPresenterComponent(props) {
 
     if (props.isLoading) return <SuspenseView />;
 
-    // Take top 10
-    //const top10 = props.leaderboardEntries.slice(0, 10);
 
     return (
         <LeaderboardView

@@ -31,47 +31,13 @@ function mapStateToProps(state) {
   };
 }
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = (dispatch, ownProps) => ({
   onClose: () => dispatch(setSelectedAnimeId(null)),
   onSelectCategory: (value) => dispatch(setQuizCategory(value)),
   onSelectMode: (value) => dispatch(setQuizMode(value)),
   onSelectType: (value) => dispatch(setQuizType(value)),
-
-  // Start quiz using the quizThunks thunk
-  onPlay: (characters, quizSettings, anime) => {
-    if (!characters || !quizSettings.category || !quizSettings.mode || !quizSettings.type) {
-      console.warn("Cannot start quiz: missing data or settings");
-      return;
-    }
-
-    // Close modal FIRST
-    dispatch(setSelectedAnimeId(null));
-
-    // Filter for voice actor category
-    let filteredCharacters = characters;
-    if (quizSettings.category === "voiceActor") {
-      filteredCharacters = characters.filter(c => c.voice_actors && c.voice_actors.length > 0);
-      if (filteredCharacters.length === 0) {
-        alert("No voice actor data available for this anime. Please choose another category.");
-        return;
-      }
-    }
-
-    // Dispatch the thunk from the quizThunks
-    dispatch(
-      startQuizThunk({
-        characters: filteredCharacters,
-        category: quizSettings.category,
-        mode: quizSettings.mode,
-        type: quizSettings.type,
-        anime: {
-          id: anime.id,
-          title: anime.title,
-          image: anime.image
-        }
-      })
-    );
-  }
+  // Pass dispatch itself to component for dynamic props
+  dispatch
 });
 
 function AnimeDetailsPresenterComponent(props) {
@@ -80,7 +46,22 @@ function AnimeDetailsPresenterComponent(props) {
   // Wait for data to load
   if (!props.anime || !props.characters) return <SuspenseView />;
 
-  return <AnimeDetailsView {...props} onPlay={() => props.onPlay(props.characters, props.quizSettings, props.anime)} />;
+  const handlePlayACB = () => {
+    const { characters, quizSettings, anime, dispatch, onClose } = props;
+
+    if (!quizSettings || !quizSettings.category || !quizSettings.mode || !quizSettings.type) {
+      alert("Please select category, mode, and type before playing!");
+      return;
+    }
+
+    // Close modal first
+    onClose();
+    
+    // Start quiz
+    dispatch(startQuizThunk({ characters, quizSettings, anime }));
+  };
+
+  return <AnimeDetailsView {...props} onPlay={handlePlayACB} />;
 }
 
 export const AnimeDetailsPresenter =

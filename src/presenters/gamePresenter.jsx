@@ -16,33 +16,17 @@
 import { connect } from "react-redux";
 import { GameView } from "../views/gameView.jsx"; 
 import { GameScorePresenter } from "./gameScorePresenter.jsx"; 
+import { selectCurrentQuestionWithAnswers } from "/src/redux/selectors/quizSelectors.js"; 
 import { startQuizThunk, answerThunk, timerExpiredThunk } from "/src/redux/thunks/quizThunks.js"; 
 
 /**********************************************************************
  * mapStateToProps — what the View reads
  **********************************************************************/
 function mapStateToProps(state) {
-  const q = state.quiz.currentQuestion;
-  const questionPrompt = q
-  ? q.category === "role"
-    ? `What is the role of this character"?`
-    : q.category === "name"
-      ? `Who is this character?`
-      : q.category === "voiceActor"
-        ? `Who is the Japanese voice actor for this character?`
-        : `Who is this character?`
-  : "";
-
   return {
     quizActive: state.quiz.quizActive,
     quizFinished: state.quiz.quizFinished,
-    question: q
-      ? {
-          image: q.image || "/characters/default.png",
-          prompt: questionPrompt, // question text
-          answers: state.quiz.answersShuffled.map((a) => ({ text: a }))
-        }
-      : { image: "", prompt: "", answers: [] },
+    question: selectCurrentQuestionWithAnswers(state),
     score: state.quiz.score,
 
     // SOLO + MULTiplayer

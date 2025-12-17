@@ -24,8 +24,8 @@ function mapStateToProps(state) {
         score: q.score ?? 0,
         total: q.total ?? 0,
         category: q.category ?? "Unknown",
-        mode: q.mode ?? "solo",
-        type: q.type ?? "best10",
+        mode: q.mode ?? "Solo",
+        type: q.type ?? "Best10",
         completedAt: q.completedAt ?? Date.now(),
         animeImg: q.animeImg ?? null
     }));
