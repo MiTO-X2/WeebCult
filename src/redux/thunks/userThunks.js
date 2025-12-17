@@ -15,8 +15,6 @@ import { auth, login, logout, loadUserProfile } from '/src/firebase/firestoreMod
  ***********************************************************************/
 export const listenToAuthChangesThunk = () => (dispatch) => {
     onAuthStateChanged(auth, async (user) => {
-        console.log("Auth state changed:", user);
-
         if (!user) {
             // User logged out -> clear entire user state
             dispatch(clearUser());

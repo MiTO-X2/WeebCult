@@ -9,7 +9,7 @@ detailsListener.startListening({
     const id = action.payload;
     if (!id) return; // closing modal
 
-    listenerApi.dispatch(loadAnimeDetails(id));
-    listenerApi.dispatch(loadAnimeCharacters(id));
+    await listenerApi.dispatch(loadAnimeDetails(id));
+    await listenerApi.dispatch(loadAnimeCharacters(id));
   }
 });

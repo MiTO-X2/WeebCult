@@ -22,17 +22,15 @@ const initialState = {
     details: { promiseState: makePromiseState() },
     characters: { promiseState: makePromiseState() },
     quizSettings: {                 // Store selected quiz options
-        category: null,             // "name" | "role" | "voiceActor"
-        mode: null,                 // "solo" | "1v1"
-        type: null                  // "best10" | "timed"
+        category: null,             // "Name" | "Role" | "VoiceActor"
+        mode: null,                 // "Solo" | "1v1"
+        type: null                  // "Best10" | "Best10 Timed" | "Best25" | "Best25 Timed"
     }
 };
 
 /************************************************************
- * 1. Thunks
+ * Thunks
  ************************************************************/
-
-// Hämtar all anime information från anime id
 export const loadAnimeDetails = createAsyncThunk(
     "details/loadAnimeDetails",
     async (id) => {
@@ -41,7 +39,6 @@ export const loadAnimeDetails = createAsyncThunk(
     }
 );
 
-// Hämtar alla karaktärer från anime id
 export const loadAnimeCharacters = createAsyncThunk(
     "details/loadAnimeCharacters",
     async (id) => {
@@ -51,7 +48,7 @@ export const loadAnimeCharacters = createAsyncThunk(
 );
 
 /************************************************************
- * 2. Slice
+ * Slice
  ************************************************************/
 export const detailsSlice = createSlice({
     name: "details",
@@ -67,13 +64,13 @@ export const detailsSlice = createSlice({
             }
         },
         setQuizCategory(state, action) {
-            state.quizSettings.category = action.payload; // "name" | "role" | "voiceActor"
+            state.quizSettings.category = action.payload; // "Name" | "Role" | "VoiceActor"
         },
         setQuizMode(state, action) {
-            state.quizSettings.mode = action.payload; // "solo" | "1v1"
+            state.quizSettings.mode = action.payload; // "Solo" | "1v1"
         },
         setQuizType(state, action) {
-            state.quizSettings.type = action.payload; // "best10" | "timed"
+            state.quizSettings.type = action.payload; // "Best10" | "Best10 Timed" | "Best25" | "Best25 Timed"
         },
         resetDetails(state) {
                 state.selectedId = null;
@@ -129,9 +126,6 @@ export const detailsSlice = createSlice({
     }
 });
 
-/************************************************************
- * 3. Exports
- ************************************************************/
 export const { 
     setSelectedAnimeId,
     setQuizCategory,

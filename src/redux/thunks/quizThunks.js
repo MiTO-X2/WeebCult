@@ -78,7 +78,6 @@ export function finishQuizThunk() {
     const { quiz, user } = getState();
 
     if (!user.uid) {
-      console.log("Anonymous user -> stats not persisted");
       return;
     }
 

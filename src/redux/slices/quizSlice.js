@@ -12,9 +12,9 @@ function shuffle(array) {
 
 const initialState = {
     quizActive: false,
-    category: null,          // "name" | "role" | "voiceActor"
-    mode: null,              // "solo" | "1v1"
-    type: null,              // "best10" | "timed" | "best25" | "best25-timed"
+    category: null,          // "Name" | "Role" | "VoiceActor"
+    mode: null,              // "Solo" | "1v1"
+    type: null,              // "Best10" | "Best10 Timed" | "Best25" | "Best25 Timed"
     timeLimit: 10,           // seconds per question (if timed)
 
     questions: [],           // array of prepared question objects

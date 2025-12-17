@@ -7,6 +7,12 @@ export const appInit = createAction("APP_INIT");
 
 const MAIN_GENRES = ["Action", "Comedy", "Slice of Life", "Fantasy"];
 
+// Helper: abort-safe dispatch ----------
+async function safeDispatch(listenerApi, thunk) {
+  if (listenerApi.signal.aborted) return null;
+  return listenerApi.dispatch(thunk).unwrap();
+}
+
 listenerMiddleware.startListening({
   actionCreator: appInit,
   effect: async (_, listenerApi) => {
@@ -18,20 +24,25 @@ listenerMiddleware.startListening({
     listenerApi.dispatch(appInitialized());
 
     try {
-      await listenerApi.dispatch(fetchTrending()).unwrap();
+      // Fetch trending anime
+      await safeDispatch(listenerApi, fetchTrending());
 
-      if (listenerApi.signal.aborted) return;
+      // Fetch all genres
+      const allGenres = await safeDispatch(listenerApi, fetchAllGenres());
+      if (!allGenres) return;
 
-      const allGenres = await listenerApi.dispatch(fetchAllGenres()).unwrap();
+      // Filter main genres
       const mainGenres = allGenres.filter(g => MAIN_GENRES.includes(g.name));
 
+      // Fetch anime by genre in series
       for (const genre of mainGenres) {
-        await listenerApi
-          .dispatch(fetchAnimeByGenre({ genreID: genre.id, genreName: genre.name }))
-          .unwrap();
-        await new Promise(res => setTimeout(res, 1000));
+        await safeDispatch(
+          listenerApi,
+          fetchAnimeByGenre({ genreID: genre.id, genreName: genre.name })
+        );
 
-        if (listenerApi.signal.aborted) return;
+        // short delay to avoid hammering API
+        await new Promise(res => setTimeout(res, 1000));
       }
     } catch (err) {
       console.error("App init failed:", err);

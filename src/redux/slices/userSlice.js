@@ -23,8 +23,7 @@ const initialState = {
     ready: false,      // Firebase auth listener sets this
 };  
 
-// ------------------------ Thunks ------------------------
-
+/************* Thunks *************/
 // --------------------------------------------------------
 // Load stats for a user
 // --------------------------------------------------------
@@ -50,7 +49,6 @@ export const updateUserStats = createAsyncThunk(
     if (!uid) return rejectWithValue("Not logged in");
 
     try {
-      console.log("Saving stats to Firestore:", uid, stats); // debug
       await saveUserStats(uid, stats);
       return stats;
     } catch (err) {

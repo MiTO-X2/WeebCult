@@ -7,10 +7,8 @@
  *   - No side effects
  *   - Only structural combination of slices
  ***************************************************************/
-// 1. Import combineReducers
-import { combineReducers } from '@reduxjs/toolkit';
 
-// 2. Import reducers from the slices (NO business logic here)
+import { combineReducers } from '@reduxjs/toolkit';
 import userReducer from './slices/userSlice.js';
 import animeReducer from './slices/animeSlice.js';
 import detailsReducer from './slices/detailsSlice.js';
@@ -19,7 +17,7 @@ import factReducer from './slices/factSlice.js';
 import sidebarReducer from './slices/sidebarSlice.js';  
 import leaderboardReducer from './slices/leaderboardSlice.js';
 
-// 3. Combine reducers into a single root reducer (EXPORT ONLY)
+// Combine reducers into a single root reducer
 export default combineReducers({
         user: userReducer,       // User authentication, profile, tokens
         anime: animeReducer,     // Anime lists, genres, filters

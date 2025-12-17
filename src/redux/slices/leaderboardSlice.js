@@ -16,8 +16,9 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { updateLeaderboardEntry, loadLeaderboard, loadLeaderboardEntry } from "/src/firebase/firestoreModel";
 
 
-//  Thunks
-
+/************************************************************
+ * Thunks
+ ************************************************************/
 // --------------------------------------------------------
 // Load all leaderboard entries (global)
 // --------------------------------------------------------
@@ -48,19 +49,6 @@ export const fetchUserLeaderboardEntry = createAsyncThunk(
     }
 );
 
-// --------------------------------------------------------
-// Update logged-in user's leaderboard entry
-//
-// Called after a user finishes a quiz:
-//
-// leaderboardData:
-//   {
-//      username,
-//      bestScore,
-//      quizzesCompleted,
-//      lastUpdated
-//   }
-// --------------------------------------------------------
 export const saveUserLeaderboardEntry = createAsyncThunk(
     "leaderboard/saveUserLeaderboardEntry",
     async ({ uid, leaderboardData }, { rejectWithValue }) => {
@@ -73,10 +61,27 @@ export const saveUserLeaderboardEntry = createAsyncThunk(
     }
 );
 
+/************************************************************
+* Custom thunk: Open leaderboard + fetch data
+************************************************************/
+export const openLeaderboardThunk = () => (dispatch, getState) => {
+    const { user } = getState();
 
-// ====================================================================
-//  Slice
-// ====================================================================
+    // Open leaderboard in state
+    dispatch(openLeaderboard());
+
+    // Fetch global leaderboard
+    dispatch(fetchLeaderboard());
+
+    // Fetch user's leaderboard entry if logged in
+    if (user?.uid) {
+        dispatch(fetchUserLeaderboardEntry(user.uid));
+    }
+};
+
+/************************************************************
+* Slice
+************************************************************/
 
 const initialState = {
     entries: [],          // global leaderboard array

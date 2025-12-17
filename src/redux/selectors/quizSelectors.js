@@ -24,3 +24,19 @@ export const selectQuizAnime = (state) => ({
   title: state.quiz.animeTitle,
   image: state.quiz.animeImg
 });
+
+export const selectRecentQuizzes = (state) => {
+  const allQuizzes = state.user.stats.quizzes || [];
+  return [...allQuizzes]
+    .sort((a, b) => b.completedAt - a.completedAt)
+    .slice(0, 3)
+    .map(q => ({
+      score: q.score ?? 0,
+      total: q.total ?? 0,
+      category: q.category ?? "Unknown",
+      mode: q.mode ?? "Solo",
+      type: q.type ?? "Best10",
+      completedAt: q.completedAt ?? Date.now(),
+      animeImg: q.animeImg ?? null
+    }));
+};
