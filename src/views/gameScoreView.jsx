@@ -1,4 +1,9 @@
 export function GameScoreView(props) {
+  function handlePlayAgainACB() {
+    props.onPlayAgain();
+    window.location.href = "#/game";
+  }
+
   return (
     <div className="score-screen">
       <h1 className="app-title">WeebCult</h1>
@@ -8,7 +13,7 @@ export function GameScoreView(props) {
           {props.category} · {props.mode} · {props.type}
         </div>
 
-        {props.mode === "solo" && (
+        {props.mode === "Solo" && (
           <div className="score-main">
             {props.score} / {props.total}
           </div>
@@ -31,12 +36,21 @@ export function GameScoreView(props) {
 
         <div className="score-divider" />
 
-        <button
-          className="return-btn"
-          onClick={() => window.location.href = "/"}
-        >
-          Return to Main Page
-        </button>
+        <div className="score-actions">
+          <button
+            className="play-again-btn"
+            onClick={handlePlayAgainACB}
+          >
+            Play Again
+          </button>
+
+          <button
+            className="return-btn"
+            onClick={() => window.location.href = "/"}
+          >
+            Return to Main Page
+          </button>
+        </div>
       </div>
     </div>
   );

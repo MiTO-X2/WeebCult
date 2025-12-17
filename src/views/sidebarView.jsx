@@ -54,22 +54,24 @@ export function SidebarView(props) {
                             flipDirection="horizontal"
                         >
                             {/* FRONT SIDE */}
-                            <div className="quiz-item" onClick={() => handleFlipACB(index)}>
-                                <div className="quiz-info">
-                                    <p><strong>{quiz.score}/{quiz.total}</strong> — {quiz.category}</p>
-                                    <p>{quiz.mode} | {quiz.type}</p>
-                                    <p className="quiz-date">
-                                        {new Date(quiz.completedAt).toLocaleString()}
-                                    </p>
+                            <div className="quiz-item quiz-front" onClick={() => handleFlipACB(index)}>
+                                <div className="quiz-front-content">
+                                    <p>Tap to see your score and details! 🎯</p>
                                 </div>
-                                {quiz.animeImg && (
-                                    <img className="quiz-thumb" src={quiz.animeImg} alt="" />
-                                )}
                             </div>
 
                             {/* BACK SIDE */}
                             <div className="quiz-item quiz-back" onClick={() => handleFlipACB(index)}>
-                                <p>More info or fun details here!</p>
+                                <div className="quiz-back-content">
+                                    {quiz.animeImg && <img className="quiz-thumb" src={quiz.animeImg} alt="" />}
+                                    <div className="quiz-info">
+                                        <p><strong>Score:</strong> {quiz.score}/{quiz.total}</p>
+                                        <p>{quiz.category} | {quiz.mode} | {quiz.type}</p>
+                                        <p className="quiz-date">
+                                            {new Date(quiz.completedAt).toLocaleString()}
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </CardFlip>
                     ))}

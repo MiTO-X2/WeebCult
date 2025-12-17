@@ -7,9 +7,9 @@
  *   - Behaves like AnimeDetailsView popup
  *
  * PROPS expected:
- *   props.entries       → array of sorted + ranked entries [{ rank, uid, username, bestScore, quizzesCompleted }]
- *   props.userEntry     → single entry of the logged-in user { rank, username, bestScore, quizzesCompleted }
- *   props.onClose       → close popup
+ *   props.entries       -> array of sorted + ranked entries [{ rank, uid, username, bestScore, quizzesCompleted }]
+ *   props.userEntry     -> single entry of the logged-in user { rank, username, bestScore, quizzesCompleted }
+ *   props.onClose       -> close popup
  *
  * NO business logic here:
  *   - NO sorting here (Presenter does it)

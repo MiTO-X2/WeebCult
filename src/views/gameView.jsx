@@ -25,6 +25,10 @@ import WeebCultLogo from "../WeebCultLogo.png";
 export function GameView(props) {
   const q = props.question;
 
+  function handleOnCancelACB(){
+    window.location.href = "/";
+  }
+
   // Determine which answer is correct/wrong for flash animation
   const getAnswerClass = (a) => {
     if (!props.selectedAnswer) return "";
@@ -39,7 +43,7 @@ export function GameView(props) {
 
       {/* TOP BAR */}
       <div className="top-bar">
-        <div className="logo-title" onClick={props.onExit}>
+        <div className="logo-title" onClick={handleOnCancelACB}>
           <img 
             src={WeebCultLogo}       
             alt="WeebCult Logo"
@@ -50,7 +54,7 @@ export function GameView(props) {
 
         {/* SCORE AREA */}
         <div className="score-area">
-          {props.mode === "solo" && (
+          {props.mode === "Solo" && (
             <div className="solo-score active">
               <span>Score:</span> {props.score}
             </div>
@@ -75,14 +79,14 @@ export function GameView(props) {
       <div className="left-info">
         <div className="question-number">Question {props.index + 1}</div>
 
-        {props.type === "timed" && (
+        {(props.type === "Best10 Timed" || props.type === "Best25 Timed") && (
           <div className= "timer-wrapper">
             <CountdownCircleTimer
               key={props.index}               
               isPlaying
               duration={props.timeLimit}      
               colors={["#7b2cbf"]} // base color
-              size={170}
+              size={window.innerWidth <= 768 ? 80 : 170}
               onComplete={() => {
                 props.onTimeUp();
                 return { shouldRepeat: false };
@@ -121,6 +125,15 @@ export function GameView(props) {
           </button>
         ))}
       </div>
+
+      {/* CANCEL BUTTON */}
+      <button
+        className="cancel-btn"
+        onClick={handleOnCancelACB}
+      >
+        Cancel
+      </button>
+
     </div>
   );
 }

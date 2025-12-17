@@ -56,13 +56,13 @@ export function AnimeDetailsView(props) {
                     {/* CATEGORY */}
                     <div className="details-column">
                         <h4 className="details-heading">Category</h4>
-                        {["name", "role", "voiceActor"].map(value => (
+                        {["Name", "Role", "VoiceActor"].map(value => (
                             <div
                                 key={value}
                                 className={`option-box ${props.quizSettings.category === value ? "selected" : ""}`}
                                 onClick={() => props.onSelectCategory(value)}
                             >
-                                {value === "name" ? "Character names" : value === "role" ? "Character role" : "Voice actors"}
+                                {value}
                             </div>
                         ))}
                     </div>
@@ -70,13 +70,13 @@ export function AnimeDetailsView(props) {
                     {/* MODE */}
                     <div className="details-column">
                         <h4 className="details-heading">Mode</h4>
-                        {["solo", "1v1"].map(value => (
+                        {["Solo", "1v1"].map(value => (
                             <div
                                 key={value}
                                 className={`option-box ${props.quizSettings.mode === value ? "selected" : ""}`}
                                 onClick={() => props.onSelectMode(value)}
                             >
-                                {value === "solo" ? "Solo" : "1 v 1"}
+                                {value}
                             </div>
                         ))}
                     </div>
@@ -84,13 +84,13 @@ export function AnimeDetailsView(props) {
                     {/* TYPE */}
                     <div className="details-column">
                         <h4 className="details-heading">Type</h4>
-                        {["best10", "timed"].map(value => (
+                        {["Best10", "Best10 Timed", "Best25", "Best25 Timed"].map(value => (
                             <div
                                 key={value}
                                 className={`option-box ${props.quizSettings.type === value ? "selected" : ""}`}
                                 onClick={() => props.onSelectType(value)}
                             >
-                                {value === "best10" ? "Best of 10" : "Best of 10 Timed"}
+                                {value}
                             </div>
                         ))}
                     </div>
