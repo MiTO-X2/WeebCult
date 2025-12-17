@@ -14,22 +14,20 @@
 import { createRoot } from "react-dom/client";
 import { ReactRoot } from "./reactRoot.jsx";
 import { Provider } from "react-redux";
-import { PersistGate } from "redux-persist/integration/react";
-import { store, persistor } from "./redux/store.js";
+import { store } from "./redux/store.js";
 import { listenToAuthChangesThunk } from "./redux/thunks/userThunks.js";
 
-// Dispatch thunks
 store.dispatch(listenToAuthChangesThunk());
+
+// Dispatch APP_INIT once at startup
 store.dispatch({ type: "APP_INIT" });
 
-// Create React root
+// Create the React root
 const root = createRoot(document.getElementById("root"));
 
-// Correct wrapping: Provider first, PersistGate inside
+// TODO: Render the application wrapped in Redux Provider
 root.render(
-  <Provider store={store}>
-    <PersistGate loading={<div>Loading...</div>} persistor={persistor}>
-      <ReactRoot />
-    </PersistGate>
-  </Provider>
+    <Provider store={store}>
+        <ReactRoot />
+    </Provider>
 );
