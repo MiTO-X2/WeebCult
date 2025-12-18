@@ -53,13 +53,19 @@ export function SidebarView(props) {
                 {/* Random Safe Neko */}
                 <div className="neko-random">
                     {props.neko && (
-                        <div className="neko-frame">
-                            <img
-                                src={props.neko.image_url}
-                                alt="Random safe neko"
-                                className="neko-random-img"
-                            />
-                        </div>
+                        <a 
+                            href={props.neko.image_url} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                        >
+                            <div className="neko-frame">
+                                <img
+                                    src={props.neko.image_url}
+                                    alt="Random safe neko"
+                                    className="neko-random-img"
+                                />
+                            </div>
+                        </a>
                     )}
                 </div>
             </div>
