@@ -34,29 +34,49 @@ body {
 .header-left {
     display: flex;                 /* Horizontal alignment of children */
     align-items: center;           /* Vertically center them */
-    gap: 10px;                     /* Space between logo and title */
+    gap: 14px;                     /* Space between logo and title */
     cursor: pointer;               /* Makes entire left header clickable */
+    padding-left: 16px;
 }
 
 .header-logo {
-    height: 40px;                  /* Logo height */
-    width: 40px;                   /* Logo width */
+    height: 42px;                  /* Logo height */
+    width: 42px;                   /* Logo width */
+    border-radius: 10px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-.header-logo:hover {
-    filter: brightness(1.2);       /* Brighten logo on hover */
-    transition: 0.2s;              /* Smooth hover transition */
+.header-left:hover .header-logo {
+    transform: scale(1.05);
+    box-shadow: 0 0 12px rgba(182, 115, 255, 0.35);
 }
 
 .header-title {
-    font-size: 25px;               /* Header title font size */
-    font-weight: 600;              /* Make it bold */
-    color: #b673ff;                /* Purple accent color */
+    font-size: 26px;               /* Header title font size */
+    font-weight: 700;              /* Make it bold */
+    letter-spacing: 0.4px;
+    color: #b673ff; /* softer than pure purple */
+    line-height: 1;
+    transition: color 0.25s ease, text-shadow 0.25s ease;
 }
 
-.header-title:hover {
-    color: #bb80ff;                /* Lighter purple on hover */
-    transition: 0.2s;              /* Smooth color fade */
+.header-left:hover .header-title {
+    color: #9b4dff;
+    text-shadow: 0 0 10px rgba(182, 115, 255, 0.35);
+}
+
+.header-title::after {
+    content: "";
+    display: block;
+    height: 2px;
+    width: 0%;
+    background: linear-gradient(90deg, #b673ff, #9b4dff);
+    margin-top: 4px;
+    transition: width 0.25s ease;
+}
+
+.header-left:hover .header-title::after {
+    width: 100%;
 }
 
 /* CENTER SEARCH BAR */
@@ -206,7 +226,7 @@ body {
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 16px;
+        gap: 12px;
         width: 100%;
     }
 
@@ -216,8 +236,9 @@ body {
     }
 
     .header-title {
-        font-size: 40px;  /* bigger title */
+        font-size: 36px;  /* bigger title */
         font-weight: 700;
+        letter-spacing: 0.6px;
     }
 
     /* Search row */
@@ -291,33 +312,36 @@ body {
     bottom: 0;                     /* Align to bottom of page */
     left: 0;                       /* Align to left edge */
     width: 100%;                   /* Full width */
-    height: 80px;                  /* Footer height */
+    min-height: 80px;                  /* Footer height */
     background-color: #121212;     /* Dark background */
     display: flex;                 /* Enable flexbox */
     flex-direction: column;        /* Stack logo above text */
     align-items: center;           /* Center horizontally */
     justify-content: center;       /* Center vertically */
     border-top: 1px solid #1f1f1f; /* Subtle top border */
-    padding: 5px 0;                /* Vertical padding */
+    padding: 10px 0;                /* Vertical padding */
     box-sizing: border-box;        /* Include padding in height */
     text-align: center;            /* Center footer text */
     z-index: 1000;                 /* Keep above content */
+    transition: background-color 0.25s ease;
 }
 
 .footer-logo {
     cursor: pointer;               /* Logo is clickable */
-    margin-bottom: 3px;            /* Small spacing under logo */
+    margin-bottom: 6px;            /* Small spacing under logo */
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .footer-logo-img {
-    height: 40px;                  /* Size of logo image */
-    width: 40px;
+    height: 42px;                  /* Size of logo image */
+    width: 42px;
+    border-radius: 10px; 
     display: block;                /* Prevent inline spacing issues */
 }
 
-.footer-logo:hover img {
-    filter: brightness(1.2);       /* Brighten logo on hover */
-    transition: 0.2s;              /* Smooth effect */
+.footer-logo:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 12px rgba(182, 115, 255, 0.35); /* subtle glow like header */
 }
 
 /* TEXT */
@@ -325,19 +349,29 @@ body {
     display: flex;                 /* Vertical stack of texts */
     flex-direction: column;
     align-items: center;
-    gap: 0;                        /* No extra spacing */
+    gap: 2px;                        /* No extra spacing */
+    line-height: 1.2;
 }
 
 .footer-text span {
-    color: white;                  /* Regular footer text */
+    font-size: 12px;
+    color: white;
 }
+
 .footer-text p {
     margin: 0;                     /* Remove default spacing */
     padding: 0;
     font-size: 14px;               /* Text size */
     font-weight: 600;              /* Bold */
     color: #b673ff;                /* Purple highlight */
-    line-height: 1.1;              /* Compact line spacing */
+    letter-spacing: 0.3px;              /* Compact line spacing */
+}
+
+/* Hover effects on text */
+.footer-bar:hover .footer-text p {
+    color: #bb80ff;
+    text-shadow: 0 0 8px rgba(182, 115, 255, 0.3);
+    transition: color 0.25s ease, text-shadow 0.25s ease;
 }
 
 /************************************************************************** 
@@ -470,6 +504,7 @@ body {
     -webkit-box-orient: vertical;
     overflow: hidden;              /* Hide overflowing text */
     text-overflow: ellipsis;       /* Add "..." truncation */
+    margin-bottom: 2px;
 }
 
 .search-results-grid {
@@ -478,6 +513,41 @@ body {
   justify-content: center;       /* center the cards horizontally */
   gap: 16px 24px;               /* vertical + horizontal spacing */
   padding: 10px 0;              /* vertical padding */
+}
+
+.row-item-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+
+    font-size: 0.75rem;                 /* smaller than title */
+    letter-spacing: 0.02em;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Base pill (shared by type, year, rating) */
+.meta-pill {
+    padding: 2px 6px;
+    border-radius: 4px;
+
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1;
+
+    display: inline-flex;
+    align-items: center;
+
+    background-color: rgba(182, 115, 255, 0.15);
+    color: rgba(255, 255, 255, 0.75);
+}
+
+/* Hover polish */
+.row-item:hover .meta-pill{
+    background-color: rgba(182, 115, 255, 0.3);
 }
 
 /************************************************************************** 
@@ -490,12 +560,18 @@ body {
     left: 0;                       /* Start at the very left */
     width: 100vw;                   /* Full viewport width */
     height: 100vh;                  /* Full viewport height */
-    background-color: rgba(0,0,0,0.55); /* Semi-transparent black overlay */
-    backdrop-filter: blur(6px);    /* Blur background content behind modal */
+    background-color: rgba(0,0,0,0.6); /* Semi-transparent black overlay */
+    backdrop-filter: blur(8px);    /* Blur background content behind modal */
     display: flex;                  /* Use flexbox for centering content */
     justify-content: center;        /* Center horizontally */
     align-items: center;            /* Center vertically */
     z-index: 5000;                  /* Ensure overlay is above all other content */
+    animation: fadeInOverlay 0.25s ease forwards;
+}
+
+@keyframes fadeInOverlay {
+    from {opacity: 0;}
+    to {opacity: 1;}
 }
 
 /* MODAL CARD (FULL-WIDTH) */
@@ -504,49 +580,82 @@ body {
     color: white;                   /* Default text color inside modal */
     width: 85vw;                    /* Make modal occupy 85% of viewport width */
     max-width: 900px;               /* Limit maximum width */
-    padding: 32px;                  /* Inner spacing inside modal */
-    border-radius: 18px;            /* Rounded corners */
+    padding: 36px;                  /* Inner spacing inside modal */
+    border-radius: 20px;            /* Rounded corners */
     position: relative;             /* Needed for absolute positioning of close button */
-    box-shadow: 0 0 25px rgba(0,0,0,0.4); /* Soft shadow around modal */
+    box-shadow: 0 0 35px rgba(182, 115, 255, 0.3);  /* Subtle purple glow */
+    transform: translateY(-20px);
+    opacity: 0;
+    animation: slideInCard 0.3s ease forwards;
+}
+
+@keyframes slideInCard {
+    to {transform: translateY(0); opacity: 1;}
 }
 
 /* TITLE */
 .modal-title {
     margin: 0;                      /* Remove default margins */
+    font-size: 38px;                 
+    font-weight: 700;
     color: #b673ff;                 /* Purple accent color */
-    font-size: 36px;                /* Large title font size */
-    font-weight: 700;               /* Bold font weight */
+    letter-spacing: 0.8px;
+    text-align: center;
+    text-shadow: 0 0 8px rgba(182,115,255,0.35); /* Glow effect */
+    position: relative;            
+    display: inline-block;
+}
+
+.modal-title::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -4px;                   /* Slightly below the text */
+    width: 0%;
+    height: 3px;
+    background-color: #9b4dff;      /* Slightly lighter purple */
+    border-radius: 2px;
+    transition: width 0.25s ease;
+}
+
+/* Hover effect */
+.modal-title:hover::after {
+    width: 100%;                    /* Full underline on hover */
 }
 
 /* Make the link inside modal-title look like plain text */
 .modal-title a {
     color: inherit;                 /* Inherit the purple color */
     text-decoration: none;          /* Remove underline */
+    transition: color 0.25s ease;
 }
 
 /* Hover effect */
 .modal-title a:hover {
     color: #9b4dff;                 /* Change to a warm/orange color on hover */
+    text-shadow: 0 0 10px rgba(182,115,255,0.4);
 }
 
 /* CLOSE BUTTON */
 .modal-close-button {
     position: absolute;             /* Position relative to modal-card */
-    top: 22px;                      /* 22px from top of modal */
-    right: 22px;                    /* 22px from right of modal */
-    background: #333;               /* Dark gray background */
+    top: 20px;                      /* 22px from top of modal */
+    right: 20px;                    /* 22px from right of modal */
+    background: #2b2b2b;               /* Dark gray background */
     color: #d2d2d2;                 /* Light gray text color */
     border: none;                   /* Remove default button border */
-    font-size: 14px;                /* Font size of X button */
-    padding: 6px 12px;              /* Inner spacing inside button */
-    border-radius: 20px;            /* Rounded pill-like button */
+    font-size: 15px;                /* Font size of X button */
+    padding: 6px 14px;              /* Inner spacing inside button */
+    border-radius: 24px;            /* Rounded pill-like button */
     cursor: pointer;                /* Pointer cursor on hover */
-    transition: 0.2s;               /* Smooth transition for hover effects */
+    transition: all 0.2s;               /* Smooth transition for hover effects */
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
 }
 
 .modal-close-button:hover {
     background-color: #333;         /* Slightly lighter background on hover */
     color: #bb80ff;                    /* Purple text on hover */
+    transform: scale(1.05);
 }
 
 /* GRID LAYOUT (3 COLUMNS) */
@@ -563,12 +672,14 @@ body {
 }
 
 .details-heading {
-    font-size: 20px;                /* Heading font size */
+    font-size: 22px;                /* Heading font size */
     font-weight: 600;               /* Semi-bold font */
     color: #b673ff;                 /* Purple accent */
-    margin-bottom: 6px;             /* Space below heading */
+    margin-bottom: 8px;             /* Space below heading */
     border-bottom: 1px solid #444;  /* Underline with subtle line */
     padding-bottom: 6px;            /* Padding for underline spacing */
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
 }
 
 /* OPTION LIST */
@@ -577,7 +688,7 @@ body {
     font-size: 16px;                /* Font size for option text */
     padding: 6px 0;                 /* Vertical padding inside option */
     cursor: pointer;                /* Pointer cursor to indicate clickable */
-    transition: 0.2s;               /* Smooth hover effect transition */
+    transition: color 0.2s, font-weight 0.2s;               /* Smooth hover effect transition */
 }
 
 .option-box:hover {
@@ -600,16 +711,19 @@ body {
     background-color: #424242;      /* Dark gray button background */
     color: #cfcfcf;                 /* Light gray text */
     border: none;                   /* Remove default border */
-    padding: 12px 40px;             /* Vertical + horizontal padding */
-    border-radius: 25px;            /* Rounded pill-style button */
+    padding: 14px 50px;             /* Vertical + horizontal padding */
+    border-radius: 28px;            /* Rounded pill-style button */
     cursor: pointer;                /* Pointer cursor on hover */
-    font-size: 16px;                /* Button text size */
-    transition: 0.2s;               /* Smooth hover transition */
+    font-weight: 600;
+    transition: all 0.25s;
+    box-shadow: 0 0 12px rgba(182,115,255,0.3);
 }
 
 .play-button:hover {
     background-color: #333;      /* Lighter gray on hover */
     color: #bb80ff;                   /* Purple text on hover */
+    transform: scale(1.03);
+    box-shadow: 0 0 20px rgba(182,115,255,0.45);
 }
 
 /**************************************************************************
@@ -642,16 +756,16 @@ body {
     width: 350px;
     max-width: 90%;
     height: 100%;
-    background-color: #1b1b1d;               /* Dark modal background */
+    background-color: #1c1c1e;               /* Dark modal background */
     color: #eee;                             /* Default text color */
-    padding: 28px 28px 16px;
+    padding: 32px 28px 16px;
     display: flex;
     flex-direction: column;
     border-left: 1px solid #2b2b2f;
     box-shadow: -8px 0 25px rgba(0,0,0,0.45);
     border-radius: 0 18px 18px 0;
     transform: translateX(100%);
-    animation: slideIn 0.28s forwards ease-out;
+    animation: slideIn 0.3s forwards ease-out;
     overflow: hidden;
     box-sizing: border-box; /* include padding in width */
 }
@@ -665,31 +779,52 @@ body {
 /* CLOSE BUTTON */
 .sidebar-close-button {
     position: absolute;
-    top: 20px;
-    right: 20px;
+    top: 5px;
+    right: 22px;
     background: #29292d;
     color: #dcdcdc;
     border: none;
     font-size: 15px;
-    padding: 6px 14px;
+    padding: 8px 16px;
     border-radius: 20px;
     cursor: pointer;
-    transition: 0.2s;
+    transition: all 0.25s ease;
 }
 
 .sidebar-close-button:hover {
     background-color: #3a3a3e;
-    color: #c38aff;  /* Purple hover accent */
+    color: #bb80ff;  /* Purple hover accent */
 }
 
 /* TITLE */
 .sidebar-title {
-    margin-top: 10px;
-    margin-bottom: 25px;
-    font-size: 1.5rem;
+    margin-top: 1.75rem;
     font-weight: 700;
     color: #b673ff;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.8px;
+    margin-top: 10px;
+    margin-bottom: 25px;
+    text-align: center;
+    position: relative;
+    display: inline-block;
+    text-shadow: 0 0 8px rgba(182,115,255,0.35);
+    cursor: default;
+}
+
+.sidebar-title::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 0%;
+    height: 3px;
+    background-color: #9b4dff;
+    border-radius: 2px;
+    transition: width 0.25s ease;
+}
+
+.sidebar-title:hover::after {
+    width: 100%;
 }
 
 /* QUIZ LIST */
@@ -729,17 +864,12 @@ body {
 .quiz-front,
 .quiz-back {
     width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px 12px;
     border-radius: 14px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    padding: 12px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     backface-visibility: hidden;
     cursor: pointer;
-    min-height: 80px; /* ensures same height */
-    box-sizing: border-box;
 }
 
 /* FRONT SIDE */
@@ -749,6 +879,7 @@ body {
     font-weight: 600;
 }
 
+/* Front hover lift */
 .quiz-front:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(0,0,0,0.55);
@@ -780,6 +911,7 @@ body {
     backface-visibility: hidden;
 }
 
+/* Back hover lift */
 .quiz-back:hover {
     transform: translateY(-3px);
     box-shadow: 0 6px 18px rgba(0,0,0,0.6);
@@ -821,10 +953,10 @@ body {
 
 /* WEBCULT LOGO */
 .sidebar-logo {
-    margin-top: 20px;     
+    margin-top: auto;     
     display: flex;
     justify-content: center;
-    padding: 12px 0;
+    padding: 16px 0 12px;
 }
 
 .sidebar-logo-img {
@@ -834,11 +966,11 @@ body {
     height: auto;
     object-fit: contain;
     cursor: pointer;
+    transition: filter 0.25s ease;
 }
 
 .sidebar-logo:hover img {
-    filter: brightness(1.2);       /* Brighten logo on hover */
-    transition: 0.2s;              /* Smooth effect */
+    filter: brightness(1.25);
 }
 
 /**************************************************************************
@@ -947,7 +1079,6 @@ body {
     align-items: center;
     justify-content: flex-start;
     padding: 0;
-    font-family: "Arial", sans-serif;
     background-color: #121212;
     color: white;
     min-height: 100vh;
@@ -968,26 +1099,62 @@ body {
     z-index: 1000;
 }
 
+/* LOGO + TITLE CONTAINER */
 .logo-title {
     display: flex;
     align-items: center;
-    gap: 10px;
-    cursor: pointer;
+    gap: 14px;                 /* Same spacing as header */
+    cursor: pointer;           /* Makes entire area clickable */
 }
 
+/* LOGO */
 .logo {
-    width: 40px;
-    height: 40px;
+    width: 42px;               /* Same as header */
+    height: 42px;
+    border-radius: 10px;       /* Rounded corners like header */
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
+.logo-title:hover .logo {
+    transform: scale(1.05);
+    box-shadow: 0 0 12px rgba(182, 115, 255, 0.35); /* Purple glow */
+}
+
+/* TITLE */
 .title {
-    font-size: 25px;
-    font-weight: 600;
-    color: #b673ff;
+    font-size: 26px;           /* Match header size */
+    font-weight: 700;          /* Bold */
+    letter-spacing: 0.4px;     /* Same as header */
+    color: #b673ff;            /* Purple accent color */
+    line-height: 1;
+    position: relative;
+    display: inline-block;
+    transition: color 0.25s ease, text-shadow 0.25s ease;
+}
+
+.logo-title:hover .title {
+    color: #9b4dff;            /* Hover color */
+    text-shadow: 0 0 10px rgba(182, 115, 255, 0.35); /* Glow on hover */
+}
+
+/* UNDERLINE ANIMATION */
+.title::after {
+    content: "";
+    display: block;
+    height: 2px;
+    width: 0%;
+    background: linear-gradient(90deg, #b673ff, #9b4dff);
+    margin-top: 4px;
+    transition: width 0.25s ease;
+}
+
+.logo-title:hover .title::after {
+    width: 100%;               /* Animate full underline on hover */
 }
 
 /* SCORE & TIMER */
 .score-area, .versus-score {
+    font-family: "Arial", sans-serif;
     display: flex;
     gap: 20px;
 }
@@ -1017,6 +1184,7 @@ body {
 }
 
 .left-info {
+    font-family: "Arial", sans-serif;
     position: absolute;
     left: 20px;
     top: 100px;
@@ -1058,6 +1226,7 @@ body {
 
 /* CENTER INFO */
 .center-info {
+    font-family: "Arial", sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1084,6 +1253,7 @@ body {
 
 /* ANSWERS GRID */
 .answers-grid {
+    font-family: "Arial", sans-serif;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 14px;
@@ -1132,6 +1302,7 @@ body {
 }
 
 .cancel-btn {
+  font-family: "Arial", sans-serif;
   position: fixed;
   bottom: 24px;
   right: 24px;

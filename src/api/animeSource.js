@@ -170,8 +170,13 @@ function transformSingleAnimeCB(a) {
         synopsis: a.synopsis,
         episodes: a.episodes,
         type: a.type,
-        rating: a.rating
+        rating: normalizeRating(a.rating)
     };
+}
+
+function normalizeRating(rating) {
+    if (!rating) return "NR";     // Not Rated
+    return rating.split(" ")[0];  // "PG-13 - Teens..." -> "PG-13"
 }
 
 /*function transformAnimeCB(a) {

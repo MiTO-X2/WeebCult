@@ -20,6 +20,13 @@ export function RowView(props) {
             <div key={`${props.title}-${item.id}-${index}`} className="row-item" onClick={() => props.onSelectItem(item)}>
                 <img src={item.image} alt={item.title} className="row-item-img" />
                 <p className="row-item-title">{item.title}</p>
+
+                {/* NEW: meta info row */}
+                <div className="row-item-meta">
+                    {item.type && <span className="meta-pill meta-type">{item.type}</span>}
+                    {item.year && <span className="meta-pill meta-year">{item.year}</span>}
+                    {item.rating && <span className="meta-pill meta-rating">{item.rating}</span>}
+                </div>
             </div>
         );
     }

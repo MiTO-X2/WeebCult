@@ -49,6 +49,12 @@ export function MainPageView(props) {
                             >
                                 <img src={a.image} alt={a.title} className="row-item-img" />
                                 <p className="row-item-title">{a.title}</p>
+
+                                <div className="row-item-meta">
+                                    {a.type && <span className="meta-pill meta-type">{a.type}</span>}
+                                    {a.year && <span className="meta-pill meta-year">{a.year}</span>}
+                                    {a.rating && <span className="meta-pill meta-rating">{a.rating}</span>}
+                                </div>
                             </div>
                         ))}
                     </div>
