@@ -121,14 +121,13 @@ export function getAnimeByGenre(genreID) {
 export function getAnimeCharacters(animeID) {
     const url = PROXY_URL + "/anime/" + animeID + "/characters";
 
-    return fetch(url, {
-    method: "GET",
-    headers: {
-        "X-DH2642-Key": PROXY_KEY,
-        "X-DH2642-Group": GROUP_NUMBER
-    }
+    return fetchWithRetry(url, {
+        method: "GET",
+        headers: {
+            "X-DH2642-Key": PROXY_KEY,
+            "X-DH2642-Group": GROUP_NUMBER
+        }
     })
-    .then(checkStatusACB)
     .then(handleAnimeCharactersJSONACB);    // Transform characters into a standard format
 }
 
