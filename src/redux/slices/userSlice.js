@@ -84,11 +84,33 @@ export const userSlice = createSlice({
         },
         // Add a new completed quiz to stats (local only; call updateUserStats to persist)
         addQuizResult(state, action) {
-            state.stats.quizzes.unshift(action.payload); // newest first
-            if (state.stats.quizzes.length > 10) {
-                state.stats.quizzes = state.stats.quizzes.slice(0, 10); // keep last 10
+            const newQuiz = action.payload;
+
+            // Increment total completed quizzes
+            if (!state.stats.totalQuizzesCompleted) state.stats.totalQuizzesCompleted = 0;
+            state.stats.totalQuizzesCompleted += 1;
+
+            const quizzes = state.stats.quizzes || [];
+
+            if (quizzes.length === 0) {
+                // First quiz -> just add it
+                state.stats.quizzes = [newQuiz];
+                return;
             }
-        },
+
+            // Find current highest score quiz
+            let highestQuiz = quizzes[0];
+            let restQuizzes = quizzes.slice(1); // remaining 9 (or fewer)
+
+            // If the new quiz beats the current highest, it becomes index 0
+            if (newQuiz.score > highestQuiz.score) {
+                state.stats.quizzes = [newQuiz, highestQuiz, ...restQuizzes].slice(0, 10);
+            } else {
+                // Otherwise, just insert it among the rest (after highest)
+                restQuizzes.unshift(newQuiz);
+                state.stats.quizzes = [highestQuiz, ...restQuizzes].slice(0, 10);
+            }
+        }
     },
 
     extraReducers:(builder) =>{

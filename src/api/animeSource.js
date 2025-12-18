@@ -175,29 +175,26 @@ function normalizeRating(rating) {
     return rating.split(" ")[0];  // "PG-13 - Teens..." -> "PG-13"
 }
 
-/*function transformAnimeCB(a) {
-    return {
-        id: a.mal_id,
-        title: a.title,
-        image: a.images && a.images.jpg ? a.images.jpg.image_url : "",
-        score: a.score,
-        year: a.year
-    };
-}*/
-
-
 // function for handling the JSON response of getAnimeCharacters
 function handleAnimeCharactersJSONACB(json) {
     // Transform each character object into the standard format
-    return json.data.map(transformCharacterCB);
+    return json.data.map(transformCharacterCB).filter(c => c.image);
 }
 
 // Standardize the character format for the app
 function transformCharacterCB(c) {
+    let image = c.character.images.jpg.image_url || "";
+
+    // Skip placeholder / unknown images
+    const badPatterns = ["question", "placeholder", "no_image", "default", "unknown"];
+    if (!image || badPatterns.some(p => image.toLowerCase().includes(p))) {
+        image = "";
+    }
+
     return {
     id: c.character.mal_id,                     // Character ID from MyAnimeList
     name: c.character.name,                     // Character name
-    image: c.character.images.jpg.image_url,    // Character image URL
+    image,                                      // Character image URL
     role: c.role,                               // Role in the anime (main, supporting, etc.)
     voice_actors: (c.voice_actors || []).map(va => ({
             id: va.person.mal_id,

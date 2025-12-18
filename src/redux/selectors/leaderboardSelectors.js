@@ -14,10 +14,13 @@ export const selectRankedLeaderboard = createSelector(
   entries =>
     [...entries]
       .sort(
-        (a, b) =>
-          b.bestScore - a.bestScore ||
-          a.lastUpdated - b.lastUpdated
-      )
+        (a, b) => {
+          const scoreDiff = b.bestScore - a.bestScore;
+          if (scoreDiff !== 0) return scoreDiff;
+
+          // Convert lastUpdated to numbers if needed
+          return (b.lastUpdated || 0) - (a.lastUpdated || 0);
+        })
       .map((entry, index) => ({
         ...entry,
         rank: index + 1
