@@ -4,16 +4,11 @@ export const GROUP_NUMBER = "808";
 
 // The proxy is needed because Jikan has strict CORS.
 // This wraps any URL after the group number as we did for the lab.
-// API 1
+
+// API 1 (Jikan API)
 export const PROXY_URL = `https://brfenergi.se/iprog/group/${GROUP_NUMBER}/https://api.jikan.moe/v4`;
 
-// API 2
-export const PROXY_URL_FACTS = `https://brfenergi.se/iprog/group/${GROUP_NUMBER}/https://anime-facts-rest-api.herokuapp.com/api/v1`;
-
-// Link API
-export const PROXY_URL_LINK = `https://brfenergi.se/iprog/group/${GROUP_NUMBER}/https://kitsu.io/api/edge`;
-
-// The actual (peppar peppar ta i trä) API 2
+// API 2 (Nekos API)
 export const PROXY_URL_NEKO = `https://brfenergi.se/iprog/group/${GROUP_NUMBER}`;
 
 // Same key used in the lab

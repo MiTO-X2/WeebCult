@@ -13,7 +13,6 @@ import userReducer from './slices/userSlice.js';
 import animeReducer from './slices/animeSlice.js';
 import detailsReducer from './slices/detailsSlice.js';
 import quizReducer from './slices/quizSlice.js';  
-import factReducer from './slices/factSlice.js';
 import sidebarReducer from './slices/sidebarSlice.js';  
 import nekoReducer from './slices/nekoSlice.js';  
 import leaderboardReducer from './slices/leaderboardSlice.js';
@@ -24,7 +23,6 @@ export default combineReducers({
         anime: animeReducer,     // Anime lists, genres, filters
         details: detailsReducer, // Detailed view data
         quiz: quizReducer,       // Quiz system state
-        fact: factReducer,
         sidebar: sidebarReducer,
         neko: nekoReducer,
         leaderboard: leaderboardReducer

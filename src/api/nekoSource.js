@@ -11,26 +11,19 @@ import { PROXY_KEY, GROUP_NUMBER, PROXY_URL_NEKO } from "./apiConfig.js";
  * GET RANDOM NEKO IMAGE
  ***************************************************************/
 export async function getRandomNeko() {
-    try {
-        // Nekos API full URL
-        const targetURL = "https://api.nekosapi.com/v4/images/random";
-        const url = `${PROXY_URL_NEKO}/${targetURL}`;
+    const targetURL = "https://api.nekosapi.com/v4/images/random";
+    const url = `${PROXY_URL_NEKO}/${targetURL}`;
 
-        const res = await fetch(url, {
-            method: "GET",
-            headers: {
-                "X-DH2642-Key": PROXY_KEY,
-                "X-DH2642-Group": GROUP_NUMBER
-            }
-        });
-        
-        const json = await checkStatusACB(res);
-        console.log("Raw Neko API response:", json); 
-        return transformNekoJSONACB(json);
-    } catch (err) {
-        console.error("getRandomNeko error:", err);
-        return null; 
-    }
+    const res = await fetch(url, {
+        method: "GET",
+        headers: {
+            "X-DH2642-Key": PROXY_KEY,
+            "X-DH2642-Group": GROUP_NUMBER
+        }
+    });
+
+    const json = await checkStatusACB(res);
+    return transformNekoJSONACB(json);
 }
 
 /***************************************************************

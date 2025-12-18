@@ -16,8 +16,6 @@ import CardFlip from "react-card-flip";
 import WeebCultLogo from "../WeebCultLogo.png";
 
 export function SidebarView(props) {
-    console.log("SidebarView props:", props);
-
     const [flippedIndexes, setFlippedIndexes] = useState([]);
 
     function handleOverlayClickACB(e) {
@@ -49,32 +47,21 @@ export function SidebarView(props) {
                         <p className="sidebar-empty">🎉 No quizzes yet! Start your first quiz and see your scores here. 🚀</p>
                     )}
 
-                    {/* RANDOM NEKO IMAGE */}
-                    {props.nekoStatus === "loading" && (
-                        <p className="sidebar-neko-loading">Loading neko…</p>
-                    )}
-
-                    {props.nekoStatus === "succeeded" && props.nekoData && (
-                        <img
-                            src={props.nekoData.image_url}
-                            alt="Random Neko"
-                            className="sidebar-neko-img"
-                        />
-                    )}
-
-
                     {props.quizzes.map(renderQuizItemCB)}
                 </div>
 
-                {/* WeebCult Logo */}
-                <div className="sidebar-logo">
-                    <img
-                        src={WeebCultLogo}
-                        alt="WeebCult Logo"
-                        className="sidebar-logo-img"
-                    />
+                {/* Random Safe Neko */}
+                <div className="neko-random">
+                    {props.neko && (
+                        <div className="neko-frame">
+                            <img
+                                src={props.neko.image_url}
+                                alt="Random safe neko"
+                                className="neko-random-img"
+                            />
+                        </div>
+                    )}
                 </div>
-
             </div>
         </div>
     );

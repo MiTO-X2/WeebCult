@@ -984,26 +984,75 @@ body {
     color: #b1a8ff;
 }
 
-/* WEBCULT LOGO */
-.sidebar-logo {
-    margin-top: auto;     
+/* RANDOM NEKO CONTAINER */
+.neko-random {
     display: flex;
     justify-content: center;
-    padding: 16px 0 12px;
+    margin: 16px 0 20px; /* slightly more bottom spacing */
+    position: relative;
+    perspective: 1500px; /* stronger 3D depth */
 }
 
-.sidebar-logo-img {
-    max-width: 160px;
-    max-height: 80px;
-    width: auto;
-    height: auto;
-    object-fit: contain;
+/* IMAGE FRAME */
+.neko-frame {
+    position: relative;
+    width: 170px;
+    height: 170px;
+    border-radius: 22px;
+    overflow: hidden;
+    background: linear-gradient(145deg, #2c2c34, #1b1b23);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.6), 0 0 18px rgba(182,115,255,0.25);
+    transform-style: preserve-3d;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.5s ease;
     cursor: pointer;
-    transition: filter 0.25s ease;
+    animation: nekoPulse 3s ease-in-out infinite;
 }
 
-.sidebar-logo:hover img {
-    filter: brightness(1.25);
+/* HOVER DYNAMICS */
+.neko-frame:hover {
+    transform: rotateY(10deg) rotateX(5deg) scale(1.1);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.75), 0 0 25px rgba(182,115,255,0.6), 0 0 60px rgba(182,115,255,0.15) inset;
+}
+
+/* NEKO IMAGE */
+.neko-random-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 22px;
+    display: block;
+    backface-visibility: hidden;
+    transition: transform 0.5s ease;
+}
+
+/* GLIMMER HALOS */
+.neko-frame::before,
+.neko-frame::after {
+    content: "";
+    position: absolute;
+    top: -10%;
+    left: -10%;
+    width: 120%;
+    height: 120%;
+    border-radius: 22px;
+    pointer-events: none;
+    z-index: 0;
+    border: 2px solid transparent;
+    background: radial-gradient(circle at center, rgba(182,115,255,0.15), transparent 70%);
+    filter: blur(14px);
+    opacity: 0.7;
+}
+
+.neko-frame::after {
+    background: radial-gradient(circle at 75% 25%, rgba(255,255,255,0.08), transparent 70%);
+    filter: blur(8px);
+    transform: rotate(15deg);
+}
+
+/* PULSE ANIMATION */
+@keyframes nekoPulse {
+    0%, 100% { transform: scale(1) rotateY(0deg) rotateX(0deg); }
+    50% { transform: scale(1.02) rotateY(2deg) rotateX(1deg); }
 }
 
 /**************************************************************************

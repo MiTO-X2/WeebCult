@@ -16,7 +16,8 @@ import rootReducer from './rootReducer.js';
 import { listenerMiddleware } from "./listeners/listenerMiddleware.js";
 import { detailsListener } from "./listeners/detailsListener.js";
 import { leaderboardListener } from "./listeners/leaderboardListener.js";
-import { quizListener } from './listeners/quizListener.js'; // <--- import listener
+import { sidebarListener } from './listeners/sidebarListener.js';
+import { quizListener } from './listeners/quizListener.js';
 
 // Load quiz from localStorage
 function loadQuizFromLocalStorage() {
@@ -42,5 +43,6 @@ export const store = configureStore({
                   .prepend(listenerMiddleware.middleware)
                   .prepend(detailsListener.middleware)
                   .prepend(leaderboardListener.middleware)
+                  .prepend(sidebarListener.middleware)
                   .prepend(quizListener.middleware),
 }); 
