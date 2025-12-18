@@ -13,5 +13,8 @@ export const PROXY_URL_FACTS = `https://brfenergi.se/iprog/group/${GROUP_NUMBER}
 // Link API
 export const PROXY_URL_LINK = `https://brfenergi.se/iprog/group/${GROUP_NUMBER}/https://kitsu.io/api/edge`;
 
+// The actual (peppar peppar ta i trä) API 2
+export const PROXY_URL_NEKO = `https://brfenergi.se/iprog/group/${GROUP_NUMBER}`;
+
 // Same key used in the lab
 export const PROXY_KEY="3d2a031b4cmsh5cd4e7b939ada54p19f679jsn9a775627d767"
