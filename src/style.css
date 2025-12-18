@@ -384,6 +384,39 @@ body {
     padding: 20px 20px 40px 20px;  /* Page padding */
 }
 
+/* WELCOME BANNER */
+.welcome-banner {
+    margin: 24px auto 20px;              /* Reduced outer empty space */
+    padding: 40px 44px;                  /* Bigger inner presence */
+    max-width: 1100px;                   /* Wider */
+    background: linear-gradient(145deg, #1b1b22, #16161c);
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 14px 40px rgba(0,0,0,0.5);
+    border: 1px solid rgba(182,115,255,0.18);
+}
+
+/* TITLE */
+.welcome-title {
+    margin: 0;
+    font-size: 36px;                     /* Bigger */
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: #b673ff;
+    text-shadow: 0 0 14px rgba(182,115,255,0.45);
+}
+
+/* TEXT */
+.welcome-text {
+    margin-top: 16px;
+    font-size: 18px;                     /* Improved readability */
+    line-height: 1.7;
+    color: rgba(255,255,255,0.85);
+    max-width: 780px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 /* CONTAINER FOR FIXED TOP-RIGHT BUTTONS */
 .top-buttons {
     position: fixed;       /* Fix container to viewport */

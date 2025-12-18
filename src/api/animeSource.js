@@ -41,15 +41,15 @@ export function searchAnime(query, filters = {}) {
     // const url = PROXY_URL + "/anime?q=" + encodeURIComponent(query) + "&limit=20";
     const url = `${PROXY_URL}/anime?${params.toString()}`;
 
-    return fetch(url, {
-    method: "GET",
-    headers: {
-        "X-DH2642-Key": PROXY_KEY,
-        "X-DH2642-Group": GROUP_NUMBER
-    }
+    return fetchWithRetry(url, {
+        method: "GET",
+        headers: {
+            "X-DH2642-Key": PROXY_KEY,
+            "X-DH2642-Group": GROUP_NUMBER
+        }
     })
-    .then(checkStatusACB)
-    .then(handleAnimeSearchJSONACB);    // this extract the 'data' array from the JSON response
+    .then(handleAnimeSearchJSONACB);
+        // this extract the 'data' array from the JSON response
 } 
 
 /***************************************************************
@@ -58,15 +58,14 @@ export function searchAnime(query, filters = {}) {
 export function getTopAnime() {
     const url = PROXY_URL + "/top/anime?limit=20";
 
-    return fetch(url, {
+    return fetchWithRetry(url, {
         method: "GET",
         headers: {
             "X-DH2642-Key": PROXY_KEY,
             "X-DH2642-Group": GROUP_NUMBER
         }
     })
-        .then(checkStatusACB)
-        .then(handleAnimeSearchJSONACB);   // same data format
+    .then(handleAnimeSearchJSONACB);
 }
 
 /***************************************************************
@@ -75,15 +74,15 @@ export function getTopAnime() {
 export function getGenres() {
     const url = PROXY_URL + "/genres/anime";
 
-    return fetch(url, {
+    return fetchWithRetry(url, {
         method: "GET",
         headers: {
             "X-DH2642-Key": PROXY_KEY,
             "X-DH2642-Group": GROUP_NUMBER
         }
     })
-        .then(checkStatusACB)
-        .then(handleGenresJSONACB);
+    .then(handleGenresJSONACB);
+
 }
 
 function handleGenresJSONACB(json) {
@@ -105,15 +104,14 @@ export function getAnimeByGenre(genreID) {
     const url =
         PROXY_URL + "/anime?genres=" + genreID + "&limit=20";
 
-    return fetch(url, {
+    return fetchWithRetry(url, {
         method: "GET",
         headers: {
             "X-DH2642-Key": PROXY_KEY,
             "X-DH2642-Group": GROUP_NUMBER
         }
     })
-        .then(checkStatusACB)
-        .then(handleAnimeSearchJSONACB);
+    .then(handleAnimeSearchJSONACB);
 }
 
 /***************************************************************
@@ -140,14 +138,13 @@ export function getAnimeCharacters(animeID) {
 export function getAnimeById(animeID) {
     const url = PROXY_URL + "/anime/" + animeID;
 
-    return fetch(url, {
-    method: "GET",
-    headers: {
-        "X-DH2642-Key": PROXY_KEY,
-        "X-DH2642-Group": GROUP_NUMBER
-    }
+    return fetchWithRetry(url, {
+        method: "GET",
+        headers: {
+            "X-DH2642-Key": PROXY_KEY,
+            "X-DH2642-Group": GROUP_NUMBER
+        }
     })
-    .then(checkStatusACB)
     .then(json => transformSingleAnimeCB(json.data)); 
 }                                    
 
@@ -262,6 +259,39 @@ function checkStatusACB(response) {
 
     // If OK → return JSON promise, convert HTTP response → JS Object
     return response.json();
+}
+
+/***************************************************************
+ * FETCH WITH RETRY
+ * - Retries on rate limit (429)
+ * - Exponential backoff
+ ***************************************************************/
+async function fetchWithRetry(
+  url,
+  options,
+  retries = 3,
+  delay = 1000
+) {
+  try {
+    const response = await fetch(url, options);
+
+    // Handle rate limiting explicitly
+    if (response.status === 429 && retries > 0) {
+      console.warn("Rate limited. Retrying in", delay, "ms");
+      await new Promise(res => setTimeout(res, delay));
+      return fetchWithRetry(url, options, retries - 1, delay * 2);
+    }
+
+    if (!response.ok) {
+      throw new Error("API responded with status: " + response.status);
+    }
+
+    return response.json();
+  } catch (error) {
+    if (retries <= 0) throw error;
+    await new Promise(res => setTimeout(res, delay));
+    return fetchWithRetry(url, options, retries - 1, delay * 2);
+  }
 }
 
 /***************************************************************

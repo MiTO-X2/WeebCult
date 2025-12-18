@@ -61,6 +61,17 @@ export function MainPageView(props) {
                 </div>
             ) : (
                 <>
+                    {/* Welcome banner (only when not searching) */}
+                    {!props.searchResults?.length && (
+                        <div className="welcome-banner">
+                            <h1 className="welcome-title">Welcome to WeebCult</h1>
+                            <p className="welcome-text">
+                                Discover anime, test your knowledge through quizzes,
+                                and compete for a spot on the global leaderboard.
+                            </p>
+                        </div>
+                    )}
+
                     {props.trending?.length > 0 && (
                         <RowView
                             title="Trending"

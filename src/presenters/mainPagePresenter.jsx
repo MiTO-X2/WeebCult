@@ -39,7 +39,7 @@ const mapDispatchToProps = {
 
 function MainPagePresenterComponent(props) {
 
-  const genresNotReady = props.genres.length === 0 || props.genres.some(g => !g.items || g.items.length === 0)
+  const genresNotReady = props.genres.length === 0 || props.genres.some(g => g.items == null)
 
   const isPending = !props.trendingLoaded || !!props.trendingPromise  || !!props.allGenresPromise  || genresNotReady;
   const combinedError = props.trendingError || props.allGenresError || props.searchError;
