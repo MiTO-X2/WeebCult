@@ -10,10 +10,10 @@
 import { connect } from "react-redux";
 import { MainPageView } from "../views/mainPageView.jsx";
 import { SuspenseView } from "../views/suspenseView.jsx";
-import { setSelectedAnimeId } from "../redux/slices/detailsSlice.js";
 import { openSidebar } from "../redux/slices/sidebarSlice.js";
-import { openLeaderboardThunk } from "../redux/slices/leaderboardSlice.js";
 import { selectGenreLists } from "../redux/slices/animeSlice.js";
+import { setSelectedAnimeId } from "../redux/slices/detailsSlice.js";
+import { openLeaderboardThunk } from "../redux/slices/leaderboardSlice.js";
 
 function mapStateToProps(state) {
   return {
@@ -38,7 +38,6 @@ const mapDispatchToProps = {
 };
 
 function MainPagePresenterComponent(props) {
-
   const genresNotReady = props.genres.length === 0 || props.genres.some(g => g.items == null)
 
   const isPending = !props.trendingLoaded || !!props.trendingPromise  || !!props.allGenresPromise  || genresNotReady;
@@ -57,7 +56,6 @@ function MainPagePresenterComponent(props) {
     />
   );
 }
-
 
 export const MainPagePresenter = 
     connect(mapStateToProps, mapDispatchToProps)(MainPagePresenterComponent);

@@ -1,5 +1,4 @@
 /***********************************************************************
- * Pure UI.
  * Renders:
  *   - Rows of anime lists (Trending + Genres)
  * Props:
@@ -22,14 +21,16 @@ export function MainPageView(props) {
             {/* Top-right buttons: sidebar + leaderboard */}
             <div className="top-buttons">
                 <button 
-                    className="sidebar-button"
+                    className="sidebar-button tooltip tooltip-left"
+                    data-tooltip="View your 3 most recent quizzes"
                     onClick={() => props.onOpenSidebar()}
                 >
                     <i className="fa-solid fa-angles-left"></i>
                 </button>
 
                 <button
-                    className="leaderboard-button"
+                    className="leaderboard-button tooltip tooltip-left"
+                    data-tooltip="Open the global leaderboard"
                     onClick={props.onOpenLeaderboard}
                 >
                     <i className="fa-solid fa-trophy"></i>

@@ -1,6 +1,4 @@
 /***********************************************************************
- * HeaderPresenter.jsx
- *
  * Responsibilities:
  *  - Connect HeaderView to Redux
  *  - Pass current search query and selected filters as props
@@ -12,7 +10,10 @@ import { connect } from "react-redux";
 import { HeaderView } from "../views/headerView.jsx";
 import { fetchSearch } from "../redux/slices/animeSlice.js";
 import { loginUserThunk, logoutUserThunk } from "../redux/thunks/userThunks.js";
-import { setQuery, setSelectedType, setSelectedStatus, setSelectedRating, setSelectedGenres, setSelectedOrderBy } from "../redux/slices/animeSlice.js";
+import { 
+  setQuery, setSelectedType, setSelectedStatus, 
+  setSelectedRating, setSelectedGenres, setSelectedOrderBy 
+} from "../redux/slices/animeSlice.js";
 
 function mapStateToProps(state) {
   const searchFilters = state.anime.searchFilters || {};
@@ -32,9 +33,7 @@ function mapStateToProps(state) {
   };
 }
 
-
 const mapDispatchToProps = (dispatch) => ({
-  //onQueryChange: (query) => dispatch({ type: "anime/setQuery", payload: query }),
   onQueryChange: (query) => dispatch(setQuery(query)),
   onSearch: () => dispatch(fetchSearch()),
   onTypeChange: (value) => dispatch(setSelectedType(value)),
@@ -42,6 +41,7 @@ const mapDispatchToProps = (dispatch) => ({
   onRatingChange: (value) => dispatch(setSelectedRating(value)),
   onGenresChange: (selected) => dispatch(setSelectedGenres(selected)),
   onOrderByChange: (value) => dispatch(setSelectedOrderBy(value)),
+
   // --- Login/Logout ---
   onLogin: () => dispatch(loginUserThunk()),
   onLogout: () => dispatch(logoutUserThunk())

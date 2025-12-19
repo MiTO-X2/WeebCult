@@ -7,7 +7,6 @@
  *   - Pass all necessary props + callbacks to the view
  *   - Manage suspense logic (pending / error)
  *   - Handle quizSettings updates
- * 
  ***********************************************************************/
 
 import { connect } from "react-redux";
@@ -31,7 +30,7 @@ function mapStateToProps(state) {
   };
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch) => ({
   onClose: () => dispatch(setSelectedAnimeId(null)),
   onSelectCategory: (value) => dispatch(setQuizCategory(value)),
   onSelectMode: (value) => dispatch(setQuizMode(value)),
@@ -54,7 +53,7 @@ function AnimeDetailsPresenterComponent(props) {
       return;
     }
 
-    // Close modal first
+    // Close modal popup first
     onClose();
 
     // Start quiz

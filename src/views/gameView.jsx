@@ -1,20 +1,17 @@
 /***********************************************************************
- * PURE UI VIEW (NO LOGIC)
- *
  * Props:
  *   - question: { image, prompt, answers: [{ text }] }
  *   - index: current question index (0-based)
  *   - score / player1 / player2: UI-only numbers
  *   - turn: "p1" | "p2"
- *   - mode: "solo" | "versus"
- *   - type: "best10" | "timed"
+ *   - mode: "Solo" | "1v1"
+ *   - type: "Best10" | "Best10 Timed" | "Best25" | "Best25 Timed"
  *   - timeLimit: seconds per question
  *   - selectedAnswer: last clicked answer text
  *   - isCorrect: true | false | null
- *   - disableAnswers: boolean
  *   - onAnswer: callback(answerText)
  *   - onTimeUp: callback()
- *   - onExit: callback() → go back to main page
+ *   - onExit: callback() -> go back to main page
  ***********************************************************************/
 
 import "../style.css";

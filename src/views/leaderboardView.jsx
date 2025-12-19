@@ -1,14 +1,12 @@
 /***********************************************************************
- * PURE UI: LeaderboardView
- *
  * Displays:
  *   - Top 10 leaderboard
  *   - User standing section (rank + stats)
  *   - Behaves like AnimeDetailsView popup
  *
  * PROPS expected:
- *   props.entries       -> array of sorted + ranked entries [{ rank, uid, username, bestScore, quizzesCompleted }]
- *   props.userEntry     -> single entry of the logged-in user { rank, username, bestScore, quizzesCompleted }
+ *   props.entries       -> array of sorted + ranked entries
+ *   props.userEntry     -> single entry of the logged-in user
  *   props.onClose       -> close popup
  *
  * NO business logic here:

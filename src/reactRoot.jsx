@@ -2,7 +2,7 @@
  * This file defines the main routing structure for the app.
  * It should:
  *    - Display the top-level layout (HeaderPresenter, etc.)
- *    - Declare all route → Presenter mappings
+ *    - Declare all route -> Presenter mappings
  *
  * It should NOT:
  *    - Contain business logic
@@ -15,7 +15,6 @@
  *    - ReactRoot is NOT allowed to fetch data.
  *    - ReactRoot ONLY wires navigation and visual layout.
  *    - If a route needs data, the presenter handles it by dispatching Redux actions.
- *
  ***********************************************************************/
 
 import { Outlet } from "react-router-dom";

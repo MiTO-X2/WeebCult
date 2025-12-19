@@ -1,10 +1,8 @@
 /***********************************************************************
- * PURE UI COMPONENT
- * 
  * Contains:
- *  - Logo + Title "WeebCult" → navigate to home
- *  - Search input + button → triggers props callbacks
- *  - Profile button → go to auth page
+ *  - Logo + Title "WeebCult" -> navigate to home
+ *  - Search input + button -> triggers props callbacks
+ *  - Profile button -> go to auth page
  *
  * RULES:
  *  - No data fetching

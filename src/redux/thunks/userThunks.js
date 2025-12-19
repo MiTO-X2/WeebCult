@@ -7,8 +7,8 @@
  ***********************************************************************/
 
 import { onAuthStateChanged } from "firebase/auth";
-import { setUid, clearUser, setUserData, fetchUserStats, setReady } from "/src/redux/slices/userSlice";
 import { auth, login, logout, loadUserProfile } from '/src/firebase/firestoreModel.js';
+import { setUid, clearUser, setUserData, fetchUserStats, setReady } from "/src/redux/slices/userSlice";
 
 /***********************************************************************
  * Listen to Firebase auth changes (fires once at startup + on login/logout)

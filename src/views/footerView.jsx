@@ -1,6 +1,4 @@
 /***********************************************************************
- * PURE UI COMPONENT
- * 
  * Footer:
  *  - Logo (clickable → navigate home)
  *  - "Made with ♡ by:"

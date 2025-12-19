@@ -2,7 +2,7 @@
  * Pure UI modal popup for choosing:
  *   - Category (character name OR role)
  *   - Mode (Solo OR 1v1)
- *   - Type (Best of 10 OR Best of 10 Timed)
+ *   - Type (Best of 10|25 OR Best of 10|25 Timed)
  *
  * Requirements:
  *   - Click outside closes popup

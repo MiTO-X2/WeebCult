@@ -1,6 +1,4 @@
 /***************************************************************
- *  =========  FILE RESPONSIBILITIES =========
- *
  *  This file handles ALL external communication with Jikan API.
  *  - Builds correct API URLs
  *  - Performs fetch()
@@ -203,22 +201,11 @@ function transformCharacterCB(c) {
 }
 
 /***************************************************************
- *  STATUS CHECKER
- ***************************************************************/
-function checkStatusACB(response) {
-    if (!response.ok) {
-        // Throw an error if response status is not OK (e.g., 404, 500)
-        throw new Error("API responded with status: " + response.status);
-    }
-
-    // If OK → return JSON promise, convert HTTP response → JS Object
-    return response.json();
-}
-
-/***************************************************************
  * FETCH WITH RETRY
  * - Retries on rate limit (429)
  * - Exponential backoff
+ * - Helps fixing the API requests rate limit issue 
+ *   and page refreshes
  ***************************************************************/
 async function fetchWithRetry(
   url,

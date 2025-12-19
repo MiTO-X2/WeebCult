@@ -16,9 +16,9 @@
 
 
 import { initializeApp } from "firebase/app";
-import { getFirestore, doc, setDoc, getDoc, collection, getDocs } from "firebase/firestore";
 import{ firebaseConfig } from "/src/firebase/firebaseConfig.js"
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut} from "firebase/auth"
+import { getFirestore, doc, setDoc, getDoc, collection, getDocs } from "firebase/firestore";
 
 const app= initializeApp(firebaseConfig);
 export const auth = getAuth(app);
@@ -37,12 +37,12 @@ export async function loadUserProfile(uid) {
     return snap.data();
 }
 
-/** LOGIN / LOGOUT **/
+/** LOGIN **/
 export function login() {
     const provider = new GoogleAuthProvider();
     return signInWithPopup(auth, provider);
 }
-
+/** LOGOUT **/
 export function logout() {
     return signOut(auth);
 }

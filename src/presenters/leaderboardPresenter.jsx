@@ -9,32 +9,28 @@
  ***********************************************************************/
 
 import { connect } from "react-redux";
-import { LeaderboardView } from "../views/leaderboardView.jsx";
 import { SuspenseView } from "../views/suspenseView.jsx";
+import { LeaderboardView } from "../views/leaderboardView.jsx";
 import { closeLeaderboard } from "../redux/slices/leaderboardSlice.js";
 import { selectRankedLeaderboard, selectUserRankedEntry } from "../redux/selectors/leaderboardSelectors.js";
 
-// ------------------- mapStateToProps -------------------
 function mapStateToProps(state) {
     return {
         leaderboardEntries: selectRankedLeaderboard(state),      // already sorted + ranked
-        userEntry: selectUserRankedEntry(state, state.user.uid),        // user's ranked entry
+        userEntry: selectUserRankedEntry(state, state.user.uid), // user's ranked entry
         isOpen: state.leaderboard.isOpen,
         isLoading: state.leaderboard.loading
     };
 }
 
-// ------------------- mapDispatchToProps -------------------
 const mapDispatchToProps = {
     onClose: closeLeaderboard
 };
 
-// ------------------- Presenter Component -------------------
 function LeaderboardPresenterComponent(props) {
     if (!props.isOpen) return null; // modal closed
 
     if (props.isLoading) return <SuspenseView />;
-
 
     return (
         <LeaderboardView
@@ -45,6 +41,5 @@ function LeaderboardPresenterComponent(props) {
     );
 }
 
-// ------------------- Connect -------------------
 export const LeaderboardPresenter =
     connect(mapStateToProps, mapDispatchToProps)(LeaderboardPresenterComponent);

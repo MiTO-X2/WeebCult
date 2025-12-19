@@ -4,7 +4,6 @@
  *   - Add default  middleware (including thunk)
  *   - Import the rootReducer containing all slices
  *  
- *
  * NOTES:
  *   - No business logic here.
  *   - DO NOT create thunks here.

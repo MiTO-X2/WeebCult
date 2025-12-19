@@ -9,19 +9,14 @@
  *   - NO business or sorting logic in Firestore model
  *   - Sorting (ranking) is done in Presenter, not here
  *   - View = pure, Presenter = logic, Slice = state
- *
  ***********************************************************************/
 
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { updateLeaderboardEntry, loadLeaderboard, loadLeaderboardEntry } from "/src/firebase/firestoreModel";
 
-
 /************************************************************
- * Thunks
- ************************************************************/
-// --------------------------------------------------------
-// Load all leaderboard entries (global)
-// --------------------------------------------------------
+* Load all leaderboard entries (global)
+************************************************************/
 export const fetchLeaderboard = createAsyncThunk(
     "leaderboard/fetchLeaderboard",
     async (_, { rejectWithValue }) => {
@@ -34,9 +29,9 @@ export const fetchLeaderboard = createAsyncThunk(
     }
 );
 
-// --------------------------------------------------------
-// Load the logged-in user's leaderboard entry
-// --------------------------------------------------------
+/************************************************************
+* Load the logged-in user's leaderboard entry
+************************************************************/
 export const fetchUserLeaderboardEntry = createAsyncThunk(
     "leaderboard/fetchUserLeaderboardEntry",
     async (uid, { rejectWithValue }) => {
@@ -79,10 +74,6 @@ export const openLeaderboardThunk = () => (dispatch, getState) => {
     }
 };
 
-/************************************************************
-* Slice
-************************************************************/
-
 const initialState = {
     entries: [],          // global leaderboard array
     userEntry: null,      // logged-in user's leaderboard info
@@ -91,17 +82,13 @@ const initialState = {
     isOpen: false
 };
 
+/************************************************************
+* Slice
+************************************************************/
 export const leaderboardSlice = createSlice({
     name: "leaderboard",
     initialState,
     reducers: {
-        // Optional: reset leaderboard (rarely used)
-        clearLeaderboard(state){
-            state.entries = [];
-            state.userEntry = null;
-            state.loading = false;
-            state.error = null;
-        },
         closeLeaderboard(state){
             state.isOpen = false
         },
@@ -111,7 +98,6 @@ export const leaderboardSlice = createSlice({
     },
 
     extraReducers: (builder) => {
-
         // -------------------------------
         // fetchLeaderboard
         // -------------------------------

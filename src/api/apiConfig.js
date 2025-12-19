@@ -2,7 +2,7 @@
 // Currently the group number is the last 3 digits of my canvas ID
 export const GROUP_NUMBER = "808";
 
-// The proxy is needed because Jikan has strict CORS.
+// The proxy is needed because API has strict CORS.
 // This wraps any URL after the group number as we did for the lab.
 
 // API 1 (Jikan API)

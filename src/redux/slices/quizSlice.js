@@ -63,7 +63,6 @@ export const quizSlice = createSlice({
                 state.animeImg = anime.image; // field name consistent with API
             }
             
-
             state.questions = characters.map((c) => ({
                 id: c.id,
                 image: c.image,

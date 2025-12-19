@@ -7,23 +7,20 @@
  *   - loginUser() = sign-in detected → load Firestore profile
  *   - logoutUser() = sign-out detected → clear state
  *   - saveUserProfile() = update profile in Firestore
- * 
  ***********************************************************************/
 
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { loadUserStats, saveUserStats } from '/src/firebase/firestoreModel';
 
-
 const initialState = {
     uid: undefined,
     userData: undefined,   // Firestore “users/{uid}” document
-    stats: { quizzes: [] }, // Array of completed quizzes, each quiz: { score, category, mode, type, time, completedAt, animeId, animeTitle, animeImg}
+    stats: { quizzes: [] }, // Array of completed quizzes
     loading: false,
     error: null,
     ready: false,      // Firebase auth listener sets this
 };  
 
-/************* Thunks *************/
 // --------------------------------------------------------
 // Load stats for a user
 // --------------------------------------------------------
@@ -57,8 +54,7 @@ export const updateUserStats = createAsyncThunk(
   }
 );
 
-/************************ 5. createSlice *****************/
-
+/************************ createSlice *****************/
 export const userSlice = createSlice({
     name: 'user',
     initialState,

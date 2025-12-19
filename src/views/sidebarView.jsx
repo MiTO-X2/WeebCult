@@ -1,5 +1,4 @@
 /***********************************************************************
- * PURE UI COMPONENT
  * Sidebar popup showing:
  *   - Recent quizzes
  *   - Random anime fact
@@ -13,7 +12,6 @@
 
 import { useState } from "react";
 import CardFlip from "react-card-flip";
-import WeebCultLogo from "../WeebCultLogo.png";
 
 export function SidebarView(props) {
     const [flippedIndexes, setFlippedIndexes] = useState([]);

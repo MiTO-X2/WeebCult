@@ -1,18 +1,11 @@
 /**********************************************************************
- * GAME PRESENTER
- *
  * Responsibilities:
- *  - Connect Redux quiz state → GameView props (mapStateToProps)
- *  - Convert Redux actions → callbacks for the GameView (mapDispatchToProps)
- *  - Perform orchestration logic NOT belonging in the slice:
- *      * Generating wrong answers
- *      * Calling slice actions in correct order
- *      * Triggering next question
- *  - Trigger leaderboard update after a quiz finishes
- *  - Uses final quiz result + user info to update Firestore
+ *  - Connect Redux quiz state -> GameView props (mapStateToProps)
+ *  - Convert Redux actions -> callbacks for the GameView (mapDispatchToProps)
  *  - Does NOT handle ranking or sorting (LeaderboardPresenter does that)
  *  - NO JSX, NO UI logic, NO data fetching
  **********************************************************************/
+
 import { connect } from "react-redux";
 import { GameView } from "../views/gameView.jsx"; 
 import { GameScorePresenter } from "./gameScorePresenter.jsx"; 
@@ -62,6 +55,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 function GamePresenterComponent(props) {
+  // Move to the game score screen after the quiz ends
   if (props.quizFinished) {
     return <GameScorePresenter />;
   }
