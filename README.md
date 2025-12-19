@@ -36,6 +36,23 @@ The project follows a clean and scalable architecture that separates **UI compon
 - Real-time score tracking
 - Dynamic question generation based on anime data
 
+### Game Score Screen
+
+- Displays the user’s final score
+- Shows quiz metadata:
+  - Category
+  - Mode
+  - Quiz type
+- Provides:
+  - **Play Again** button
+  - **Return to Main Screen** button
+
+### Global Leaderboard
+
+- Displays ranked users based on quiz performance
+- Uses Firestore persistence
+- Dynamically updates via Redux listeners and selectors
+
 ### User Experience
 
 - Sidebar popup showing:
@@ -229,27 +246,6 @@ App bootstrap
 Application root, routing & navigation
 
 ### index.html
-
----
-
-## Additional Screens & Flows
-
-### Game Score Screen
-
-- Displays the user’s final score
-- Shows quiz metadata:
-  - Category
-  - Mode
-  - Quiz type
-- Provides:
-  - **Play Again** button
-  - **Return to Main Screen** button
-
-### Global Leaderboard
-
-- Displays ranked users based on quiz performance
-- Uses Firestore persistence
-- Dynamically updates via Redux listeners and selectors
 
 ---
 
