@@ -7,8 +7,8 @@
  ***********************************************************************/
 
 import { onAuthStateChanged } from "firebase/auth";
-import { auth, login, logout, loadUserProfile } from '/src/firebase/firestoreModel.js';
-import { setUid, clearUser, setUserData, fetchUserStats, setReady } from "/src/redux/slices/userSlice";
+import { auth, login, logout, loadUserProfile, loadUserStats } from '/src/firebase/firestoreModel.js';
+import { setUid, clearUser, setUserData, setReady, setStatsFromDB } from "/src/redux/slices/userSlice";
 
 /***********************************************************************
  * Listen to Firebase auth changes (fires once at startup + on login/logout)
@@ -29,8 +29,17 @@ export const listenToAuthChangesThunk = () => (dispatch) => {
         }));
 
         dispatch(setUid(user.uid));
-        await dispatch(fetchUserStats(user.uid)); // load user stats
-        dispatch(setReady(true)); // ready flag for UI
+        // Load stats directly from Firestore and update Redux
+        try {
+            const stats = await loadUserStats(user.uid);
+            if (stats) {
+                dispatch(setStatsFromDB(stats)); // listener middleware persists automatically
+            }
+        } catch (err) {
+            console.error("Failed to load user stats:", err);
+        }
+
+        dispatch(setReady(true));
     });
 };
 

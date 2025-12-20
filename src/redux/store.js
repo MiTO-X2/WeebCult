@@ -17,6 +17,7 @@ import { detailsListener } from "./listeners/detailsListener.js";
 import { leaderboardListener } from "./listeners/leaderboardListener.js";
 import { sidebarListener } from './listeners/sidebarListener.js';
 import { quizListener } from './listeners/quizListener.js';
+import { userListener } from './listeners/userListener.js';
 
 // Load quiz from localStorage
 function loadQuizFromLocalStorage() {
@@ -43,5 +44,6 @@ export const store = configureStore({
                   .prepend(detailsListener.middleware)
                   .prepend(leaderboardListener.middleware)
                   .prepend(sidebarListener.middleware)
-                  .prepend(quizListener.middleware),
+                  .prepend(quizListener.middleware)
+                  .prepend(userListener.middleware),
 }); 

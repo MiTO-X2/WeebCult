@@ -31,7 +31,7 @@ export function MainPageView(props) {
                 <button
                     className="leaderboard-button tooltip tooltip-left"
                     data-tooltip="Open the global leaderboard"
-                    onClick={props.onOpenLeaderboard}
+                    onClick={() => props.onOpenLeaderboard()}
                 >
                     <i className="fa-solid fa-trophy"></i>
                 </button>

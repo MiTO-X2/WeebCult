@@ -13,7 +13,7 @@ import { SuspenseView } from "../views/suspenseView.jsx";
 import { openSidebar } from "../redux/slices/sidebarSlice.js";
 import { selectGenreLists } from "../redux/slices/animeSlice.js";
 import { setSelectedAnimeId } from "../redux/slices/detailsSlice.js";
-import { openLeaderboardThunk } from "../redux/slices/leaderboardSlice.js";
+import { openLeaderboard } from "../redux/slices/leaderboardSlice.js";
 
 function mapStateToProps(state) {
   return {
@@ -34,7 +34,7 @@ function mapStateToProps(state) {
 const mapDispatchToProps = {
   setSelectedAnimeId,
   onOpenSidebar: openSidebar,
-  onOpenLeaderboard: openLeaderboardThunk
+  onOpenLeaderboard: openLeaderboard
 };
 
 function MainPagePresenterComponent(props) {

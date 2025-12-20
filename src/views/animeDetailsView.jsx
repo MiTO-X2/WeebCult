@@ -57,7 +57,7 @@ export function AnimeDetailsView(props) {
                     <div className="details-column">
                         <h4 className="details-heading">Category</h4>
                         {["Name", "Role", "VoiceActor"].map(value => 
-                            renderOptionCB(value, props.quizSettings.category, props.onSelectCategory)
+                            renderOptionCB(value, props.quizSettings.category, props.onSelectCategory, "category")
                         )}
                     </div>
 
@@ -65,7 +65,7 @@ export function AnimeDetailsView(props) {
                     <div className="details-column">
                         <h4 className="details-heading">Mode</h4>
                         {["Solo", "1v1"].map(value => 
-                            renderOptionCB(value, props.quizSettings.mode, props.onSelectMode)
+                            renderOptionCB(value, props.quizSettings.mode, props.onSelectMode, "mode")
                         )}
                     </div>
 
@@ -73,7 +73,7 @@ export function AnimeDetailsView(props) {
                     <div className="details-column">
                         <h4 className="details-heading">Type</h4>
                         {["Best10", "Best10 Timed", "Best25", "Best25 Timed"].map(value =>
-                            renderOptionCB(value, props.quizSettings.type, props.onSelectType)
+                            renderOptionCB(value, props.quizSettings.type, props.onSelectType, "type")
                         )}
                     </div>
                 </div>
@@ -87,15 +87,21 @@ export function AnimeDetailsView(props) {
         </div>
     );
 
-    function renderOptionCB(value, selectedValue, onSelect) {
+    function renderOptionCB(value, selectedValue, onSelect, groupName) {
         return (
-            <div
+            <label
                 key={value}
-                className={`option-box ${selectedValue === value ? "selected" : ""}`}
-                onClick={() => onSelect(value)}
+                className={`radio-option ${selectedValue === value ? "selected" : ""}`}
             >
-                {value}
-            </div>
+                <input
+                    type="radio"
+                    name={groupName}
+                    value={value}
+                    checked={selectedValue === value}
+                    onChange={() => onSelect(value)}
+                />
+                <span className="radio-label">{value}</span>
+            </label>
         );
     }
 }

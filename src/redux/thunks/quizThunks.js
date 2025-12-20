@@ -9,11 +9,11 @@ import {
 
 import {
   addQuizResult,// <-- to add completed quiz to user stats
-  updateUserStats,// <-- to persist updated stats to Firestore
+  updateUserStatsAction,// <-- to persist updated stats to Firestore
 } from "/src/redux/slices/userSlice.js";
 
 import {
-  saveUserLeaderboardEntry,// <-- to update user's leaderboard entry
+  saveUserLeaderboardEntryAction,// <-- to update user's leaderboard entry
 } from "/src/redux/slices/leaderboardSlice.js";
 
 /********************************************************************************
@@ -77,17 +77,10 @@ export function finishQuizThunk() {
   return async (dispatch, getState) => {
     const { quiz, user } = getState();
 
-    if (!user.uid) {
-      return;
-    }
+    if (!user.uid) return;
 
     // Determine score depending on mode
-    let finalScore;
-    if (quiz.mode === "Solo") {
-      finalScore = quiz.score;
-    } else if (quiz.mode === "1v1") {
-      finalScore = quiz.player1; // logged-in user is player 1
-    }
+    let finalScore = quiz.mode === "Solo" ? quiz.score : quiz.player1;
 
     const finalQuizResult = {
       score: finalScore,
@@ -105,27 +98,23 @@ export function finishQuizThunk() {
     // Update local Redux stats first (slice ensures only 10 are kept)
     dispatch(addQuizResult(finalQuizResult));
 
+    // Persist stats to Firestore via listener
+    dispatch(updateUserStatsAction());
+
     // Get latest stats immediately
+    // Update leaderboard
     const { stats } = getState().user;
-
-    try {
-      // Persist current Redux stats to Firestore
-      await dispatch(updateUserStats(stats)).unwrap();
-
-      // Update leaderboard
-      const bestScore = stats.quizzes.reduce((max, q) => Math.max(max, q.score), 0);
-      const leaderboardData = {
+    const bestScore = stats.quizzes.reduce((max, q) => Math.max(max, q.score), 0);
+    const leaderboardData = {
         username: user.userData.displayName,
         bestScore,
         quizzesCompleted: stats.totalQuizzesCompleted,
         lastUpdated: Date.now()
-      };
+    };
 
-      await dispatch(saveUserLeaderboardEntry({ uid: user.uid, leaderboardData })).unwrap();
-      console.log("Finished quiz & stats saved!");
-    } catch (err) {
-      console.error("Failed to update stats or leaderboard:", err);
-    }
+    dispatch(saveUserLeaderboardEntryAction({ uid: user.uid, data: leaderboardData }));
+
+    console.log("Finished quiz & stats saved!");
   };
 }
 

@@ -760,43 +760,60 @@ body {
 /* GRID LAYOUT (3 COLUMNS) */
 .details-grid {
     display: grid;                  
-    grid-template-columns: repeat(3, 1fr); /* 3 equal-width columns */
-    gap: 40px;                      /* Space between columns */
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;                      /* Space between columns */
     margin-top: 30px;               /* Space above the grid */
 }
 
 .details-column {
     display: flex;                  /* Use flexbox inside each column */
     flex-direction: column;         /* Stack items vertically */
+    padding-right: 16px;
+}
+
+.details-column:not(:last-child) {
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .details-heading {
-    font-size: 22px;                /* Heading font size */
+    font-size: 20px;                /* Heading font size */
     font-weight: 600;               /* Semi-bold font */
     color: #b673ff;                 /* Purple accent */
-    margin-bottom: 8px;             /* Space below heading */
+    margin-bottom: 12px;             /* Space below heading */
     border-bottom: 1px solid #444;  /* Underline with subtle line */
     padding-bottom: 6px;            /* Padding for underline spacing */
     letter-spacing: 0.5px;
     text-transform: uppercase;
 }
 
-/* OPTION LIST */
-.option-box {
-    color: white;                   /* Default option text color */
-    font-size: 16px;                /* Font size for option text */
-    padding: 6px 0;                 /* Vertical padding inside option */
-    cursor: pointer;                /* Pointer cursor to indicate clickable */
-    transition: color 0.2s, font-weight 0.2s;  /* Smooth hover effect transition */
+/* RADIO OPTION */
+.radio-option {
+    display: flex;
+    align-items: center;
+    background: #2a2a3d;
+    padding: 8px 12px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
 }
-
-.option-box:hover {
-    color: #bb80ff;                 /* Highlight color on hover */
+.radio-option:hover {
+    background: #3a2a5c;
 }
-
-.option-box.selected {
-    color: #bb80ff;                 /* Highlight selected option */
-    font-weight: 600;                 /* Make selected option semi-bold */
+.radio-option input[type="radio"] {
+    display: none;
+}
+.radio-label {
+    color: #fff;
+    font-weight: 500;
+}
+.radio-option.selected {
+    background: #6c4cff;
+    box-shadow: 0 0 12px rgba(108, 76, 255, 0.5);
+}
+.radio-option.selected .radio-label {
+    color: #fff;
+    font-weight: 700;
 }
 
 /* PLAY BUTTON */
@@ -823,6 +840,16 @@ body {
     color: #bb80ff;              /* Purple text on hover */
     transform: scale(1.03);
     box-shadow: 0 0 20px rgba(182,115,255,0.45);
+}
+
+@media (max-width: 600px) {
+    .details-grid {
+        gap: 16px;
+    }
+
+    .details-heading {
+        font-size: 16px;
+    }
 }
 
 /**************************************************************************
