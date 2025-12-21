@@ -10,7 +10,10 @@ export const updateUserStatsAction = createAction('user/updateUserStatsAction');
 const initialState = {
     uid: undefined,
     userData: undefined,   // Firestore “users/{uid}” document
-    stats: { quizzes: [], totalQuizzesCompleted: 0 }, // Array of completed quizzes
+    stats: { 
+        quizzes: [], 
+        totalQuizzesCompleted: 0,
+        totalPoints: 0 }, // Array of completed quizzes
     loading: false,
     error: null,
     ready: false,      // Firebase auth listener sets this
@@ -44,7 +47,8 @@ export const userSlice = createSlice({
             // Load stats from Firestore without triggering persistence
             state.stats = {
                 quizzes: action.payload.quizzes || [],
-                totalQuizzesCompleted: action.payload.totalQuizzesCompleted || 0
+                totalQuizzesCompleted: action.payload.totalQuizzesCompleted || 0,
+                totalPoints: action.payload.totalPoints || 0
             };
         },
         // Add a new completed quiz to stats (local only; call updateUserStats to persist)
@@ -54,6 +58,9 @@ export const userSlice = createSlice({
             // Increment total completed quizzes
             if (!state.stats.totalQuizzesCompleted) state.stats.totalQuizzesCompleted = 0;
             state.stats.totalQuizzesCompleted += 1;
+
+            // Add to total points
+            state.stats.totalPoints += newQuiz.score;
 
             const quizzes = state.stats.quizzes || [];
 

@@ -108,6 +108,7 @@ export function finishQuizThunk() {
     const leaderboardData = {
         username: user.userData.displayName,
         bestScore,
+        totalPoints: stats.totalPoints,
         quizzesCompleted: stats.totalQuizzesCompleted,
         lastUpdated: Date.now()
     };

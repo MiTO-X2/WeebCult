@@ -15,11 +15,11 @@ export const selectRankedLeaderboard = createSelector(
     [...entries]
       .sort(
         (a, b) => {
-          const scoreDiff = b.bestScore - a.bestScore;
-          if (scoreDiff !== 0) return scoreDiff;
+          const pointsDiff = (b.totalPoints || 0) - (a.totalPoints || 0);
+          if (pointsDiff !== 0) return pointsDiff;
 
           // Convert lastUpdated to numbers if needed
-          return (b.lastUpdated || 0) - (a.lastUpdated || 0);
+          return (a.lastUpdated || 0) - (b.lastUpdated || 0);
         })
       .map((entry, index) => ({
         ...entry,

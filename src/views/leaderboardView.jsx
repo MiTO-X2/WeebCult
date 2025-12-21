@@ -40,6 +40,7 @@ export function LeaderboardView(props) {
                             <tr>
                                 <th>#</th>
                                 <th>User</th>
+                                <th>Total Points</th>
                                 <th>Best Score</th>
                                 <th>Quizzes</th>
                             </tr>
@@ -50,6 +51,7 @@ export function LeaderboardView(props) {
                                 <tr key={entry.uid}>
                                     <td>{entry.rank}</td>
                                     <td>{entry.username}</td>
+                                    <td>{entry.totalPoints}</td>
                                     <td>{entry.bestScore}</td>
                                     <td>{entry.quizzesCompleted}</td>
                                 </tr>
@@ -66,6 +68,7 @@ export function LeaderboardView(props) {
                         {[
                             { label: "Rank", value: props.userEntry.rank },
                             { label: "Username", value: props.userEntry.username },
+                            { label: "Total Points", value: props.userEntry.totalPoints },
                             { label: "Best Score", value: props.userEntry.bestScore },
                             { label: "Quizzes Completed", value: props.userEntry.quizzesCompleted }
                         ].map((field) => (
