@@ -1,9 +1,6 @@
 /***********************************************************************
  * PURPOSE:
  *   - Manage sidebar popup logic
- *   - Listen to model/userState and model/factState via Redux
- *   - Pass recent quizzes + random anime fact to SidebarView
- *   - Handle loading state for fact
  *   - Handle close action
  ***********************************************************************/
 

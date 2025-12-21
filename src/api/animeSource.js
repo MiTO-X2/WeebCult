@@ -12,7 +12,6 @@
  *      - Access presenters or views
  *
  *  ALL thunks (Redux Toolkit) call these functions.
- *
  ***************************************************************/
 
 import { PROXY_URL, PROXY_KEY, GROUP_NUMBER } from "./apiConfig.js";

@@ -78,57 +78,54 @@ export function HeaderView(props) {
                     </button>
                 </div>
 
-                {/* FILTERS (only show if user typed something) */}
-                {/*props.query?.length > 0 && (*/}
-                    <div className="search-filters">
+                <div className="search-filters">
 
-                        {/* TYPE */}
-                        <select
-                            value={props.selectedType || ""}
-                            onChange={e => handleFilterChangeACB(props.onTypeChange, e.target.value)}
-                        >
-                            <option value="">Type</option>
-                            {props.typeOptions?.map(renderOptionCB)}
-                        </select>
+                    {/* TYPE */}
+                    <select
+                        value={props.selectedType || ""}
+                        onChange={e => handleFilterChangeACB(props.onTypeChange, e.target.value)}
+                    >
+                        <option value="">Type</option>
+                        {props.typeOptions?.map(renderOptionCB)}
+                    </select>
 
-                        {/* STATUS */}
-                        <select
-                            value={props.selectedStatus || ""}
-                            onChange={e => handleFilterChangeACB(props.onStatusChange, e.target.value)}
-                        >
-                            <option value="">Status</option>
-                            {props.statusOptions?.map(renderOptionCB)}
-                        </select>
+                    {/* STATUS */}
+                    <select
+                        value={props.selectedStatus || ""}
+                        onChange={e => handleFilterChangeACB(props.onStatusChange, e.target.value)}
+                    >
+                        <option value="">Status</option>
+                        {props.statusOptions?.map(renderOptionCB)}
+                    </select>
 
-                        {/* RATING */}
-                        <select
-                            value={props.selectedRating || ""}
-                            onChange={e => handleFilterChangeACB(props.onRatingChange, e.target.value)}
-                        >
-                            <option value="">Rating</option>
-                            {props.ratingOptions?.map(renderOptionCB)}
-                        </select>
+                    {/* RATING */}
+                    <select
+                        value={props.selectedRating || ""}
+                        onChange={e => handleFilterChangeACB(props.onRatingChange, e.target.value)}
+                    >
+                        <option value="">Rating</option>
+                        {props.ratingOptions?.map(renderOptionCB)}
+                    </select>
 
-                        {/* GENRES (multi-select) */}
-                        <select
-                            value={props.selectedGenres[0] || ""}
-                            onChange={e => handleFilterChangeACB(props.onGenresChange, [e.target.value])}
-                        >
-                            <option value="">Genre</option>
-                            {props.genreOptions?.map(renderGenreCB)}
-                        </select>
+                    {/* GENRES (multi-select) */}
+                    <select
+                        value={props.selectedGenres[0] || ""}
+                        onChange={e => handleFilterChangeACB(props.onGenresChange, [e.target.value])}
+                    >
+                        <option value="">Genre</option>
+                        {props.genreOptions?.map(renderGenreCB)}
+                    </select>
 
-                        {/* ORDER BY */}
-                        <select
-                            value={props.selectedOrderBy || ""}
-                            onChange={e => handleFilterChangeACB(props.onOrderByChange, e.target.value)}
-                        >
-                            <option value="">Order By</option>
-                            {props.orderByOptions?.map(renderOptionCB)}
-                        </select>
+                    {/* ORDER BY */}
+                    <select
+                        value={props.selectedOrderBy || ""}
+                        onChange={e => handleFilterChangeACB(props.onOrderByChange, e.target.value)}
+                    >
+                        <option value="">Order By</option>
+                        {props.orderByOptions?.map(renderOptionCB)}
+                    </select>
 
-                    </div>
-                {/*})}*/}
+                </div>
 
             </div>
 

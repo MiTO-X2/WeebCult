@@ -136,14 +136,6 @@ export const animeSlice = createSlice({
                 if (ps.promise !== action.meta.requestId) return;
                 ps.data = action.payload;
                 ps.promise = null;
-
-                // Reset filters after search
-                // state.searchFilters.query = "";
-                // state.searchFilters.selectedType = "";
-                // state.searchFilters.selectedStatus = "";
-                // state.searchFilters.selectedRating = "";
-                // state.searchFilters.selectedGenres = [];
-                // state.searchFilters.selectedOrderBy = "";
             })
             .addCase(fetchSearch.rejected, (state, action) => {
                 const ps = state.search.promiseState;

@@ -1,6 +1,6 @@
 /***********************************************************************
  * Footer:
- *  - Logo (clickable → navigate home)
+ *  - Logo (clickable -> navigate home)
  *  - "Made with ♡ by:"
  *  - "Team WeebCult"
  *
