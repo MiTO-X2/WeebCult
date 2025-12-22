@@ -90,10 +90,13 @@ export function updateLeaderboardEntry(uid,leaderboardData){
 export async function loadLeaderboard(){
     const snap = await getDocs(collection(db,"leaderboard"));
 
-    return snap.docs.map(doc => ({
-        uid: doc.id,
-        ...doc.data()
-    }));
+    function mapDocToLeaderboardEntryCB(doc) {
+        return {
+            uid: doc.id,
+            ...doc.data()
+        };
+    }
+    return snap.docs.map(mapDocToLeaderboardEntryCB);
 }
 
 /***************************************************
