@@ -4,7 +4,6 @@
  *  - Pass current search query and selected filters as props
  *  - Dispatch fetchSearch when user searches
  *  - Dispatch filter selection actions
- *  - Integrate TraceMoe image-based anime search
  ***********************************************************************/
 
 import { connect } from "react-redux";
@@ -15,12 +14,9 @@ import {
   setQuery, setSelectedType, setSelectedStatus, 
   setSelectedRating, setSelectedGenres, setSelectedOrderBy 
 } from "../redux/slices/animeSlice.js";
-import { fetchTraceMoeResult, clearTraceMoe } from "../redux/slices/traceMoeSlice.js";
 
 function mapStateToProps(state) {
   const searchFilters = state.anime.searchFilters || {};
-  const traceMoeState = state.traceMoe || {};
-
   return {
     query: searchFilters.query || "",
     selectedType: searchFilters.selectedType || "",
@@ -33,39 +29,23 @@ function mapStateToProps(state) {
     ratingOptions: searchFilters.ratingOptions,
     orderByOptions: searchFilters.orderByOptions,
     genreOptions: state.anime.allGenres.promiseState.data || [],
-    isLoggedIn: !!state.user.uid,
-
-    traceMoe: {
-      data: traceMoeState.data,
-      error: traceMoeState.promiseState?.error || null,
-      loading: !!traceMoeState.promiseState?.promise
-    }
+    isLoggedIn: !!state.user.uid 
   };
 }
 
 const mapDispatchToProps = (dispatch) => ({
   onQueryChange: (query) => dispatch(setQuery(query)),
   onSearch: () => dispatch(fetchSearch()),
-
   onTypeChange: (value) => dispatch(setSelectedType(value)),
   onStatusChange: (value) => dispatch(setSelectedStatus(value)),
   onRatingChange: (value) => dispatch(setSelectedRating(value)),
   onGenresChange: (selected) => dispatch(setSelectedGenres(selected)),
   onOrderByChange: (value) => dispatch(setSelectedOrderBy(value)),
 
+  // --- Login/Logout ---
   onLogin: () => dispatch(loginUserThunk()),
-  onLogout: () => dispatch(logoutUserThunk()),
-
-  onTraceMoeSearch: (imageUrl) =>
-    dispatch(fetchTraceMoeResult(imageUrl)),
-
-  onUseTraceMoeAnime: (filename) => {
-    dispatch(setQuery(filename));
-    dispatch(clearTraceMoe());
-  },
-
-  onClearTraceMoe: () => dispatch(clearTraceMoe())
+  onLogout: () => dispatch(logoutUserThunk())
 });
 
-export const HeaderPresenter =
-  connect(mapStateToProps, mapDispatchToProps)(HeaderView);
+export const HeaderPresenter = 
+    connect(mapStateToProps, mapDispatchToProps)(HeaderView);
