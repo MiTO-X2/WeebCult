@@ -15,6 +15,7 @@ import detailsReducer from './slices/detailsSlice.js';
 import quizReducer from './slices/quizSlice.js';  
 import sidebarReducer from './slices/sidebarSlice.js';  
 import nekoReducer from './slices/nekoSlice.js';  
+import traceMoeReducer from './slices/traceMoeSlice.js';
 import leaderboardReducer from './slices/leaderboardSlice.js';
 
 // Combine reducers into a single root reducer
@@ -25,5 +26,6 @@ export default combineReducers({
         quiz: quizReducer,       // Quiz system state
         sidebar: sidebarReducer,
         neko: nekoReducer,
+        traceMoe: traceMoeReducer,
         leaderboard: leaderboardReducer
    });
