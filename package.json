@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "latest",
-    "firebase": "latest",
+    "firebase": "^12.18.0",
     "react": "latest",
     "react-card-flip": "^1.2.3",
     "react-countdown-circle-timer": "^3.2.1",
