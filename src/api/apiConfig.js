@@ -6,7 +6,7 @@ export const GROUP_NUMBER = "808";
 // This wraps any URL after the group number as we did for the lab.
 
 // API 1 (Jikan API)
-export const PROXY_URL = `https://brfenergi.se/iprog/group/${GROUP_NUMBER}/https://api.jikan.moe/v4`;
+export const PROXY_URL = `https://brfenergi.se/iprog/group/${GROUP_NUMBER}/https://api.tenrai.org/v1`;
 
 // API 2 (Nekos API)
 export const PROXY_URL_NEKO = `https://brfenergi.se/iprog/group/${GROUP_NUMBER}`;
