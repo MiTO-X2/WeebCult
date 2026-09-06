@@ -6,8 +6,14 @@
     "serve": "vite preview"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.7",
     "@vitejs/plugin-react": "latest",
-    "vite": "latest"
+    "jest": "^30.5.1",
+    "jsdom": "^29.1.1",
+    "vite": "latest",
+    "vitest": "^5.0.0"
   },
   "dependencies": {
     "@reduxjs/toolkit": "latest",
