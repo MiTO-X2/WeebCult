@@ -1,11 +1,11 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import quizReducer, {
-  initializeQuiz,
-  setQuestionAnswers,
-  submitAnswer,
-  nextQuestion,
-  loadCurrentQuestion,
-  timeExpired,
+    initializeQuiz,
+    setQuestionAnswers,
+    submitAnswer,
+    nextQuestion,
+    loadCurrentQuestion,
+    timeExpired,
 } from './quizSlice';
 
 /* ---------------- Test fixtures ---------------- */
