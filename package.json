@@ -6,9 +6,11 @@
     "serve": "vite preview"
   },
   "devDependencies": {
+    "@playwright/test": "^1.63.0",
     "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.3",
     "@testing-library/user-event": "^14.6.7",
+    "@types/node": "^26.5.0",
     "@vitejs/plugin-react": "latest",
     "jest": "^30.5.1",
     "jsdom": "^29.1.1",
