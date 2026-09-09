@@ -8,7 +8,7 @@ test('Check for example a trending anime exists', async ({ page }) => {
   await page.screenshot({ path: './test-results/Trending.png', fullPage: true });
 });
 
-test('Check if leader works fine', async ({ page }) => {
+test('Check if leaderboard works fine', async ({ page }) => {
   await page.goto('http://localhost:8080/');
   await page.getByRole('button', { name: ' Open the global leaderboard' }).click();
   await expect(page.getByRole('heading', { name: 'Leaderboard' })).toBeVisible();

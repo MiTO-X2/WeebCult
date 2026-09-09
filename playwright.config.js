@@ -73,7 +73,7 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'npm run preview -- --port 8080',
+    command: 'npx vite preview --port 8080 --strictPort',
     url: 'http://localhost:8080',
     reuseExistingServer: !process.env.CI,
   },
