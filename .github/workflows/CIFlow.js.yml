@@ -31,7 +31,9 @@ jobs:
     - name: Builds website  
       run: npm run build 
     - name: Installs playwright browser
-      run: npx playwright install --with-deps
+      run: |
+        sudo rm -f /etc/apt/sources.list.d/google-chrome*
+        npx playwright install --with-deps
     - name: Run playwright test
       run: npx playwright test
     
