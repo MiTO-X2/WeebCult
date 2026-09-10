@@ -15,7 +15,6 @@ test('Check that the api loads all anime categories in main page', async ({ page
     await expect(fantasy);
     let slice = await page.getByText('Mahoutsukai ni Taisetsu na').scrollIntoViewIfNeeded();
     await expect(slice);
-    await page.screenshot({ path: './test-results/Mainpage.png', fullPage: true });
 });
 
 test('Check if leaderboard works fine', async ({ page }) => {
