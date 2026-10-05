@@ -1,0 +1,39 @@
+name: Checkov
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read  
+
+    steps:
+    - uses: actions/checkout@v7
+
+    - name: Test with Checkov
+      id: checkov
+      uses: bridgecrewio/checkov-action@master   
+      with:
+        directory: .
+        framework: terraform
+        download_external_modules: true
+        # USED FOR TUTORIAL DEMO — remove to trigger a failing check
+        skip_check: CKV_GCP_27
+        output_format: cli,sarif
+        output_file_path: console,results.sarif
+
+    - name: Upload SARIF as artifact
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: sarif_file
+        path: results.sarif
+        if-no-files-found: ignore
