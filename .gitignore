@@ -135,3 +135,19 @@ dist
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+
+# Keys and data
+serviceKey.json
+
+# Terraform local state, variables, and downloaded providers
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+
+# Firebase CLI local cache
+.firebase/
+
+# Terraform-generated config file; the app uses src/firebase/firebaseConfig.js
+/src/firebaseConfig.js

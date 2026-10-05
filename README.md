@@ -296,6 +296,8 @@ npm run build
 
 The application is deployed using Firebase Hosting.
 
+Terraform provisions Firebase and Firestore resources in the existing `weebcult-81f89` project; it does not create a separate Google Cloud project. The project ID is configured in `terraform.tfvars` and matches `.firebaserc`.
+
 ---
 
 ## Credits
