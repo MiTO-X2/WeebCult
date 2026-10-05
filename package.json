@@ -28,5 +28,8 @@
     "react-router-dom": "latest",
     "react-spinners": "^0.17.0",
     "redux-persist": "^6.0.0"
+  },
+  "overrides": {
+    "@grpc/grpc-js": "1.13.6"
   }
 }
