@@ -44,10 +44,9 @@
 
 ## Overview
 
-**WeebCult** is a full-featured anime quiz web application that allows users to search for anime titles and play interactive quizzes based on characters, trivia, and anime-related knowledge.  
-The application is built with **React**, **Redux Toolkit**, and **Firebase**, and integrates real-world anime data through public APIs.
+**WeebCult** is a full-featured anime quiz web application that lets users search for anime titles and play interactive quizzes based on characters, trivia, and anime-related knowledge. The application is built with **React**, **Redux Toolkit**, and **Firebase**, and integrates real-world anime data through public APIs.
 
-The project follows a clean and scalable architecture that separates **UI components**, **presentation logic**, **state management**, and **data sources**, ensuring maintainability, clarity, and extensibility.
+The project uses a presenter/view architecture with centralized Redux state, listener middleware, and Firebase-backed authentication and persistence. It is designed for search-driven anime discovery and quick quiz sessions.
 
 ---
 
@@ -57,7 +56,7 @@ The project follows a clean and scalable architecture that separates **UI compon
 
 - Search anime by title with filtering options
 - Browse trending anime and genres
-- View anime details before starting a quiz
+- Open anime details before starting a quiz
 
 ### Quiz System
 
@@ -69,75 +68,58 @@ The project follows a clean and scalable architecture that separates **UI compon
 
 ### Game Score Screen
 
-- Displays the user’s final score
-- Shows quiz metadata:
+- Displays the final score and quiz metadata:
   - Category
   - Mode
   - Quiz type
-- Provides:
-  - **Play Again** button
-  - **Return to Main Screen** button
+- Provides **Play Again** and **Return to Main Screen** actions
 
 ### Global Leaderboard
 
 - Displays ranked users based on quiz performance
 - Uses Firestore persistence
-- Dynamically updates via Redux listeners and selectors
+- Updates through Redux listeners and selectors
 
 ### User Experience
 
-- Sidebar popup showing:
-  - The **3 most recently played quizzes per user**
-  - Interactive flip-card UI revealing quiz details
-  - Random anime image fetched from a secondary API
-- Smooth loading states using suspense loaders
-- Responsive and interactive UI design
+- Sidebar showing each user's three most recent quizzes
+- Interactive flip cards reveal score, anime title, mode, category, quiz type, and play time
+- Random anime image fetched from Nekos API
+- Loading states for authentication and data initialization
+- Responsive, anime-themed interface
 
 ### Persistence & Authentication
 
-- Firebase Authentication (Google Sign-In)
-- Firestore database for storing user quiz history
+- Firebase Authentication with Google Sign-In
+- Firestore stores user quiz history and leaderboard data
 - User-specific recent quiz tracking
 
 ---
 
 ## Third-Party Components Used
 
-The following **user-visible third-party components** are integrated into the application:
+The following user-visible third-party components are integrated into the application:
 
 ### 1. MoonLoader
 
 📦 **Library:** `react-spinners`  
 📍 **Used in:** `suspenseView`
 
-- Displays a professional loading spinner while authentication or data is initializing.
-
----
+- Displays a loading spinner while authentication or data is initializing.
 
 ### 2. CountdownCircleTimer
 
 📦 **Library:** `react-countdown-circle-timer`  
 📍 **Used in:** `gameView`
 
-- Visual countdown timer for timed quizzes.
-- Enhances urgency and user engagement during gameplay.
-
----
+- Displays the countdown for timed quizzes.
 
 ### 3. CardFlip
 
 📦 **Library:** `react-card-flip`  
 📍 **Used in:** `sidebarView`
 
-- Interactive flip-card component.
-- Displays the last **3 recently played quizzes**.
-- Flip interaction reveals:
-  - Score
-  - Anime title
-  - Quiz mode
-  - Category
-  - Quiz type
-  - Time played
+- Provides interactive cards for the three most recent quizzes.
 
 ---
 
@@ -147,40 +129,30 @@ The following **user-visible third-party components** are integrated into the ap
 
 🔗 https://jikan.moe/
 
-- Primary data source for the application.
-- Used to:
-  - Search anime
-  - Fetch anime details
-  - Retrieve characters
-  - Generate quiz questions dynamically
-- Most of the app’s logic and content is built around this API.
-
----
+- Searches anime and fetches anime details and characters.
+- Supplies data used to generate quiz questions.
 
 ### 2. Nekos API
 
 🔗 https://nekos.best/
 
-- Used in the sidebar to fetch and display a random anime image.
-- Adds visual variety and personality to the UI.
+- Supplies a random anime image for the sidebar.
+
+Anime API requests use the proxy configuration in `src/api/apiConfig.js`.
 
 ---
 
 ## Application Architecture
 
-The project follows a **layered architecture inspired by MVP principles**:
+The project follows a layered architecture inspired by MVP principles:
 
-- **Views:** Pure UI components (no logic, no API calls)
+- **Views:** UI components
 - **Presenters:** Connect Redux state and callbacks to views
-- **Redux:** Centralized state management (slices, reducers, middleware)
-- **API Layer:** All external data fetching
-- **Firebase Layer:** Authentication and persistence
+- **Redux:** Centralized state management with slices, selectors, thunks, and listener middleware
+- **API layer:** Jikan and Nekos data fetching
+- **Firebase layer:** Authentication and persistence
 
-This design ensures:
-
-- Predictable data flow
-- Clear separation of concerns
-- High maintainability and scalability
+The application bootstrap starts in `src/index.jsx`; the application root, hash-based routing, and navigation are defined in `src/reactRoot.jsx`. Authentication initialization runs on startup, and the Redux store restores quiz state from local storage.
 
 ---
 
@@ -188,98 +160,61 @@ This design ensures:
 
 ### `src/api`
 
-Contains functions for fetching data from the Jikan and Nekos APIs:
+Contains functions for fetching data from external APIs:
 
-- **animeSource.js:** Searches anime, fetches character information, and supplies quiz data through Jikan.
-- **nekoSource.js:** Fetches random anime images through Nekos API.
-- **apiConfig.js:** Configures the API proxy used by Jikan and Nekos. Use proxy access details provided by your course or proxy provider.
+- **animeSource.js:** Anime search, character information, and quiz data through Jikan.
+- **nekoSource.js:** Random anime images through Nekos API.
+- **apiConfig.js:** API proxy configuration.
 
-### documents
+### `documents`
 
-- **User_Evaluation_WeebCult.pdf:** Pre-user evaluation document (prototyping stage)
-- **formative-evaluation.pdf:** Formative evaluation and feedback analysis
+- **User_Evaluation_WeebCult.pdf:** Pre-user evaluation document.
+- **formative-evaluation.pdf:** Formative evaluation and feedback analysis.
 
 ### `src/firebase`
 
 Manages authentication and database access:
 
-- **firebaseConfig.js:** Firebase web-app configuration used by the application.
+- **firebaseConfig.js:** Firebase web-app configuration.
 - **firestoreModel.js:** Firebase Authentication and Firestore persistence.
 
 ### `src/presenters`
 
-Fetches information from Redux (application state/model) and passes it to views:
+Connects Redux state and interactions to views:
 
-- **animeDetailsPresenter.jsx:** Handles anime details and quiz setup.
-- **gamePresenter.jsx:** Handles quiz display and gameplay.
-- **gameScorePresenter.jsx:** Handles the post-quiz score screen.
-- **headerPresenter.jsx:** Manages header, search, and filtering interactions.
-- **leaderboardPresenter.jsx:** Handles the global leaderboard.
-- **mainPagePresenter.jsx:** Mounts anime lists on the main page.
-- **sidebarPresenter.jsx:** Handles recent quiz scores and the random Nekos image.
+- **animeDetailsPresenter.jsx:** Anime details and quiz setup.
+- **gamePresenter.jsx:** Quiz gameplay.
+- **gameScorePresenter.jsx:** Post-quiz score screen.
+- **headerPresenter.jsx:** Header, search, and filtering interactions.
+- **leaderboardPresenter.jsx:** Global leaderboard.
+- **mainPagePresenter.jsx:** Anime lists on the main page.
+- **sidebarPresenter.jsx:** Recent quiz scores and random Nekos image.
 
 ### `src/redux`
 
 Stores application state and model:
 
-- **listeners:** Contains custom Redux middleware listeners
-
-  - **detailsListener.js:** Handles side effects for anime details
-  - **leaderboardListener.js:** Leaderboard-related async logic
-  - **listenerMiddleware.js:** Main listener middleware (anime & genre rendering)
-  - **quizListener.js:** Quiz lifecycle side effects
-  - **sidebarListener.js:** Sidebar persistence & updates
-  - **userListener.js:** User-related persistence and updates
-
-- **selectors:**
-
-  - **leaderboardSelectors.js:** Derived leaderboard state.
-  - **quizSelectors.js:** Derived quiz state (score, progress)
-
-- **slices**
-
-  - **animeSlice.js:** Stores/fetches anime search, trending, and genre results
-  - **detailsSlice.js:** Stores anime ID and fetches character/anime details
-  - **leaderboardSlice.js:** Global leaderboard state
-  - **nekoSlice.js:** Nekos API image state
-  - **quizSlice.js:** Manages quiz state, including score, questions, mode, etc
-  - **sidebarSlice.js:** Sidebar UI & recent quiz state
-  - **userSlice.js:** Stores user information and manages login/logout (Authentication & user state)
-
-- **thunks:**
-
-  - **quizThunks.js:** Async quiz-related logic.
-  - **userThunks.js:** Authentication & user persistence logic
-
-- **rootReducer.js:** Combines all Redux slice reducers into a single root reducer
-- **store.js:** Creates Redux store configuration and imports slices
+- **listeners:** Side effects for anime details, leaderboard, anime and genre rendering, quiz lifecycle, sidebar persistence, and user updates.
+- **selectors:** Derived leaderboard and quiz state.
+- **slices:** Anime, details, leaderboard, Nekos, quiz, sidebar, and user state.
+- **thunks:** Asynchronous quiz and user persistence logic.
+- **rootReducer.js:** Combines the slice reducers.
+- **store.js:** Configures the Redux store and persistence.
 
 ### `src/views`
 
-UI components that render the website:
-
-- **animeDetailsView.jsx:** Anime details popup UI
-- **footerView.jsx:** Footer with logo and text
-- **gameScoreView.jsx:** Score screen after quiz completion
-- **gameView.jsx:** Quiz UI
-- **headerView.jsx:** Header UI for (e.g., logo, app title, search bar and filtering)
-- **leaderboardView.jsx:** Global leaderboard UI
-- **mainPageView.jsx:** Main landing page UI
-- **rowView.jsx:** Renders anime rows per genre
-- **sidebarView.jsx:** Sidebar popup UI
-- **suspenseView.jsx:** Loader UI (MoonLoader)
+UI components that render the website, including anime details, game and score screens, header, leaderboard, main page, anime rows, sidebar, footer, and suspense loader.
 
 ### Application entry points and tests
 
-- **src/index.jsx:** App bootstrap.
+- **src/index.jsx:** App bootstrap and auth initialization.
 - **src/reactRoot.jsx:** Application root, routing, and navigation.
 - **src/setupTests.js:** Shared Vitest setup.
-- **tests/E2ETesting.spec.js:** Playwright end-to-end tests.
 - **src/redux/slices/*.test.js:** Vitest unit tests for Redux slices.
-
+- **tests/E2ETesting.spec.js:** Playwright end-to-end tests.
 - **index.html:** Vite HTML entry point.
 - **vite.config.js:** Vite and Vitest configuration.
-- **playwright.config.js:** Playwright browser and end-to-end test configuration.
+- **playwright.config.js:** Playwright browser and test configuration.
 - **firebase.json** and **firestore.rules:** Firebase Hosting and Firestore rules configuration.
 - **main.tf**, **variables.tf**, and **.terraform.lock.hcl:** Optional Terraform configuration for Firebase and Google Cloud resources.
 
@@ -287,13 +222,10 @@ UI components that render the website:
 
 ## Documentation
 
-The `/documents` folder contains evaluation material produced during the development process:
+The `documents` folder contains evaluation material produced during development:
 
-- **Pre-User Evaluation:**  
-  Initial assumptions, user expectations, and early design validation
-
-- **Formative Evaluation:**  
-  Iterative feedback analysis and improvements applied to the final application
+- **Pre-User Evaluation:** Initial assumptions, user expectations, and early design validation.
+- **Formative Evaluation:** Iterative feedback analysis and improvements applied to the application.
 
 These documents reflect the user-centered design process followed throughout development.
 
@@ -302,10 +234,11 @@ These documents reflect the user-centered design process followed throughout dev
 ### WeebCult demonstrates:
 
 - Clean React + Redux architecture
-- Proper separation of concerns
+- Separation of concerns
 - Real-world API integration
-- Thoughtful UI/UX design
-- Production-ready deployment
+- UI/UX design
+- Firebase-backed persistence
+- Automated browser testing
 
 ---
 
@@ -319,14 +252,14 @@ These documents reflect the user-centered design process followed throughout dev
 - **Optional, for end-to-end tests:** Playwright browser binaries (installed below).
 - **Optional, for deployment/infrastructure work:** Firebase CLI, Terraform CLI, and Google Cloud CLI with access to the target project.
 
-Install optional infrastructure tools from the [Terraform](https://developer.hashicorp.com/terraform/install) and [Google Cloud CLI](https://cloud.google.com/sdk/docs/install) installation guides. The Firebase CLI install command is included in the deployment section.
-
-On Windows, install Git and the Node.js LTS release from their official downloads:
+On Windows, install Git and Node.js from their official downloads:
 
 - [Git for Windows](https://git-scm.com/download/win)
 - [Node.js](https://nodejs.org/en/download)
 
-After installation, open a new terminal and confirm both tools are available:
+Install optional infrastructure tools from the [Terraform](https://developer.hashicorp.com/terraform/install) and [Google Cloud CLI](https://cloud.google.com/sdk/docs/install) installation guides. The Firebase CLI installation command is in the deployment section.
+
+Open a new terminal after installing Git and Node.js, then confirm they are available:
 
 ```sh
 git --version
@@ -395,7 +328,7 @@ npx playwright install
 npx playwright test
 ```
 
-Playwright installs Chromium, Firefox, and WebKit for the configured desktop and mobile browser projects. These tests use the external anime APIs, so proxy access must be configured.
+The Playwright suite covers anime category rendering, leaderboard behavior, the recent quiz sidebar, anime search, and starting a quiz. It runs across the configured Chromium, Firefox, WebKit, and Mobile Safari projects; the tests use external anime APIs, so proxy access must be configured.
 
 ### Deployment
 
@@ -410,7 +343,7 @@ firebase deploy --only hosting --project weebcult-81f89
 
 Only deploy if you are authorized to update the selected Firebase project. For a different project, use its project ID and update `.firebaserc` and the Firebase app configuration accordingly.
 
-The Terraform files at the repository root are optional infrastructure provisioning, not required to run the application. They target the existing Firebase/Google Cloud project configured by `project_id` in `variables.tf` (also reflected in `.firebaserc`); they do not create a separate Google Cloud project. Terraform use requires the Terraform CLI, Google Cloud CLI, appropriate project permissions, and Google Application Default Credentials (for example, `gcloud auth application-default login`). Initialize and review the proposed changes before making any:
+The Terraform files at the repository root are optional infrastructure provisioning and are not required to run the application. They target the existing Firebase/Google Cloud project configured by `project_id` in `variables.tf` (also reflected in `.firebaserc`); they do not create a separate Google Cloud project. Terraform use requires the Terraform CLI, Google Cloud CLI, appropriate project permissions, and Google Application Default Credentials (for example, `gcloud auth application-default login`). Initialize and review the proposed changes before making any:
 
 ```sh
 terraform init
@@ -423,18 +356,17 @@ Do not run `terraform apply` unless you are authorized to modify the selected pr
 
 ## Credits
 
-This project was developed as part of an academic React & Redux application project and represents a complete, production-style single-page application.
+This project was developed as part of an academic React & Redux application project.
 
 ### Technologies & Tools
-
-- **Vitest** – Unit test runner
-- **Playwright** – End-to-end browser tests
-- **Terraform** – Optional Firebase and Google Cloud infrastructure provisioning
 
 - **React** – Component-based UI framework
 - **Redux Toolkit** – Centralized state management
 - **Firebase** – Authentication, Firestore database, and hosting
 - **Vite** – Development server and build tool
+- **Vitest** – Unit test runner
+- **Playwright** – End-to-end browser tests
+- **Terraform** – Optional Firebase and Google Cloud infrastructure provisioning
 - **JavaScript** – Application logic
 - **CSS** – Styling and layout
 
@@ -454,8 +386,7 @@ All anime-related data, images, and metadata are provided by third-party public 
 - **Jikan API** (MyAnimeList unofficial API)
 - **Nekos API**
 
-This application is for **educational and non-commercial purposes only**.  
-All anime titles, characters, and images belong to their respective copyright holders.
+This application is for educational and non-commercial purposes only. All anime titles, characters, and images belong to their respective copyright holders.
 
 ---
 
