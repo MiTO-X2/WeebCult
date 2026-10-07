@@ -11,6 +11,37 @@
 
 ---
 
+## Table of Contents
+
+- [Overview](#overview)
+- [Key Features](#key-features)
+  - [Anime Discovery](#anime-discovery)
+  - [Quiz System](#quiz-system)
+  - [Game Score Screen](#game-score-screen)
+  - [Global Leaderboard](#global-leaderboard)
+  - [User Experience](#user-experience)
+  - [Persistence & Authentication](#persistence--authentication)
+- [Third-Party Components Used](#third-party-components-used)
+- [External APIs Used](#external-apis-used)
+- [Application Architecture](#application-architecture)
+- [Project File Structure](#project-file-structure)
+- [Documentation](#documentation)
+- [Setup & Installation](#setup--installation)
+  - [Prerequisites](#prerequisites)
+  - [Clone the Repository](#clone-the-repository)
+  - [Install Dependencies](#install-dependencies)
+  - [Configure Firebase and API Access](#configure-firebase-and-api-access)
+  - [Run Development Server](#run-development-server)
+  - [Build for Production](#build-for-production)
+  - [Preview the Production Build](#preview-the-production-build)
+  - [Run Tests](#run-tests)
+  - [Deployment](#deployment)
+- [Credits](#credits)
+- [Data & API Disclaimer](#data--api-disclaimer)
+- [Learning Outcomes](#learning-outcomes)
+
+---
+
 ## Overview
 
 **WeebCult** is a full-featured anime quiz web application that allows users to search for anime titles and play interactive quizzes based on characters, trivia, and anime-related knowledge.  
@@ -155,39 +186,39 @@ This design ensures:
 
 ## Project File Structure
 
-### api
+### `src/api`
 
-Contains functions for fetching data from external APIs (Jikan):
+Contains functions for fetching data from the Jikan and Nekos APIs:
 
-- **animeSource.js:** Searching anime with different parameters and fetching character info. Jikan API calls (search, characters, quiz data)
-- **nekoSource.js:** Nekos API integration (random anime images)
-- **api.config.js:** API configuration and proxy settings (Stores proxy key and proxy URL)
+- **animeSource.js:** Searches anime, fetches character information, and supplies quiz data through Jikan.
+- **nekoSource.js:** Fetches random anime images through Nekos API.
+- **apiConfig.js:** Configures the API proxy used by Jikan and Nekos. Use proxy access details provided by your course or proxy provider.
 
 ### documents
 
-- **User-Evaluation-WeebCult.pdf:** Pre-user evaluation document (prototyping stage)
+- **User_Evaluation_WeebCult.pdf:** Pre-user evaluation document (prototyping stage)
 - **formative-evaluation.pdf:** Formative evaluation and feedback analysis
 
-### firebase
+### `src/firebase`
 
 Manages authentication and database access:
 
-- **firebaseConfig.js:** Contains Firebase keys, appID, and configuration
-- **firestoreModel.js:** Implements functionality for authentication & firestore persistence
+- **firebaseConfig.js:** Firebase web-app configuration used by the application.
+- **firestoreModel.js:** Firebase Authentication and Firestore persistence.
 
-### presenters
+### `src/presenters`
 
 Fetches information from Redux (application state/model) and passes it to views:
 
-- **animeDetailsPresenter.jsx:** Handles popup logic when an anime poster is clicked and contains the settings for the quiz to play
-- **gamePresenter.jsx:** Handles quiz display and gameplay logic
-- **gameScorePresenter.jsx:** Post-quiz score screen logic
-- **headerPresenter.jsx:** Manages header interactions (e.g., logo click and search bar and filtering)
-- **leaderboardPresenter.jsx:** Global leaderboard logic.
-- **mainPagePresenter.jsx:** Mounts anime lists on the main page
-- **sidebarPresenter.jsx:** Handles the sidebar popup responsible for rendering recent quiz scores and random anime img from the second API (Nekos API usage)
+- **animeDetailsPresenter.jsx:** Handles anime details and quiz setup.
+- **gamePresenter.jsx:** Handles quiz display and gameplay.
+- **gameScorePresenter.jsx:** Handles the post-quiz score screen.
+- **headerPresenter.jsx:** Manages header, search, and filtering interactions.
+- **leaderboardPresenter.jsx:** Handles the global leaderboard.
+- **mainPagePresenter.jsx:** Mounts anime lists on the main page.
+- **sidebarPresenter.jsx:** Handles recent quiz scores and the random Nekos image.
 
-### redux
+### `src/redux`
 
 Stores application state and model:
 
@@ -198,6 +229,7 @@ Stores application state and model:
   - **listenerMiddleware.js:** Main listener middleware (anime & genre rendering)
   - **quizListener.js:** Quiz lifecycle side effects
   - **sidebarListener.js:** Sidebar persistence & updates
+  - **userListener.js:** User-related persistence and updates
 
 - **selectors:**
 
@@ -222,7 +254,7 @@ Stores application state and model:
 - **rootReducer.js:** Combines all Redux slice reducers into a single root reducer
 - **store.js:** Creates Redux store configuration and imports slices
 
-### views
+### `src/views`
 
 UI components that render the website:
 
@@ -237,15 +269,19 @@ UI components that render the website:
 - **sidebarView.jsx:** Sidebar popup UI
 - **suspenseView.jsx:** Loader UI (MoonLoader)
 
-### index.jsx
+### Application entry points and tests
 
-App bootstrap
+- **src/index.jsx:** App bootstrap.
+- **src/reactRoot.jsx:** Application root, routing, and navigation.
+- **src/setupTests.js:** Shared Vitest setup.
+- **tests/E2ETesting.spec.js:** Playwright end-to-end tests.
+- **src/redux/slices/*.test.js:** Vitest unit tests for Redux slices.
 
-### reactRoot.jsx
-
-Application root, routing & navigation
-
-### index.html
+- **index.html:** Vite HTML entry point.
+- **vite.config.js:** Vite and Vitest configuration.
+- **playwright.config.js:** Playwright browser and end-to-end test configuration.
+- **firebase.json** and **firestore.rules:** Firebase Hosting and Firestore rules configuration.
+- **main.tf**, **variables.tf**, and **.terraform.lock.hcl:** Optional Terraform configuration for Firebase and Google Cloud resources.
 
 ---
 
@@ -277,26 +313,111 @@ These documents reflect the user-centered design process followed throughout dev
 
 ### Prerequisites
 
-- Node.js (v18 or newer recommended)
-- npm or yarn
+- **Git** to clone the repository.
+- **Node.js 20.19+ or 22.12+** (required by the Vite version in this project). npm is included with Node.js.
+- A modern browser.
+- **Optional, for end-to-end tests:** Playwright browser binaries (installed below).
+- **Optional, for deployment/infrastructure work:** Firebase CLI, Terraform CLI, and Google Cloud CLI with access to the target project.
+
+Install optional infrastructure tools from the [Terraform](https://developer.hashicorp.com/terraform/install) and [Google Cloud CLI](https://cloud.google.com/sdk/docs/install) installation guides. The Firebase CLI install command is included in the deployment section.
+
+On Windows, install Git and the Node.js LTS release from their official downloads:
+
+- [Git for Windows](https://git-scm.com/download/win)
+- [Node.js](https://nodejs.org/en/download)
+
+After installation, open a new terminal and confirm both tools are available:
+
+```sh
+git --version
+node --version
+npm --version
+```
+
+### Clone the Repository
+
+```sh
+git clone https://github.com/MiTO-X2/WeebCult.git
+cd WeebCult
+```
 
 ### Install Dependencies
 
-npm install
+Install the exact dependency versions recorded in the lockfile:
+
+```sh
+npm ci
+```
+
+### Configure Firebase and API Access
+
+The application reads its Firebase web-app configuration from `src/firebase/firebaseConfig.js`; a separate `.env` file is not currently used. To connect the application to your own Firebase project, register a web app and put its Firebase configuration in that file. Enable Google as a sign-in provider in Firebase Authentication and set up Firestore in the Firebase console. You also need access to the configured Firestore database and its rules.
+
+Jikan and Nekos requests use the proxy configuration in `src/api/apiConfig.js`. If the configured proxy details are not available to you, obtain authorized values from the proxy provider and update that file. Do not commit private credentials or access keys.
 
 ### Run Development Server
 
+```sh
 npm run dev
+```
+
+Open the local URL printed by Vite (by default, `http://localhost:8080`).
 
 ### Build for Production
 
+```sh
 npm run build
+```
+
+The production files are written to `dist/`.
+
+### Preview the Production Build
+
+```sh
+npm run serve
+```
+
+Open the preview URL printed by Vite.
+
+### Run Tests
+
+Run the Redux slice unit tests:
+
+```sh
+npx vitest run
+```
+
+Run the Playwright end-to-end tests against a production preview:
+
+```sh
+npm run build
+npx playwright install
+npx playwright test
+```
+
+Playwright installs Chromium, Firefox, and WebKit for the configured desktop and mobile browser projects. These tests use the external anime APIs, so proxy access must be configured.
 
 ### Deployment
 
-The application is deployed using Firebase Hosting.
+The application is deployed using Firebase Hosting. To deploy, install the [Firebase CLI](https://firebase.google.com/docs/cli), sign in with an account authorized for the target project, then build and deploy:
 
-Terraform provisions Firebase and Firestore resources in the existing `weebcult-81f89` project; it does not create a separate Google Cloud project. The project ID is configured in `terraform.tfvars` and matches `.firebaserc`.
+```sh
+npm install --global firebase-tools
+firebase login
+npm run build
+firebase deploy --only hosting --project weebcult-81f89
+```
+
+Only deploy if you are authorized to update the selected Firebase project. For a different project, use its project ID and update `.firebaserc` and the Firebase app configuration accordingly.
+
+The Terraform files at the repository root are optional infrastructure provisioning, not required to run the application. They target the existing Firebase/Google Cloud project configured by `project_id` in `variables.tf` (also reflected in `.firebaserc`); they do not create a separate Google Cloud project. Terraform use requires the Terraform CLI, Google Cloud CLI, appropriate project permissions, and Google Application Default Credentials (for example, `gcloud auth application-default login`). Initialize and review the proposed changes before making any:
+
+```sh
+terraform init
+terraform plan
+```
+
+Do not run `terraform apply` unless you are authorized to modify the selected project and have reviewed the plan.
 
 ---
 
@@ -305,6 +426,10 @@ Terraform provisions Firebase and Firestore resources in the existing `weebcult-
 This project was developed as part of an academic React & Redux application project and represents a complete, production-style single-page application.
 
 ### Technologies & Tools
+
+- **Vitest** – Unit test runner
+- **Playwright** – End-to-end browser tests
+- **Terraform** – Optional Firebase and Google Cloud infrastructure provisioning
 
 - **React** – Component-based UI framework
 - **Redux Toolkit** – Centralized state management
